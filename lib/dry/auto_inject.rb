@@ -3,6 +3,9 @@ require 'dry/auto_inject/injection'
 
 module Dry
   class AutoInject
+    # @attr_reader [Injection] injection The configured injection module
+    #
+    # @api private
     attr_reader :injection
 
     # Configure an auto-injection module
