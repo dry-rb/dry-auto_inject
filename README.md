@@ -6,6 +6,15 @@
 <a href="https://codeclimate.com/github/dryrb/dry-auto_inject" target="_blank">![Code Climate](https://codeclimate.com/github/dryrb/dry-auto_inject/badges/gpa.svg)</a>
 <a href="http://inch-ci.org/github/dryrb/dry-auto_inject" target="_blank">![Documentation Status](http://inch-ci.org/github/dryrb/dry-auto_inject.svg?branch=master&style=flat)</a>
 
+A simple extensions which allows you to automatically inject dependencies to your
+object constructors from a configured container.
+
+It does 3 things:
+
+- Defines a constructor which accepts dependencies
+- Defines attribute readers for dependencies
+- Injects dependencies automatically to the constructor with overridden `.new`
+
 ## Installation
 
 Add this line to your application's Gemfile:
