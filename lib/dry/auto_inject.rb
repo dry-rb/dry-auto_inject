@@ -2,6 +2,9 @@ require 'dry/auto_inject/version'
 require 'dry/auto_inject/injection'
 
 module Dry
+  # Main DSL class
+  #
+  # @api public
   class AutoInject
     # @attr_reader [Injection] injection The configured injection module
     #
