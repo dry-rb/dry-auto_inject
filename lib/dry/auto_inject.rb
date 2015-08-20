@@ -11,10 +11,10 @@ module Dry
         @container = container
       end
 
-      def included(mod)
-        mod.instance_variable_set("@container", container)
+      def included(descendant)
+        descendant.instance_variable_set('@container', container)
 
-        mod.module_eval do
+        descendant.module_eval do
           class << self
             attr_reader :container
           end
@@ -27,7 +27,7 @@ module Dry
     class Injection < Module
       attr_reader :names
 
-      attr_reader :mod
+      attr_reader :instance_mod
 
       attr_reader :ivars
 
@@ -35,25 +35,12 @@ module Dry
         module_exec(&block)
         @names = names
         @ivars = names.map(&:to_s).map { |s| s.split('.').last }.map(&:to_sym)
-        @mod = Module.new
+        @instance_mod = Module.new
         define_constructor
       end
 
       def included(klass)
-        klass.instance_variable_set('@container', container)
-
-        klass.class_eval do
-          class << self
-            attr_reader :container
-          end
-
-          def self.inherited(descendant)
-            descendant.instance_variable_set('@container', container)
-            super
-          end
-        end
-
-        klass.class_eval <<-RUBY
+        klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def self.new(*args)
             names = [#{names.map(&:inspect).join(', ')}]
             deps = names.map.with_index { |_, i| args[i] || container[names[i]] }
@@ -61,13 +48,25 @@ module Dry
           end
         RUBY
 
-        klass.send(:include, mod)
+        klass.instance_variable_set('@container', container)
+
+        klass.class_eval do
+          def self.container
+            if superclass.respond_to?(:container)
+              superclass.container
+            else
+              @container
+            end
+          end
+        end
+
+        klass.send(:include, instance_mod)
 
         super
       end
 
       def define_constructor
-        mod.class_eval <<-RUBY
+        instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           attr_reader #{ivars.map { |name| ":#{name}" }.join(', ')}
 
           def initialize(*args)
