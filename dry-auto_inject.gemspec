@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'dry/auto_inject/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'dry-pipeline'
+  spec.name          = 'dry-auto_inject'
   spec.version       = Dry::AutoInject::VERSION.dup
   spec.authors       = ['Piotr Solnica']
   spec.email         = ['piotr.solnica@gmail.com']
