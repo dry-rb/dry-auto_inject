@@ -10,6 +10,8 @@ RSpec.describe Dry::AutoInject do
       include Test::AutoInject[:one, :two, 'namespace.three']
     end
 
+    descendant = Class.new(klass)
+
     object = klass.new
 
     expect(object.one).to be(1)
@@ -33,5 +35,11 @@ RSpec.describe Dry::AutoInject do
     expect(object.one).to be(1)
     expect(object.two).to be(2)
     expect(object.three).to be(3)
+
+    child = descendant.new
+
+    expect(child.one).to be(1)
+    expect(child.two).to be(2)
+    expect(child.three).to be(3)
   end
 end

@@ -1,5 +1,3 @@
-require 'dry-configurable'
-
 require 'dry/auto_inject/version'
 
 module Dry
@@ -14,13 +12,13 @@ module Dry
       end
 
       def included(mod)
+        mod.instance_variable_set("@container", container)
+
         mod.module_eval do
-          extend Dry::Configurable
-
-          setting :container
+          class << self
+            attr_reader :container
+          end
         end
-
-        mod.configure { |config| config.container = container }
 
         super
       end
@@ -42,18 +40,23 @@ module Dry
       end
 
       def included(klass)
+        klass.instance_variable_set('@container', container)
+
         klass.class_eval do
-          extend Dry::Configurable
+          class << self
+            attr_reader :container
+          end
 
-          setting :container
+          def self.inherited(descendant)
+            descendant.instance_variable_set('@container', container)
+            super
+          end
         end
-
-        klass.configure { |config| config.container = self.config.container }
 
         klass.class_eval <<-RUBY
           def self.new(*args)
             names = [#{names.map(&:inspect).join(', ')}]
-            deps = names.map.with_index { |_, i| args[i] || config.container[names[i]] }
+            deps = names.map.with_index { |_, i| args[i] || container[names[i]] }
             super(*deps)
           end
         RUBY
