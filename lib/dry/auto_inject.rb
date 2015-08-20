@@ -31,9 +31,12 @@ module Dry
 
       attr_reader :mod
 
+      attr_reader :ivars
+
       def initialize(names, &block)
         module_exec(&block)
         @names = names
+        @ivars = names.map(&:to_s).map { |s| s.split('.').last }.map(&:to_sym)
         @mod = Module.new
         define_constructor
       end
@@ -49,12 +52,8 @@ module Dry
 
         klass.class_eval <<-RUBY
           def self.new(*args)
-            names = [#{names.map { |name| ":#{name}" }.join(', ')}]
-
-            deps = names.map.with_index { |obj, i|
-              args[i] || config.container[names[i]]
-            }
-
+            names = [#{names.map(&:inspect).join(', ')}]
+            deps = names.map.with_index { |_, i| args[i] || config.container[names[i]] }
             super(*deps)
           end
         RUBY
@@ -66,10 +65,10 @@ module Dry
 
       def define_constructor
         mod.class_eval <<-RUBY
-          attr_reader #{names.map { |name| ":#{name}" }.join(', ')}
+          attr_reader #{ivars.map { |name| ":#{name}" }.join(', ')}
 
           def initialize(*args)
-            #{names.map.with_index { |name, i| "@#{name} = args[#{i}]" }.join("\n")}
+            #{ivars.map.with_index { |name, i| "@#{name} = args[#{i}]" }.join("\n")}
           end
         RUBY
         self
