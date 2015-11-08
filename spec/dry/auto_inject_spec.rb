@@ -20,7 +20,15 @@ RSpec.describe Dry::AutoInject do
       end
     end
 
-    child_class = Class.new(parent_class)
+    child_class = Class.new(parent_class) do
+      attr_reader :foo
+
+      def initialize(*args)
+        @foo = 'bar'
+        super
+      end
+    end
+
     grand_child_class = Class.new(child_class)
 
     [
@@ -30,5 +38,7 @@ RSpec.describe Dry::AutoInject do
       assert_valid_object(child_class.new(*args))
       assert_valid_object(grand_child_class.new(*args))
     end
+
+    expect(grand_child_class.new(1, 2, 3).foo).to eql('bar')
   end
 end

@@ -63,6 +63,7 @@ module Dry
           attr_reader #{ivars.map { |name| ":#{name}" }.join(', ')}
 
           def initialize(*args)
+            super()
             #{ivars.map.with_index { |name, i| "@#{name} = args[#{i}]" }.join("\n")}
           end
         RUBY
