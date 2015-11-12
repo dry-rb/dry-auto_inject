@@ -47,12 +47,11 @@ my_container.register(:data_store, -> { DataStore.new })
 my_container.register(:user_repository, -> { container[:data_store][:users] })
 my_container.register(:persist_user, -> { PersistUser.new })
 
-# set up your auto-injection module
-
+# set up your auto-injection function
 AutoInject = Dry::AutoInject(my_container)
 
 # then simply include it in your class providing which dependencies should be
-# injected automatically from the configure container
+# injected automatically from the configured container
 class PersistUser
   include AutoInject[:user_repository]
 
