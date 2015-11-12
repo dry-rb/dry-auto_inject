@@ -7,13 +7,15 @@ RSpec.describe Dry::AutoInject do
 
   it 'works' do
     module Test
-      AutoInject = Dry::AutoInject.new do
-        container one: 1, two: 2, 'namespace.three' => 3
+      AutoInject = Dry::AutoInject({ one: 1, two: 2, 'namespace.three' => 3 })
+
+      def self.AutoInject(*args)
+        AutoInject[*args]
       end
     end
 
     parent_class = Class.new do
-      include Test::AutoInject[:one, :two, 'namespace.three']
+      include Test::AutoInject(:one, :two, 'namespace.three')
 
       def self.inherited(other)
         super

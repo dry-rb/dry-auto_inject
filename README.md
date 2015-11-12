@@ -49,7 +49,7 @@ my_container.register(:persist_user, -> { PersistUser.new })
 
 # set up your auto-injection module
 
-AutoInject = Dry::AutoInject.new { container(my_container) }
+AutoInject = Dry::AutoInject(my_container)
 
 # then simply include it in your class providing which dependencies should be
 # injected automatically from the configure container
