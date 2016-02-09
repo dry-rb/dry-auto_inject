@@ -60,8 +60,15 @@ RSpec.describe Dry::AutoInject do
       Class.new do
         include Test::AutoInject.hash[:one, :two, 'namespace.three']
 
+        attr_reader :other
+
         def self.inherited(other)
           super
+        end
+
+        def initialize(args)
+          super
+          @other = args[:other]
         end
       end
     end
@@ -81,6 +88,7 @@ RSpec.describe Dry::AutoInject do
         assert_valid_object(grand_child_class.new(args))
       end
 
+      expect(parent_class.new(other: true).other).to be(true)
       expect(grand_child_class.new(one: 1, two: 2, three: 3).foo).to eql('bar')
     end
   end

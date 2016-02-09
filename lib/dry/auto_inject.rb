@@ -141,7 +141,7 @@ module Dry
           names = [#{names.map(&:inspect).join(', ')}]
           deps = names.each_with_object({}) { |k, r|
             r[k.to_s.split('.').last.to_sym] = options[k] || container[k]
-          }
+          }.merge(options)
           super(deps)
         end
       RUBY
