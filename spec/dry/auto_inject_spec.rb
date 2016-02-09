@@ -5,42 +5,53 @@ RSpec.describe Dry::AutoInject do
     expect(object.three).to be(3)
   end
 
-  it 'works' do
+  before do
     module Test
       AutoInject = Dry::AutoInject({ one: 1, two: 2, 'namespace.three' => 3 })
+    end
+  end
 
-      def self.AutoInject(*args)
-        AutoInject[*args]
+  context 'with positioned args' do
+    let(:parent_class) do
+      Class.new do
+        include Test::AutoInject[:one, :two, 'namespace.three']
+
+        def self.inherited(other)
+          super
+        end
       end
     end
 
-    parent_class = Class.new do
-      include Test::AutoInject(:one, :two, 'namespace.three')
+    let(:child_class) do
+      Class.new(parent_class) do
+        attr_reader :foo
 
-      def self.inherited(other)
-        super
+        def initialize(*args)
+          @foo = 'bar'
+          super
+        end
       end
     end
 
-    child_class = Class.new(parent_class) do
-      attr_reader :foo
+    let(:grand_child_class) do
+      Class.new(child_class)
+    end
 
-      def initialize(*args)
-        @foo = 'bar'
-        super
+    let(:test_args) do
+      [
+        [], [1, 2, 3], [nil, 2, 3], [1, nil, 3], [1, 2, nil], [nil, nil, 3],
+        [1, nil, nil], [1, nil, 3]
+      ]
+    end
+
+    it 'works' do
+      test_args.each do |args|
+        assert_valid_object(parent_class.new(*args))
+        assert_valid_object(child_class.new(*args))
+        assert_valid_object(grand_child_class.new(*args))
       end
+
+      expect(grand_child_class.new(1, 2, 3).foo).to eql('bar')
     end
-
-    grand_child_class = Class.new(child_class)
-
-    [
-      [], [1, 2, 3], [nil, 2, 3], [1, nil, 3], [1, 2, nil], [nil, nil, 3], [1, nil, nil], [1, nil, 3]
-    ].each do |args|
-      assert_valid_object(parent_class.new(*args))
-      assert_valid_object(child_class.new(*args))
-      assert_valid_object(grand_child_class.new(*args))
-    end
-
-    expect(grand_child_class.new(1, 2, 3).foo).to eql('bar')
   end
 end
