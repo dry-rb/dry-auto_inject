@@ -87,10 +87,6 @@ module Dry
       define_constructor
     end
 
-    def hash
-      self.class.new(names, constructor, type: :hash)
-    end
-
     # @api private
     def included(klass)
       define_readers
