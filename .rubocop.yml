@@ -7,6 +7,7 @@ Metrics/LineLength:
 Lint/HandleExceptions:
   Exclude:
     - rakelib/*.rake
+    - spec/spec_helper.rb
 
 Style/LambdaCall:
   EnforcedStyle: braces
@@ -17,3 +18,4 @@ Style/Documentation:
 Style/FileName:
   Exclude:
     - lib/dry-pipeline.rb
+    - lib/dry-auto_inject.rb
