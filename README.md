@@ -1,10 +1,10 @@
-# Dry::AutoInject <a href="https://gitter.im/dryrb/chat" target="_blank">![Join the chat at https://gitter.im/dryrb/chat](https://badges.gitter.im/Join%20Chat.svg)</a>
+# Dry::AutoInject <a href="https://gitter.im/dry-rb/chat" target="_blank">![Join the chat at https://gitter.im/dry-rb/chat](https://badges.gitter.im/Join%20Chat.svg)</a>
 
 <a href="https://rubygems.org/gems/dry-auto_inject" target="_blank">![Gem Version](https://badge.fury.io/rb/dry-auto_inject.svg)</a>
-<a href="https://travis-ci.org/dryrb/dry-auto_inject" target="_blank">![Build Status](https://travis-ci.org/dryrb/dry-auto_inject.svg?branch=master)</a>
-<a href="https://gemnasium.com/dryrb/dry-auto_inject" target="_blank">![Dependency Status](https://gemnasium.com/dryrb/dry-auto_inject.svg)</a>
-<a href="https://codeclimate.com/github/dryrb/dry-auto_inject" target="_blank">![Code Climate](https://codeclimate.com/github/dryrb/dry-auto_inject/badges/gpa.svg)</a>
-<a href="http://inch-ci.org/github/dryrb/dry-auto_inject" target="_blank">![Documentation Status](http://inch-ci.org/github/dryrb/dry-auto_inject.svg?branch=master&style=flat)</a>
+<a href="https://travis-ci.org/dry-rb/dry-auto_inject" target="_blank">![Build Status](https://travis-ci.org/dry-rb/dry-auto_inject.svg?branch=master)</a>
+<a href="https://gemnasium.com/dry-rb/dry-auto_inject" target="_blank">![Dependency Status](https://gemnasium.com/dry-rb/dry-auto_inject.svg)</a>
+<a href="https://codeclimate.com/github/dry-rb/dry-auto_inject" target="_blank">![Code Climate](https://codeclimate.com/github/dry-rb/dry-auto_inject/badges/gpa.svg)</a>
+<a href="http://inch-ci.org/github/dry-rb/dry-auto_inject" target="_blank">![Documentation Status](http://inch-ci.org/github/dry-rb/dry-auto_inject.svg?branch=master&style=flat)</a>
 
 A simple extensions which allows you to automatically inject dependencies to your
 object constructors from a configured container.
@@ -73,5 +73,5 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/dryrb/dry-auto_inject.
+Bug reports and pull requests are welcome on GitHub at https://github.com/dry-rb/dry-auto_inject.
 
