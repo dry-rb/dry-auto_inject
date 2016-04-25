@@ -1,3 +1,4 @@
+require 'dry-initializer'
 require 'dry/auto_inject/version'
 
 module Dry
@@ -84,12 +85,11 @@ module Dry
       @type = options.fetch(:type, :args)
       @ivars = names.map(&:to_s).map { |s| s.split('.').last }.map(&:to_sym)
       @instance_mod = Module.new
-      define_constructor
     end
 
     # @api private
     def included(klass)
-      define_readers
+      define_initializer(klass)
       define_new_method(klass)
       define_container(klass)
 
@@ -148,41 +148,33 @@ module Dry
     end
 
     # @api private
-    def define_constructor
+    def define_initializer(klass)
       case type
-      when :args then define_constructor_with_args
-      when :hash then define_constructor_with_hash
+      when :args then define_initializer_with_args(klass)
+      when :hash then define_initializer_with_hash(klass)
       end
     end
 
     # @api private
-    def define_constructor_with_args
-      instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-        def initialize(*args)
-          super()
-          #{ivars.map.with_index { |name, i| "@#{name} = args[#{i}]" }.join("\n")}
+    def define_initializer_with_args(klass)
+      klass.class_exec(ivars) do |ivars|
+        extend Dry::Initializer
+
+        ivars.each do |name|
+          param name
         end
-      RUBY
-      self
+      end
     end
 
     # @api private
-    def define_constructor_with_hash
-      instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-        def initialize(options)
-          super()
-          #{ivars.map { |name| "@#{name} = options[:#{name}]" }.join("\n")}
-        end
-      RUBY
-      self
-    end
+    def define_initializer_with_hash(klass)
+      klass.class_exec(ivars) do |ivars|
+        extend Dry::Initializer
 
-    # @api private
-    def define_readers
-      instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-        attr_reader #{ivars.map { |name| ":#{name}" }.join(', ')}
-      RUBY
-      self
+        ivars.each do |name|
+          option name
+        end
+      end
     end
   end
 end
