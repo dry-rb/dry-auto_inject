@@ -66,9 +66,9 @@ RSpec.describe Dry::AutoInject do
           super
         end
 
-        def initialize(args)
-          super
-          @other = args[:other]
+        def initialize(other: nil, **args)
+          super(**args)
+          @other = other
         end
       end
     end
