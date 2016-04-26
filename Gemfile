@@ -5,8 +5,4 @@ gemspec
 
 group :tools do
   gem 'byebug', platforms: :mri
-  gem 'rubocop'
-  gem 'guard'
-  gem 'guard-rspec'
-  gem 'guard-rubocop'
 end
