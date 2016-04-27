@@ -57,6 +57,11 @@ module Dry
     end
 
     # @api public
+    def kwargs
+      self.class.new(container, options.merge(type: :kwargs))
+    end
+
+    # @api public
     def [](*names)
       AutoInject.new(names, container, options)
     end
@@ -120,6 +125,7 @@ module Dry
       case type
       when :args then define_new_method_with_args(klass)
       when :hash then define_new_method_with_hash(klass)
+      when :kwargs then define_new_method_with_kwargs(klass)
       end
     end
 
@@ -148,10 +154,24 @@ module Dry
     end
 
     # @api private
+    def define_new_method_with_kwargs(klass)
+      klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
+        def self.new(**args)
+          names = [#{names.map(&:inspect).join(', ')}]
+          deps = names.each_with_object({}) { |k, r|
+            r[k.to_s.split('.').last.to_sym] = args[k] || container[k]
+          }.merge(args)
+          super(**deps)
+        end
+      RUBY
+    end
+
+    # @api private
     def define_constructor
       case type
       when :args then define_constructor_with_args
       when :hash then define_constructor_with_hash
+      when :kwargs then define_constructor_with_kwargs
       end
     end
 
@@ -172,6 +192,17 @@ module Dry
         def initialize(options)
           super()
           #{ivars.map { |name| "@#{name} = options[:#{name}]" }.join("\n")}
+        end
+      RUBY
+      self
+    end
+
+    # @api private
+    def define_constructor_with_kwargs
+      instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
+        def initialize(**args)
+          super()
+          #{ivars.map { |name| "@#{name} = args[:#{name}]" }.join("\n")}
         end
       RUBY
       self
