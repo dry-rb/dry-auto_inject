@@ -63,7 +63,16 @@ module Dry
 
     # @api public
     def [](*names)
+      names = dealias(*names)
       AutoInject.new(names, container, options)
+    end
+
+    private
+
+    # @api private
+    def dealias(*names)
+      return names unless names.last.is_a?(Hash)
+      names[0..-2] + names.last.values
     end
   end
 

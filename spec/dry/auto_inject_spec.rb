@@ -7,7 +7,7 @@ RSpec.describe Dry::AutoInject do
 
   before do
     module Test
-      AutoInject = Dry::AutoInject({ one: 1, two: 2, 'namespace.three' => 3 })
+      AutoInject = Dry::AutoInject(one: 1, two: 2, 'namespace.three' => 3)
     end
   end
 
@@ -90,6 +90,44 @@ RSpec.describe Dry::AutoInject do
 
       expect(parent_class.new(other: true).other).to be(true)
       expect(grand_child_class.new(one: 1, two: 2, three: 3).foo).to eql('bar')
+    end
+
+    context 'and hash key alias' do
+      let(:parent_class) do
+        Class.new do
+          include Test::AutoInject.hash[:one, :two, four: 'namespace.three']
+
+          attr_reader :other
+
+          def self.inherited(other)
+            super
+          end
+
+          def initialize(args)
+            super
+            @other = args[:other]
+          end
+        end
+      end
+
+      let(:test_args) do
+        [
+          {}, { one: 1, two: 2, four: 3 }, { two: 2, four: 3 },
+          { one: 1, four: 3 }, { one: 1, two: 2 }, { four: 3 },
+          { one: 1 }, { one: 1, four: 3 }
+        ]
+      end
+
+      it 'works' do
+        test_args.each do |args|
+          assert_valid_object(parent_class.new(args))
+          assert_valid_object(child_class.new(args))
+          assert_valid_object(grand_child_class.new(args))
+        end
+
+        expect(parent_class.new(other: true).other).to be(true)
+        expect(grand_child_class.new(one: 1, two: 2, four: 3).foo).to eql('bar')
+      end
     end
   end
 
