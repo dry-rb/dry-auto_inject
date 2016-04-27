@@ -9,7 +9,6 @@ rvm:
   - 2.1
   - 2.2
   - rbx-2
-  - jruby
   - ruby-head
   - jruby-head
 env:
