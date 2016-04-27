@@ -90,11 +90,11 @@ module Dry
       @ivars = names.map(&:to_s).map { |s| s.split('.').last }.map(&:to_sym)
       @instance_mod = Module.new
       define_constructor
+      define_readers
     end
 
     # @api private
     def included(klass)
-      define_readers
       define_new_method(klass)
       define_container(klass)
 
