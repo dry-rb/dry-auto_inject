@@ -53,6 +53,96 @@ RSpec.describe Dry::AutoInject do
 
       expect(grand_child_class.new(1, 2, 3).foo).to eql('bar')
     end
+
+    context 'autoinject in a subclass' do
+      let(:child_class) do
+        Class.new(parent_class) do
+          include Test::AutoInject[:one, :two, 'namespace.three']
+        end
+      end
+
+      context 'superclass initialize accepts fixed arguments' do
+        let(:parent_class) do
+          Class.new do
+            attr_reader :first
+
+            def initialize(first)
+              @first = first
+            end
+          end
+        end
+
+        it 'works' do
+          test_args.each do |args|
+            child_instance = child_class.new(*args)
+
+            assert_valid_object(child_instance)
+            expect(child_instance.first).to eq 1
+          end
+        end
+      end
+
+      context 'superclass initialize has matching signature' do
+        let(:parent_class) do
+          Class.new do
+            attr_reader :args
+
+            def initialize(*args)
+              @args = args
+            end
+          end
+        end
+
+        it 'works' do
+          test_args.each do |args|
+            child_instance = child_class.new(*args)
+
+            assert_valid_object(child_instance)
+            expect(child_instance.args).to eq [1,2,3]
+          end
+        end
+      end
+
+      context 'superclass initialize accepts variable arguments' do
+        let(:parent_class) do
+          Class.new do
+            attr_reader :first
+            attr_reader :middle
+            attr_reader :last
+
+            def initialize(first, *middle, last)
+              @first = first
+              @middle = middle
+              @last = last
+            end
+          end
+        end
+
+        it 'works' do
+          test_args.each do |args|
+            child_instance = child_class.new(*args)
+
+            assert_valid_object(child_instance)
+            expect(child_instance.first).to eq 1
+            expect(child_instance.middle).to eq [2]
+            expect(child_instance.last).to eq 3
+          end
+        end
+      end
+
+      context 'superclass initialize accepts no arguments' do
+        let(:parent_class) do
+          Class.new do
+          end
+        end
+
+        it 'works' do
+          test_args.each do |args|
+            assert_valid_object(child_class.new(*args))
+          end
+        end
+      end
+    end
   end
 
   context 'with hash arg' do

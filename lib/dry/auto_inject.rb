@@ -69,6 +69,8 @@ module Dry
 
   # @api private
   class AutoInject < Module
+    InstanceMethods = Class.new(Module)
+
     attr_reader :names
 
     attr_reader :container
@@ -88,7 +90,7 @@ module Dry
       @options = options
       @type = options.fetch(:type, :args)
       @ivars = names.map(&:to_s).map { |s| s.split('.').last }.map(&:to_sym)
-      @instance_mod = Module.new
+      @instance_mod = InstanceMethods.new
       define_constructor
       define_readers
     end
@@ -179,7 +181,20 @@ module Dry
     def define_constructor_with_args
       instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
         def initialize(*args)
-          super()
+          super_init = method(__method__).super_method
+          super_arity = super_init.arity
+
+          super_args = if super_init.owner.is_a?(Dry::AutoInject::InstanceMethods)
+            []
+          elsif super_arity == 0
+            []
+          elsif super_arity < 0
+            args
+          else
+            args[0..super_arity-1]
+          end
+
+          super(*super_args)
           #{ivars.map.with_index { |name, i| "@#{name} = args[#{i}]" }.join("\n")}
         end
       RUBY
