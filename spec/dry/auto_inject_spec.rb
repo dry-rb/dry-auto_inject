@@ -30,10 +30,6 @@ RSpec.describe Dry::AutoInject do
     let(:parent_class) do
       Class.new do
         include Test::AutoInject[:one, :two, 'namespace.three']
-
-        def self.inherited(other)
-          super
-        end
       end
     end
 
@@ -151,10 +147,6 @@ RSpec.describe Dry::AutoInject do
         include Test::AutoInject.hash[:one, :two, 'namespace.three']
 
         attr_reader :other
-
-        def self.inherited(other)
-          super
-        end
 
         def initialize(args)
           super
