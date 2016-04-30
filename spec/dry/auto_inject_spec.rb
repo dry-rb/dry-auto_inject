@@ -268,11 +268,11 @@ RSpec.describe Dry::AutoInject do
     context 'autoinject in a subclass' do
       let(:child_class) do
         Class.new(parent_class) do
-          include Test::AutoInject.hash[:one, :two, 'namespace.three']
+          include Test::AutoInject.kwargs[:one, :two, 'namespace.three']
         end
       end
 
-      context 'superclass initialize accepts option hash' do
+      context 'superclass initialize accepts keyword args' do
         let(:parent_class) do
           Class.new do
             attr_reader :first
