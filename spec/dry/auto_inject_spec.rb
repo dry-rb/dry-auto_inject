@@ -1,8 +1,8 @@
 RSpec.describe Dry::AutoInject do
   def assert_valid_object(object)
-    expect(object.one).to be(1)
-    expect(object.two).to be(2)
-    expect(object.three).to be(3)
+    expect(object.one).to eq 1
+    expect(object.two).to eq 2
+    expect(object.three).to eq 3
   end
 
   before do
