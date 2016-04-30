@@ -164,14 +164,56 @@ RSpec.describe Dry::AutoInject do
     end
 
     it 'works' do
-      test_args.each do |args|
-        assert_valid_object(parent_class.new(args))
-        assert_valid_object(child_class.new(args))
-        assert_valid_object(grand_child_class.new(args))
+        test_args.each do |args|
+          assert_valid_object(parent_class.new(args))
+          assert_valid_object(child_class.new(args))
+          assert_valid_object(grand_child_class.new(args))
+        end
+
+        expect(parent_class.new(other: true).other).to be(true)
+        expect(grand_child_class.new(one: 1, two: 2, three: 3).foo).to eql('bar')
+    end
+
+    context 'autoinject in a subclass' do
+      let(:child_class) do
+        Class.new(parent_class) do
+          include Test::AutoInject.hash[:one, :two, 'namespace.three']
+        end
       end
 
-      expect(parent_class.new(other: true).other).to be(true)
-      expect(grand_child_class.new(one: 1, two: 2, three: 3).foo).to eql('bar')
+      context 'superclass initialize accepts option hash' do
+        let(:parent_class) do
+          Class.new do
+            attr_reader :first
+
+            def initialize(options)
+              @first = options[:one]
+            end
+          end
+        end
+
+        it 'works' do
+          test_args.each do |args|
+            child_instance = child_class.new(args)
+
+            assert_valid_object(child_instance)
+            expect(child_instance.first).to eq 1
+          end
+        end
+      end
+
+      context 'superclass initialize accepts no arguments' do
+        let(:parent_class) do
+          Class.new do
+          end
+        end
+
+        it 'works' do
+          test_args.each do |args|
+            assert_valid_object(child_class.new(args))
+          end
+        end
+      end
     end
   end
 
@@ -221,6 +263,48 @@ RSpec.describe Dry::AutoInject do
 
       expect(parent_class.new(other: true).other).to be(true)
       expect(grand_child_class.new(one: 1, two: 2, three: 3).foo).to eql('bar')
+    end
+
+    context 'autoinject in a subclass' do
+      let(:child_class) do
+        Class.new(parent_class) do
+          include Test::AutoInject.hash[:one, :two, 'namespace.three']
+        end
+      end
+
+      context 'superclass initialize accepts option hash' do
+        let(:parent_class) do
+          Class.new do
+            attr_reader :first
+
+            def initialize(one:, **args)
+              @first = one
+            end
+          end
+        end
+
+        it 'works' do
+          test_args.each do |args|
+            child_instance = child_class.new(**args)
+
+            assert_valid_object(child_instance)
+            expect(child_instance.first).to eq 1
+          end
+        end
+      end
+
+      context 'superclass initialize accepts no arguments' do
+        let(:parent_class) do
+          Class.new do
+          end
+        end
+
+        it 'works' do
+          test_args.each do |args|
+            assert_valid_object(child_class.new(**args))
+          end
+        end
+      end
     end
   end
 end

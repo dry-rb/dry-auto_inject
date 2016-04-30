@@ -83,6 +83,12 @@ module Dry
 
     attr_reader :type
 
+    def self.super_arity(klass, method)
+      method = klass.instance_method(method)
+      owner = method.owner
+      owner.equal?(klass) ? 0 : method.arity
+    end
+
     # @api private
     def initialize(names, container, options = {})
       @names = names
@@ -91,12 +97,12 @@ module Dry
       @type = options.fetch(:type, :args)
       @ivars = names.map(&:to_s).map { |s| s.split('.').last }.map(&:to_sym)
       @instance_mod = InstanceMethods.new
-      define_constructor
-      define_readers
     end
 
     # @api private
     def included(klass)
+      define_constructor(klass)
+      define_readers
       define_new_method(klass)
       define_container(klass)
 
@@ -169,32 +175,21 @@ module Dry
     end
 
     # @api private
-    def define_constructor
+    def define_constructor(klass)
       case type
-      when :args then define_constructor_with_args
-      when :hash then define_constructor_with_hash
-      when :kwargs then define_constructor_with_kwargs
+      when :args then define_constructor_with_args(klass)
+      when :hash then define_constructor_with_hash(klass)
+      when :kwargs then define_constructor_with_kwargs(klass)
       end
     end
 
     # @api private
-    def define_constructor_with_args
+    def define_constructor_with_args(klass)
+      super_arity = Dry::AutoInject.super_arity(klass, :initialize)
+
       instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
         def initialize(*args)
-          super_init = method(__method__).super_method
-          super_arity = super_init.arity
-
-          super_args = if super_init.owner.is_a?(Dry::AutoInject::InstanceMethods)
-            []
-          elsif super_arity == 0
-            []
-          elsif super_arity < 0
-            args
-          else
-            args[0..super_arity-1]
-          end
-
-          super(*super_args)
+          super(#{super_arity == 0 ? '' : (super_arity < 0 ? '*args' : '*args[0..' + super_arity.to_s + '-1]')})
           #{ivars.map.with_index { |name, i| "@#{name} = args[#{i}]" }.join("\n")}
         end
       RUBY
@@ -202,10 +197,12 @@ module Dry
     end
 
     # @api private
-    def define_constructor_with_hash
+    def define_constructor_with_hash(klass)
+      super_arity = Dry::AutoInject.super_arity(klass, :initialize)
+
       instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
         def initialize(options)
-          super()
+          super(#{super_arity == 0 ? '' : 'options'})
           #{ivars.map { |name| "@#{name} = options[:#{name}]" }.join("\n")}
         end
       RUBY
@@ -213,10 +210,12 @@ module Dry
     end
 
     # @api private
-    def define_constructor_with_kwargs
+    def define_constructor_with_kwargs(klass)
+      super_arity = Dry::AutoInject.super_arity(klass, :initialize)
+
       instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
         def initialize(**args)
-          super()
+          super(#{super_arity == 1 ? '**args' : ''})
           #{ivars.map { |name| "@#{name} = args[:#{name}]" }.join("\n")}
         end
       RUBY
