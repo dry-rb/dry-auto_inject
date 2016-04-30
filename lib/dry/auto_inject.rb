@@ -43,10 +43,10 @@ module Dry
   end
 
   module AutoInject
-    def self.super_arity(klass, method)
+    # @api private
+    def self.super_method(klass, method)
       method = klass.instance_method(method)
-      owner = method.owner
-      owner.equal?(klass) ? 0 : method.arity
+      method unless method.owner.equal?(klass)
     end
   end
 end

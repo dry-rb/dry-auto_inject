@@ -112,11 +112,18 @@ module Dry
 
       # @api private
       def define_constructor_with_args(klass)
-        super_arity = Dry::AutoInject.super_arity(klass, :initialize)
+        super_method = Dry::AutoInject.super_method(klass, :initialize)
+        super_params = if super_method.parameters.empty?
+          ''
+        elsif super_method.parameters.any? { |type, _| type == :rest }
+          '*args'
+        else
+          "*args[0..#{super_method.parameters.length - 1}]"
+        end
 
         instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def initialize(*args)
-            super(#{super_arity == 0 ? '' : (super_arity < 0 ? '*args' : '*args[0..' + super_arity.to_s + '-1]')})
+            super(#{super_params})
             #{ivars.map.with_index { |name, i| "@#{name} = args[#{i}]" }.join("\n")}
           end
         RUBY
@@ -125,11 +132,12 @@ module Dry
 
       # @api private
       def define_constructor_with_hash(klass)
-        super_arity = Dry::AutoInject.super_arity(klass, :initialize)
+        super_method = Dry::AutoInject.super_method(klass, :initialize)
+        super_params = super_method.parameters.empty? ? '' : 'options'
 
         instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def initialize(options)
-            super(#{super_arity == 0 ? '' : 'options'})
+            super(#{super_params})
             #{ivars.map { |name| "@#{name} = options[:#{name}]" }.join("\n")}
           end
         RUBY
@@ -138,11 +146,12 @@ module Dry
 
       # @api private
       def define_constructor_with_kwargs(klass)
-        super_arity = Dry::AutoInject.super_arity(klass, :initialize)
+        super_method = Dry::AutoInject.super_method(klass, :initialize)
+        super_params = super_method.parameters.empty? ? '' : '**args'
 
         instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def initialize(**args)
-            super(#{super_arity == 1 ? '**args' : ''})
+            super(#{super_params})
             #{ivars.map { |name| "@#{name} = args[:#{name}]" }.join("\n")}
           end
         RUBY
