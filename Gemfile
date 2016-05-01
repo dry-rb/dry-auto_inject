@@ -5,4 +5,5 @@ gemspec
 
 group :tools do
   gem 'byebug', platforms: :mri
+  gem 'pry'
 end
