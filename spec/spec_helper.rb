@@ -1,5 +1,5 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'dry/auto_inject'
+require 'dry-auto_inject'
 
 begin
   require 'byebug'

@@ -1,5 +1,5 @@
 module Dry
-  class AutoInject < Module
+  module AutoInject
     VERSION = '0.2.0'.freeze
   end
 end
