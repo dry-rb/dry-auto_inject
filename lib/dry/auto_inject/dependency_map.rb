@@ -3,8 +3,6 @@ module Dry
     DuplicateDependencyError = Class.new(StandardError)
 
     class DependencyMap
-      attr_reader :map
-
       def initialize(*dependencies)
         @map = {}
 
