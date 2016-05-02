@@ -16,6 +16,14 @@ RSpec.describe Dry::AutoInject::DependencyMap do
     end
   end
 
+  context "aliases only" do
+    let(:dependencies) { [first: "namespace.one", second: "namespace.two"] }
+
+    it "registers dependencies with their specified aliases" do
+      expect(dependency_map.dependencies).to eq({first: "namespace.one", second: "namespace.two"})
+    end
+  end
+
   context "duplicate identifiers" do
     let(:dependencies) { ["namespace.one", "namespace.one"] }
 
