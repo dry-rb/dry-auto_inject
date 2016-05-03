@@ -45,8 +45,7 @@ module Dry
   module AutoInject
     # @api private
     def self.super_method(klass, method)
-      method = klass.instance_method(method)
-      method unless method.owner.equal?(klass)
+      klass.instance_method(method)
     end
   end
 end
