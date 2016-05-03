@@ -18,7 +18,7 @@ RSpec.describe "Inheritance" do
 
     it "passes dependencies to the initializer" do
       # This example only works on more modern Ruby version (2.1 and newer)
-      return unless Class.instance_methods.include?(:include)
+      skip unless Class.instance_methods.include?(:include)
 
       class_with_initializer.include Test::AutoInject[:one]
       expect(class_with_initializer.new.one).to eq 1
