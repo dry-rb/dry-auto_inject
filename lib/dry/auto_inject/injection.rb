@@ -113,7 +113,7 @@ module Dry
       # @api private
       def define_constructor_with_args(klass)
         super_method = Dry::AutoInject.super_method(klass, :initialize)
-        super_params = if super_method.nil? || super_method.parameters.empty?
+        super_params = if super_method.parameters.empty?
           ''
         elsif super_method.parameters.any? { |type, _| type == :rest }
           '*args'
@@ -133,7 +133,7 @@ module Dry
       # @api private
       def define_constructor_with_hash(klass)
         super_method = Dry::AutoInject.super_method(klass, :initialize)
-        super_params = super_method.nil? || super_method.parameters.empty? ? '' : 'options'
+        super_params = super_method.parameters.empty? ? '' : 'options'
 
         instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def initialize(options)
@@ -147,7 +147,7 @@ module Dry
       # @api private
       def define_constructor_with_kwargs(klass)
         super_method = Dry::AutoInject.super_method(klass, :initialize)
-        super_params = super_method.nil? || super_method.parameters.empty? ? '' : '**args'
+        super_params = super_method.parameters.empty? ? '' : '**args'
 
         instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def initialize(**args)
