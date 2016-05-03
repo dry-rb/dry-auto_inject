@@ -14,7 +14,7 @@ RSpec.describe "Inheritance" do
     end
 
     it "passes dependencies to the initializer" do
-      class_with_initializer.include(auto_inject[:one])
+      class_with_initializer.send :include, auto_inject[:one]
       expect(class_with_initializer.new.foo).to eq 1
     end
   end
