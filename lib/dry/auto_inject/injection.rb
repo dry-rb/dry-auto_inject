@@ -4,25 +4,22 @@ module Dry
     class Injection < Module
       InstanceMethods = Class.new(Module)
 
-      attr_reader :names
+      attr_reader :dependency_map
 
       attr_reader :container
 
       attr_reader :instance_mod
-
-      attr_reader :ivars
 
       attr_reader :options
 
       attr_reader :type
 
       # @api private
-      def initialize(names, container, options = {})
-        @names = names
+      def initialize(dependency_map, container, options = {})
+        @dependency_map = dependency_map
         @container = container
         @options = options
         @type = options.fetch(:type, :args)
-        @ivars = names.map(&:to_s).map { |s| s.split('.').last }.map(&:to_sym)
         @instance_mod = InstanceMethods.new
       end
 
@@ -68,8 +65,8 @@ module Dry
       def define_new_method_with_args(klass)
         klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def self.new(*args)
-            names = [#{names.map(&:inspect).join(', ')}]
-            deps = names.map.with_index { |_, i| args[i] || container[names[i]] }
+            names = #{dependency_map.inspect}
+            deps = names.values.map.with_index { |identifier, i| args[i] || container[identifier] }
             super(*deps)
           end
         RUBY
@@ -79,9 +76,9 @@ module Dry
       def define_new_method_with_hash(klass)
         klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def self.new(options = {})
-            names = [#{names.map(&:inspect).join(', ')}]
-            deps = names.each_with_object({}) { |k, r|
-              r[k.to_s.split('.').last.to_sym] = options[k] || container[k]
+            names = #{dependency_map.inspect}
+            deps = names.each_with_object({}) { |(name, identifier), obj|
+              obj[name] = options[name] || container[identifier]
             }.merge(options)
             super(deps)
           end
@@ -92,9 +89,9 @@ module Dry
       def define_new_method_with_kwargs(klass)
         klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def self.new(**args)
-            names = [#{names.map(&:inspect).join(', ')}]
-            deps = names.each_with_object({}) { |k, r|
-              r[k.to_s.split('.').last.to_sym] = args[k] || container[k]
+            names = #{dependency_map.inspect}
+            deps = names.each_with_object({}) { |(name, identifier), obj|
+              obj[name] = args[name] || container[identifier]
             }.merge(args)
             super(**deps)
           end
@@ -124,7 +121,7 @@ module Dry
         instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def initialize(*args)
             super(#{super_params})
-            #{ivars.map.with_index { |name, i| "@#{name} = args[#{i}]" }.join("\n")}
+            #{dependency_map.names.map.with_index { |name, i| "@#{name} = args[#{i}]" }.join("\n")}
           end
         RUBY
         self
@@ -138,7 +135,7 @@ module Dry
         instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def initialize(options)
             super(#{super_params})
-            #{ivars.map { |name| "@#{name} = options[:#{name}]" }.join("\n")}
+            #{dependency_map.names.map { |name| "@#{name} = options[:#{name}]" }.join("\n")}
           end
         RUBY
         self
@@ -152,7 +149,7 @@ module Dry
         instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def initialize(**args)
             super(#{super_params})
-            #{ivars.map { |name| "@#{name} = args[:#{name}]" }.join("\n")}
+            #{dependency_map.names.map { |name| "@#{name} = args[:#{name}]" }.join("\n")}
           end
         RUBY
         self
@@ -161,7 +158,7 @@ module Dry
       # @api private
       def define_readers
         instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-          attr_reader #{ivars.map { |name| ":#{name}" }.join(', ')}
+          attr_reader #{dependency_map.names.map { |name| ":#{name}" }.join(', ')}
         RUBY
         self
       end

@@ -50,6 +50,28 @@ RSpec.describe Dry::AutoInject do
       expect(grand_child_class.new(1, 2, 3).foo).to eql('bar')
     end
 
+    context 'aliased dependencies' do
+      def assert_valid_object(object)
+        expect(object.one).to eq 1
+        expect(object.two).to eq 2
+        expect(object.last).to eq 3
+      end
+
+      let(:parent_class) do
+        Class.new do
+          include Test::AutoInject[:one, :two, last: 'namespace.three']
+        end
+      end
+
+      it 'works' do
+        test_args.each do |args|
+          assert_valid_object(parent_class.new(*args))
+          assert_valid_object(child_class.new(*args))
+          assert_valid_object(grand_child_class.new(*args))
+        end
+      end
+    end
+
     context 'autoinject in a subclass' do
       let(:child_class) do
         Class.new(parent_class) do
@@ -174,6 +196,28 @@ RSpec.describe Dry::AutoInject do
         expect(grand_child_class.new(one: 1, two: 2, three: 3).foo).to eql('bar')
     end
 
+    context 'aliased dependencies' do
+      def assert_valid_object(object)
+        expect(object.one).to eq 1
+        expect(object.two).to eq 2
+        expect(object.last).to eq 3
+      end
+
+      let(:parent_class) do
+        Class.new do
+          include Test::AutoInject.hash[:one, :two, last: 'namespace.three']
+        end
+      end
+
+      it 'works' do
+        test_args.each do |args|
+          assert_valid_object(parent_class.new(args))
+          assert_valid_object(child_class.new(args))
+          assert_valid_object(grand_child_class.new(args))
+        end
+      end
+    end
+
     context 'autoinject in a subclass' do
       let(:child_class) do
         Class.new(parent_class) do
@@ -263,6 +307,28 @@ RSpec.describe Dry::AutoInject do
 
       expect(parent_class.new(other: true).other).to be(true)
       expect(grand_child_class.new(one: 1, two: 2, three: 3).foo).to eql('bar')
+    end
+
+    context 'aliased dependencies' do
+      def assert_valid_object(object)
+        expect(object.one).to eq 1
+        expect(object.two).to eq 2
+        expect(object.last).to eq 3
+      end
+
+      let(:parent_class) do
+        Class.new do
+          include Test::AutoInject.kwargs[:one, :two, last: 'namespace.three']
+        end
+      end
+
+      it 'works' do
+        test_args.each do |args|
+          assert_valid_object(parent_class.new(**args))
+          assert_valid_object(child_class.new(**args))
+          assert_valid_object(grand_child_class.new(**args))
+        end
+      end
     end
 
     context 'autoinject in a subclass' do

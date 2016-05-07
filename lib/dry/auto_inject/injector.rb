@@ -1,3 +1,4 @@
+require 'dry/auto_inject/dependency_map'
 require 'dry/auto_inject/injection'
 
 module Dry
@@ -23,7 +24,8 @@ module Dry
 
       # @api public
       def [](*names)
-        Injection.new(names, container, options)
+        dependencies = DependencyMap.new(*names)
+        Injection.new(dependencies, container, options)
       end
     end
   end
