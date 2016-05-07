@@ -65,7 +65,7 @@ module Dry
       def define_new_method_with_args(klass)
         klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def self.new(*args)
-            names = #{dependency_map.dependencies.inspect}
+            names = #{dependency_map.inspect}
             deps = names.values.map.with_index { |identifier, i| args[i] || container[identifier] }
             super(*deps)
           end
@@ -76,7 +76,7 @@ module Dry
       def define_new_method_with_hash(klass)
         klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def self.new(options = {})
-            names = #{dependency_map.dependencies.inspect}
+            names = #{dependency_map.inspect}
             deps = names.each_with_object({}) { |(name, identifier), obj|
               obj[name] = options[name] || container[identifier]
             }.merge(options)
@@ -89,7 +89,7 @@ module Dry
       def define_new_method_with_kwargs(klass)
         klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def self.new(**args)
-            names = #{dependency_map.dependencies.inspect}
+            names = #{dependency_map.inspect}
             deps = names.each_with_object({}) { |(name, identifier), obj|
               obj[name] = args[name] || container[identifier]
             }.merge(args)

@@ -19,13 +19,18 @@ module Dry
         end
       end
 
-      def dependencies
-        @map
+      def inspect
+        @map.inspect
       end
 
       def names
         @map.keys
       end
+
+      def to_h
+        @map.dup.to_h
+      end
+      alias_method :to_hash, :to_h
 
       private
 
