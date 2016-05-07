@@ -36,7 +36,7 @@ module Dry
 
       def add_dependency(name, identifier)
         name = name.to_sym
-        raise DuplicateDependencyError, "name +{name}+ is already used" if @map.key?(name)
+        raise DuplicateDependencyError, "name +#{name}+ is already used" if @map.key?(name)
         @map[name] = identifier
       end
     end
