@@ -372,5 +372,52 @@ RSpec.describe Dry::AutoInject do
         end
       end
     end
+
+    context 'multiple autoinject' do
+      let(:klass) do
+        Class.new do
+          include Test::AutoInject.kwargs[:one]
+          include Test::AutoInject.kwargs[:two]
+        end
+      end
+
+      it 'works' do
+        instance = klass.new
+
+        expect(instance.one).to eq 1
+        expect(instance.two).to eq 2
+      end
+    end
+
+    context 'autoinject in class and included module' do
+      let(:klasses) do
+        mixin = Module.new do
+          def self.included(klass)
+            klass.send :include, Test::AutoInject.kwargs[:two]
+          end
+        end
+
+        k1 = Class.new do
+          include Test::AutoInject.kwargs[:one]
+          include mixin
+        end
+
+        k2 = Class.new do
+          include mixin
+          include Test::AutoInject.kwargs[:one]
+        end
+
+        [k1, k2]
+      end
+
+      it 'works regardless inclusion order' do
+        klasses.each do |klass|
+          instance = klass.new
+
+          expect(instance.one).to eq 1
+          expect(instance.two).to eq 2
+        end
+      end
+    end
   end
 end
