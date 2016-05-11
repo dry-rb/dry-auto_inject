@@ -110,6 +110,12 @@ module Dry
       # @api private
       def define_constructor_with_args(klass)
         super_method = Dry::AutoInject.super_method(klass, :initialize)
+
+        # Look upwards past `def initialize(*)` methods until we get an explicit list of parameters
+        while super_method && super_method.parameters == [[:rest]]
+          super_method = Dry::AutoInject.super_method(super_method.owner, :initialize)
+        end
+
         super_params = if super_method.nil? || super_method.parameters.empty?
           ''
         elsif super_method.parameters.any? { |type, _| type == :rest }
