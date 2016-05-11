@@ -74,15 +74,20 @@ module Dry
 
       # @api private
       def define_new_method_with_hash(klass)
-        klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-          def self.new(options = {})
-            names = #{dependency_map.inspect}
-            deps = names.each_with_object({}) { |(name, identifier), obj|
-              obj[name] = options[name] || container[identifier]
-            }.merge(options)
-            super(deps)
-          end
-        RUBY
+        map = dependency_map
+        mod = Module.new do
+          class_eval <<-RUBY, __FILE__, __LINE__ + 1
+            def new(options = {})
+              names = #{map.inspect}
+              deps = names.each_with_object({}) { |(name, identifier), obj|
+                obj[name] = options[name] || container[identifier]
+              }.merge(options)
+              super(deps)
+            end
+          RUBY
+        end
+
+        klass.extend(mod)
       end
 
       # @api private
