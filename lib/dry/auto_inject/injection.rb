@@ -2,6 +2,7 @@ module Dry
   module AutoInject
     # @api private
     class Injection < Module
+      ClassMethods = Class.new(Module)
       InstanceMethods = Class.new(Module)
 
       attr_reader :dependency_map
@@ -67,7 +68,7 @@ module Dry
           def self.new(*args)
             names = #{dependency_map.inspect}
             deps = names.values.map.with_index { |identifier, i| args[i] || container[identifier] }
-            super(*deps)
+            super(*deps, *args[deps.size..-1])
           end
         RUBY
       end
@@ -75,7 +76,7 @@ module Dry
       # @api private
       def define_new_method_with_hash(klass)
         map = dependency_map
-        mod = Module.new do
+        mod = ClassMethods.new do
           class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def new(options = {})
               names = #{map.inspect}
@@ -93,7 +94,7 @@ module Dry
       # @api private
       def define_new_method_with_kwargs(klass)
         map = dependency_map
-        mod = Module.new do
+        mod = ClassMethods.new do
           class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def new(**args)
               names = #{map.inspect}
@@ -126,9 +127,29 @@ module Dry
           super_method = Dry::AutoInject.super_method(super_method.owner, :initialize)
         end
 
-        super_params = if super_method.nil? || super_method.parameters.empty?
-          ''
-        elsif super_method.parameters.any? { |type, _| type == :rest }
+        if super_method.nil? || super_method.parameters.empty?
+          define_constructor_with_named_args
+        else
+          define_constructor_with_splat_args(super_method)
+        end
+
+        self
+      end
+
+      def define_constructor_with_named_args
+        initialize_args = dependency_map.names.join(', ')
+
+        instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def initialize(#{initialize_args})
+            super()
+            #{dependency_map.names.map { |name| "@#{name} = #{name}" }.join("\n")}
+          end
+        RUBY
+        self
+      end
+
+      def define_constructor_with_splat_args(super_method)
+        super_params = if super_method.parameters.any? { |type, _| type == :rest }
           '*args'
         else
           "*args[0..#{super_method.parameters.length - 1}]"
@@ -160,7 +181,36 @@ module Dry
       # @api private
       def define_constructor_with_kwargs(klass)
         super_method = Dry::AutoInject.super_method(klass, :initialize)
-        super_params = super_method.nil? || super_method.parameters.empty? ? '' : '**args'
+
+        if super_method.nil? || super_method.parameters.empty?
+          define_constructor_with_named_kwargs
+        else
+          define_constructor_with_splat_kwargs(super_method)
+        end
+
+        self
+      end
+
+      def define_constructor_with_named_kwargs
+        initialize_params = dependency_map.names.map { |name| "#{name}: nil" }.join(', ')
+
+        instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def initialize(#{initialize_params})
+            super()
+            #{dependency_map.names.map { |name| "@#{name} = #{name}" }.join("\n")}
+          end
+        RUBY
+        self
+      end
+
+      def define_constructor_with_splat_kwargs(super_method)
+        super_kwarg_names = super_method.parameters.select { |type, _| [:key, :keyreq].include?(type) }.map(&:last)
+        super_params = super_kwarg_names.map { |name| "#{name}: args[:#{name}]" }.join(', ')
+
+        # Pass through any non-dependency args if the super method accepts `**args`
+        if super_method.parameters.any? { |type, _| type == :keyrest }
+          super_params += ', **args'
+        end
 
         instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def initialize(**args)

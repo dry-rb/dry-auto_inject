@@ -50,6 +50,10 @@ RSpec.describe Dry::AutoInject do
       expect(grand_child_class.new(1, 2, 3).foo).to eql('bar')
     end
 
+    it 'raises an argument error when non-specific args are passed to the initializer' do
+      expect { parent_class.new(nil, nil, nil, 'unexpected') }.to raise_error ArgumentError
+    end
+
     context 'aliased dependencies' do
       def assert_valid_object(object)
         expect(object.one).to eq 1
@@ -356,7 +360,19 @@ RSpec.describe Dry::AutoInject do
       expect(grand_child_class.new(one: 1, two: 2, three: 3).foo).to eql('bar')
     end
 
+    it 'raise an argument error when non-specified keywords are passed to initializer' do
+      expect { parent_class.new(unexpected: 'foo') }.to raise_error ArgumentError
+    end
+
     context 'aliased dependencies' do
+      let(:test_args) do
+        [
+          {}, { one: 1, two: 2, last: 3 }, { two: 2, last: 3 },
+          { one: 1, last: 3 }, { one: 1, two: 2 }, { last: 3 },
+          { one: 1 }, { one: 1, last: 3 }
+        ]
+      end
+
       def assert_valid_object(object)
         expect(object.one).to eq 1
         expect(object.two).to eq 2
@@ -402,6 +418,27 @@ RSpec.describe Dry::AutoInject do
 
             assert_valid_object(child_instance)
             expect(child_instance.first).to eq 1
+          end
+        end
+      end
+
+      context 'superclass initialize accepts keywords args outside the injected dependencies list' do
+        let(:parent_class) do
+          Class.new do
+            attr_reader :other
+
+            def initialize(other: nil)
+              @other = other
+            end
+          end
+        end
+
+        it 'works' do
+          test_args.each do |args|
+            child_instance = child_class.new(other: 'other', **args)
+
+            assert_valid_object(child_instance)
+            expect(child_instance.other).to eq 'other'
           end
         end
       end
