@@ -427,7 +427,7 @@ RSpec.describe Dry::AutoInject do
           Class.new do
             attr_reader :other
 
-            def initialize(other:)
+            def initialize(other: nil)
               @other = other
             end
           end
