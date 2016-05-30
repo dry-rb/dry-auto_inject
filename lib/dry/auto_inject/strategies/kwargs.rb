@@ -7,21 +7,16 @@ module Dry
       class Kwargs < Constructor
         private
 
-        def define_new(klass)
-          map = dependency_map
-          mod = ClassMethods.new do
-            class_eval <<-RUBY, __FILE__, __LINE__ + 1
-              def new(**args)
-                names = #{map.inspect}
-                deps = names.each_with_object({}) { |(name, identifier), obj|
-                  obj[name] = args[name] || container[identifier]
-                }.merge(args)
-                super(**deps)
-              end
-            RUBY
-          end
-
-          klass.extend(mod)
+        def define_new(_klass)
+          class_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
+            def new(**args)
+              names = #{dependency_map.inspect}
+              deps = names.each_with_object({}) { |(name, identifier), obj|
+                obj[name] = args[name] || container[identifier]
+              }.merge(args)
+              super(**deps)
+            end
+          RUBY
         end
 
         def define_initialize(klass)
