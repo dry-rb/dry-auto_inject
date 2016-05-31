@@ -1,10 +1,18 @@
-# Dry::AutoInject <a href="https://gitter.im/dry-rb/chat" target="_blank">![Join the chat at https://gitter.im/dry-rb/chat](https://badges.gitter.im/Join%20Chat.svg)</a>
+[gitter]: https://gitter.im/dry-rb/chat
+[gem]: https://rubygems.org/gems/dry-auto_inject
+[travis]: https://travis-ci.org/dry-rb/dry-auto_inject
+[gemnasium]: https://gemnasium.com/dry-rb/dry-auto_inject
+[code_climate]: https://codeclimate.com/github/dry-rb/dry-auto_inject
+[inch]: http://inch-ci.org/github/dry-rb/dry-auto_inject
 
-<a href="https://rubygems.org/gems/dry-auto_inject" target="_blank">![Gem Version](https://badge.fury.io/rb/dry-auto_inject.svg)</a>
-<a href="https://travis-ci.org/dry-rb/dry-auto_inject" target="_blank">![Build Status](https://travis-ci.org/dry-rb/dry-auto_inject.svg?branch=master)</a>
-<a href="https://gemnasium.com/dry-rb/dry-auto_inject" target="_blank">![Dependency Status](https://gemnasium.com/dry-rb/dry-auto_inject.svg)</a>
-<a href="https://codeclimate.com/github/dry-rb/dry-auto_inject" target="_blank">![Code Climate](https://codeclimate.com/github/dry-rb/dry-auto_inject/badges/gpa.svg)</a>
-<a href="http://inch-ci.org/github/dry-rb/dry-auto_inject" target="_blank">![Documentation Status](http://inch-ci.org/github/dry-rb/dry-auto_inject.svg?branch=master&style=flat)</a>
+# dry-auto_inject [![Join the Gitter chat](https://badges.gitter.im/Join%20Chat.svg)][gitter]
+
+[![Gem Version](https://img.shields.io/gem/v/dry-auto_inject.svg)][gem]
+[![Build Status](https://img.shields.io/travis/dry-rb/dry-auto_inject.svg)][travis]
+[![Dependency Status](https://img.shields.io/gemnasium/dry-rb/dry-auto_inject.svg)][gemnasium]
+[![Code Climate](https://img.shields.io/codeclimate/github/dry-rb/dry-auto_inject.svg)][code_climate]
+[![API Documentation Coverage](http://inch-ci.org/github/dry-rb/dry-auto_inject.svg)][inch]
+![No monkey-patches](https://img.shields.io/badge/monkey--patches-0-brightgreen.svg)
 
 A simple extensions which allows you to automatically inject dependencies to your
 object constructors from a configured container.
