@@ -1,31 +1,22 @@
-require 'dry/auto_inject/dependency_map'
-require 'dry/auto_inject/injection'
+require 'dry/auto_inject/strategies'
 
 module Dry
   module AutoInject
     class Injector
-      attr_reader :container, :options
+      # @api private
+      attr_reader :container
 
       # @api private
-      def initialize(container, options = {})
+      attr_reader :strategy
+
+      # @api private
+      def initialize(container, strategy)
         @container = container
-        @options = options
+        @strategy = strategy
       end
 
-      # @api public
-      def hash
-        self.class.new(container, options.merge(type: :hash))
-      end
-
-      # @api public
-      def kwargs
-        self.class.new(container, options.merge(type: :kwargs))
-      end
-
-      # @api public
-      def [](*names)
-        dependencies = DependencyMap.new(*names)
-        Injection.new(dependencies, container, options)
+      def [](*dependency_names)
+        strategy.new(container, *dependency_names)
       end
     end
   end

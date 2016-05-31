@@ -1,4 +1,4 @@
-require 'dry/auto_inject/injector'
+require 'dry/auto_inject/builder'
 
 module Dry
   # Configure an auto-injection module
@@ -38,8 +38,8 @@ module Dry
   # @return [Proc] calling the returned proc builds an auto-injection module
   #
   # @api public
-  def self.AutoInject(container)
-    AutoInject::Injector.new(container)
+  def self.AutoInject(container, options = {})
+    AutoInject::Builder.new(container, options)
   end
 
   module AutoInject
