@@ -62,7 +62,7 @@ module Dry
         end
       end
 
-      register :kwargs, Kwargs
+      register_default :kwargs, Kwargs
     end
   end
 end

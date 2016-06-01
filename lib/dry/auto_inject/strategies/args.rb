@@ -65,7 +65,7 @@ module Dry
         end
       end
 
-      register_default :args, Args
+      register :args, Args
     end
   end
 end
