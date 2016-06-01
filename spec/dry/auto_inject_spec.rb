@@ -29,7 +29,7 @@ RSpec.describe Dry::AutoInject do
   context 'with positioned args' do
     let(:parent_class) do
       Class.new do
-        include Test::AutoInject[:one, :two, 'namespace.three']
+        include Test::AutoInject.args[:one, :two, 'namespace.three']
       end
     end
 
@@ -63,7 +63,7 @@ RSpec.describe Dry::AutoInject do
 
       let(:parent_class) do
         Class.new do
-          include Test::AutoInject[:one, :two, last: 'namespace.three']
+          include Test::AutoInject.args[:one, :two, last: 'namespace.three']
         end
       end
 
@@ -79,7 +79,7 @@ RSpec.describe Dry::AutoInject do
     context 'autoinject in a subclass' do
       let(:child_class) do
         Class.new(parent_class) do
-          include Test::AutoInject[:one, :two, 'namespace.three']
+          include Test::AutoInject.args[:one, :two, 'namespace.three']
         end
       end
 

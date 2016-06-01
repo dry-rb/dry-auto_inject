@@ -20,7 +20,7 @@ RSpec.describe "Inheritance" do
       # This example only works on more modern Ruby version (2.1 and newer)
       skip unless Class.instance_methods.include?(:include)
 
-      class_with_initializer.include Test::AutoInject[:one]
+      class_with_initializer.include Test::AutoInject.args[:one]
       expect(class_with_initializer.new.one).to eq 1
     end
   end
