@@ -7,7 +7,7 @@
     These strategies can be accessed via methods on the main builder object:
 
     ```ruby
-    MyInject = Dry::AutoInect(my_container)
+    MyInject = Dry::AutoInject(my_container)
 
     class MyClass
       include MyInject.hash["my_dep"]
@@ -59,7 +59,7 @@
     These aliases enable you to specify your own name for dependencies, both for their local readers and their keys in the kwargs- and hash-based initializers. Specify aliases by passing a hash of names:
 
     ```ruby
-    MyInject = Dry::AutoInect(my_container)
+    MyInject = Dry::AutoInject(my_container)
 
     class MyClass
       include MyInject[my_dep: "some_other.dep"]
