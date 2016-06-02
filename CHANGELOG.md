@@ -7,7 +7,7 @@
     These strategies can be accessed via methods on the main builder object:
 
     ```ruby
-    MyInject = Dry::AutoInect(my_container)
+    MyInject = Dry::AutoInject(my_container)
 
     class MyClass
       include MyInject.hash["my_dep"]
