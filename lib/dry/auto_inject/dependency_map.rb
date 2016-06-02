@@ -3,14 +3,17 @@ module Dry
     DuplicateDependencyError = Class.new(StandardError)
 
     class DependencyMap
-      def initialize(*dependencies)
+      attr_reader :namespace_separator
+
+      def initialize(namespace_separator, *dependencies)
+        @namespace_separator = namespace_separator
         @map = {}
 
         dependencies = dependencies.dup
         aliases = dependencies.last.is_a?(Hash) ? dependencies.pop : {}
 
         dependencies.each do |identifier|
-          name = identifier.to_s.split(".").last
+          name = identifier.to_s.split(namespace_separator).last
           add_dependency(name, identifier)
         end
 

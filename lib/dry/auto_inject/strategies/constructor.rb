@@ -17,10 +17,12 @@ module Dry
         attr_reader :dependency_map
         attr_reader :instance_mod
         attr_reader :class_mod
+        attr_reader :namespace_separator
 
-        def initialize(container, *dependency_names)
+        def initialize(container, namespace_separator, *dependency_names)
           @container = container
-          @dependency_map = DependencyMap.new(*dependency_names)
+          @namespace_separator = namespace_separator
+          @dependency_map = DependencyMap.new(namespace_separator, *dependency_names)
           @instance_mod = InstanceMethods.new
           @class_mod = ClassMethods.new(container)
         end

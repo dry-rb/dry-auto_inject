@@ -2,7 +2,7 @@ require "dry/auto_inject/dependency_map"
 
 RSpec.describe Dry::AutoInject::DependencyMap do
   describe "#initialize" do
-    subject(:dependency_map) { Dry::AutoInject::DependencyMap.new(*dependencies) }
+    subject(:dependency_map) { Dry::AutoInject::DependencyMap.new('.', *dependencies) }
     let(:dependencies) { ["namespace.one", "namespace.two"] }
 
     it "registers specified dependencies" do
