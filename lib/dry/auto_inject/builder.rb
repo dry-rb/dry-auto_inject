@@ -17,7 +17,7 @@ module Dry
         strategies.keys.each do |strategy_name|
           define_singleton_method(strategy_name) do
             strategy = strategies[strategy_name]
-            Injector.new(container, strategy)
+            Injector.new(container, strategy, builder: self)
           end
         end
       end
