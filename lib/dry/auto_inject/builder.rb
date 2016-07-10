@@ -3,7 +3,7 @@ require 'dry/auto_inject/injector'
 
 module Dry
   module AutoInject
-    class Builder
+    class Builder < BasicObject
       # @api private
       attr_reader :container
 
@@ -13,13 +13,16 @@ module Dry
       def initialize(container, options = {})
         @container = container
         @strategies = options.fetch(:strategies) { Strategies }
+      end
 
-        strategies.keys.each do |strategy_name|
-          define_singleton_method(strategy_name) do
-            strategy = strategies[strategy_name]
-            Injector.new(container, strategy)
-          end
-        end
+      def method_missing(name, *args, &block)
+        return super unless strategies.key?(name)
+
+        Injector.new(container, strategies[name])
+      end
+
+      def respond_to?(name, include_private = false)
+        name == :[] || strategies.key?(name)
       end
 
       # @api public
