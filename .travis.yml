@@ -5,9 +5,9 @@ bundler_args: --without console
 script:
   - bundle exec rake spec
 rvm:
-  - 2.0
   - 2.1
   - 2.2
+  - 2.3
   - rbx
   - ruby-head
   - jruby-head
