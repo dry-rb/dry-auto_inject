@@ -15,19 +15,23 @@ module Dry
         @strategies = options.fetch(:strategies) { Strategies }
       end
 
-      def method_missing(name, *args, &block)
-        return super unless strategies.key?(name)
-
-        Injector.new(container, strategies[name])
+      # @api public
+      def [](*dependency_names)
+        default[*dependency_names]
       end
 
       def respond_to?(name, include_private = false)
         name == :[] || strategies.key?(name)
       end
 
-      # @api public
-      def [](*dependency_names)
-        default[*dependency_names]
+      private
+
+      def method_missing(name, *args, &block)
+        if strategies.key?(name)
+          Injector.new(container, strategies[name])
+        else
+          super
+        end
       end
     end
   end
