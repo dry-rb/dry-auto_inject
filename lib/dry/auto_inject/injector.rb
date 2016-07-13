@@ -28,7 +28,7 @@ module Dry
       end
 
       def respond_to?(name, include_private = false)
-        name == :[] || builder.respond_to?(name, include_private)
+        name == :[] || builder.respond_to?(name)
       end
     end
   end
