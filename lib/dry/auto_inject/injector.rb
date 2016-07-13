@@ -23,12 +23,14 @@ module Dry
         strategy.new(container, *dependency_names)
       end
 
-      def method_missing(name, *args, &block)
-        builder.public_send(name)
-      end
-
       def respond_to?(name, include_private = false)
         name == :[] || builder.respond_to?(name)
+      end
+
+      private
+
+      def method_missing(name, *args, &block)
+        builder.public_send(name)
       end
     end
   end
