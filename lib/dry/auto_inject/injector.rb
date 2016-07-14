@@ -24,7 +24,7 @@ module Dry
       end
 
       def respond_to?(name, include_private = false)
-        name == :[] || builder.respond_to?(name)
+        Injector.instance_methods.include?(name) || builder.respond_to?(name)
       end
 
       private
