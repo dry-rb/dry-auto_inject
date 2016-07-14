@@ -21,7 +21,7 @@ module Dry
       end
 
       def respond_to?(name, include_private = false)
-        name == :[] || strategies.key?(name)
+        Builder.public_instance_methods.include?(name) || strategies.key?(name)
       end
 
       private
