@@ -28,7 +28,7 @@ module Dry
 
       def method_missing(name, *args, &block)
         if strategies.key?(name)
-          Injector.new(container, strategies[name])
+          Injector.new(container, strategies[name], builder: self)
         else
           super
         end
