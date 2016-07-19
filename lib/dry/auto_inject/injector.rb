@@ -30,7 +30,7 @@ module Dry
       private
 
       def method_missing(name, *args, &block)
-        builder.public_send(name)
+        builder.__send__(name)
       end
     end
   end

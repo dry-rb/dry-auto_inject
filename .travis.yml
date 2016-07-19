@@ -19,6 +19,9 @@ matrix:
     - rvm: rbx
     - rvm: ruby-head
     - rvm: jruby-head
+addons:
+  code_climate:
+    repo_token: 029b5aa100b82b6710e285597b7eabe760357b5dd1f626514371356055378d8c
 notifications:
   email: false
   webhooks:
