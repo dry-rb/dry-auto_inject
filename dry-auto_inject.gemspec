@@ -8,6 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Dry::AutoInject::VERSION.dup
   spec.authors       = ['Piotr Solnica']
   spec.email         = ['piotr.solnica@gmail.com']
+  spec.license       = 'MIT'
 
   spec.summary       = 'Container-agnostic automatic constructor injection'
   spec.homepage      = 'https://github.com/dryrb/dry-auto_inject'
@@ -17,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = '>= 2.0.0'
+  spec.required_ruby_version = '>= 2.1.0'
 
   spec.add_runtime_dependency 'dry-container', '~> 0.3.4'
 
