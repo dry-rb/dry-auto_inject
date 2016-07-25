@@ -462,14 +462,14 @@ RSpec.describe Dry::AutoInject do
         Class.new do
           include Test::AutoInject.kwargs[:one]
           include Test::AutoInject.kwargs[:two]
+          include Test::AutoInject.kwargs['namespace.three']
         end
       end
 
       it 'works' do
         instance = klass.new
 
-        expect(instance.one).to eq 1
-        expect(instance.two).to eq 2
+        assert_valid_object(instance)
       end
     end
 

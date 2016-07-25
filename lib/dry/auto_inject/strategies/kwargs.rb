@@ -49,7 +49,11 @@ module Dry
 
           # Pass through any non-dependency args if the super method accepts `**args`
           if super_method.parameters.any? { |type, _| type == :keyrest }
-            super_params += ', **args'
+            if super_params.empty?
+              super_params = '**args'
+            else
+              super_params += ', **args'
+            end
           end
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
