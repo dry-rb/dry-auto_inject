@@ -1,4 +1,33 @@
-# v.0.3.0, 2016-06-02
+# 0.4.0 / Unreleased
+
+### Added
+
+- Support for strategy chaining, which is helpful for opting for alternatives to an application's default strategy (timriley in [#25](https://github.com/dry-rb/dry-auto_inject/pull/25))
+
+    ```ruby
+    # Define the application's injector with a default strategy
+    MyInject = Dry::AutoInject(MyContainer).hash
+
+    # Opt for a different strategy
+    class MyClass
+      include MyInject.args["foo"]
+    end
+
+    # You can chain as long as you want (silly example to demonstrate the flexibility)
+    class OtherClass
+      include MyInject.args.hash.kwargs.args["foo"]
+    end
+    ```
+
+### Changed
+
+- Use a `BasicObject`-based environment for the injector builder API instead of the `define_singleton_method` approached used previously, which had negative performance characteristics (timriley in [#26](https://github.com/dry-rb/dry-auto_inject/pull/26))
+
+### Fixed
+
+- Fixed issue with kwargs injectors used at multiple points in a class inheritance heirarchy (flash-gordon in [#27](https://github.com/dry-rb/dry-auto_inject/pull/27))
+
+# 0.3.0, 2016-06-02
 
 ### Added
 
