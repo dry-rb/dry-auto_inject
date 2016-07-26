@@ -1,14 +1,14 @@
-# 0.4.0 / Unreleased
+# 0.4.0 / 2016-07-26
 
 ### Added
 
-- Support for strategy chaining, which is helpful for opting for alternatives to an application's default strategy (timriley in [#25](https://github.com/dry-rb/dry-auto_inject/pull/25))
+- Support for strategy chaining, which is helpful in opting for alternatives to an application's normal strategy (timriley in [#25](https://github.com/dry-rb/dry-auto_inject/pull/25))
 
     ```ruby
-    # Define the application's injector with a default strategy
+    # Define the application's injector with a non-default
     MyInject = Dry::AutoInject(MyContainer).hash
 
-    # Opt for a different strategy
+    # Opt for a different strategy in a particular class
     class MyClass
       include MyInject.args["foo"]
     end
@@ -21,11 +21,13 @@
 
 ### Changed
 
-- Use a `BasicObject`-based environment for the injector builder API instead of the `define_singleton_method` approached used previously, which had negative performance characteristics (timriley in [#26](https://github.com/dry-rb/dry-auto_inject/pull/26))
+- Use a `BasicObject`-based environment for the injector builder API instead of the previous `define_singleton_method`-based approach, which had negative performance characteristics (timriley in [#26](https://github.com/dry-rb/dry-auto_inject/pull/26))
 
 ### Fixed
 
 - Fixed issue with kwargs injectors used at multiple points in a class inheritance heirarchy (flash-gordon in [#27](https://github.com/dry-rb/dry-auto_inject/pull/27))
+
+[Compare v0.3.0...v0.4.0](https://github.com/dryrb/dry-auto_inject/compare/v0.3.0...v0.4.0)
 
 # 0.3.0, 2016-06-02
 
@@ -112,6 +114,8 @@
 
 * `kwargs` is the new default injection strategy
 * Rubinius support is not available for the `kwargs` strategy (see [#18](https://github.com/dry-rb/dry-auto_inject/issues/18))
+
+[Compare v0.2.0...v0.3.0](https://github.com/dryrb/dry-auto_inject/compare/v0.2.0...v0.3.0)
 
 # v0.2.0 2016-02-09
 
