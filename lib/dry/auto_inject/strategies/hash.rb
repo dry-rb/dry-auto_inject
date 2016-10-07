@@ -7,16 +7,16 @@ module Dry
       class Hash < Constructor
         private
 
-        def define_new(_klass)
-          class_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            def new(options = {})
-              names = #{dependency_map.inspect}
-              deps = names.each_with_object({}) { |(name, identifier), obj|
+        def define_new
+          class_mod.class_exec(container, dependency_map) do |container, dependency_map|
+            define_method :new do |options = {}|
+              deps = dependency_map.to_h.each_with_object({}) { |(name, identifier), obj|
                 obj[name] = options[name] || container[identifier]
               }.merge(options)
+
               super(deps)
             end
-          RUBY
+          end
         end
 
         def define_initialize(klass)

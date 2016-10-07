@@ -7,14 +7,16 @@ module Dry
       class Args < Constructor
         private
 
-        def define_new(klass)
-          klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            def self.new(*args)
-              names = #{dependency_map.inspect}
-              deps = names.values.map.with_index { |identifier, i| args[i] || container[identifier] }
+        def define_new
+          class_mod.class_exec(container, dependency_map) do |container, dependency_map|
+            define_method :new do |*args|
+              deps = dependency_map.to_h.values.map.with_index { |identifier, i|
+                args[i] || container[identifier]
+              }
+
               super(*deps, *args[deps.size..-1])
             end
-          RUBY
+          end
         end
 
         def define_initialize(klass)

@@ -4,13 +4,7 @@ module Dry
   module AutoInject
     class Strategies
       class Constructor < Module
-        ClassMethods = Class.new(Module) do
-          def initialize(container)
-            super()
-            define_method(:container) { container }
-          end
-        end
-
+        ClassMethods = Class.new(Module)
         InstanceMethods = Class.new(Module)
 
         attr_reader :container
@@ -22,14 +16,14 @@ module Dry
           @container = container
           @dependency_map = DependencyMap.new(*dependency_names)
           @instance_mod = InstanceMethods.new
-          @class_mod = ClassMethods.new(container)
+          @class_mod = ClassMethods.new
         end
 
         # @api private
         def included(klass)
           define_readers
 
-          define_new(klass)
+          define_new
           define_initialize(klass)
 
           klass.send(:include, instance_mod)
@@ -47,7 +41,7 @@ module Dry
           self
         end
 
-        def define_new(klass)
+        def define_new
           raise NotImplementedError, "must be implemented by a subclass"
         end
 

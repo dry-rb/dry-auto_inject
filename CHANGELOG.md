@@ -1,3 +1,9 @@
+# Unreleased
+
+### Fixed
+
+- Fixed issue where multiple injectors with different containers could not be used at different classes in an inheritance hierarchy (timriley in [#31](https://github.com/dry-rb/dry-auto_inject/pull/31))
+
 # 0.4.0 / 2016-07-26
 
 ### Added
