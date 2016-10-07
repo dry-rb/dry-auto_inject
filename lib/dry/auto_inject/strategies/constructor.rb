@@ -4,13 +4,7 @@ module Dry
   module AutoInject
     class Strategies
       class Constructor < Module
-        ClassMethods = Class.new(Module) do
-          def initialize(container)
-            super()
-            define_method(:container) { container }
-          end
-        end
-
+        ClassMethods = Class.new(Module)
         InstanceMethods = Class.new(Module)
 
         attr_reader :container
@@ -22,7 +16,7 @@ module Dry
           @container = container
           @dependency_map = DependencyMap.new(*dependency_names)
           @instance_mod = InstanceMethods.new
-          @class_mod = ClassMethods.new(container)
+          @class_mod = ClassMethods.new
         end
 
         # @api private
