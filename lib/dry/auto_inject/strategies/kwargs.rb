@@ -8,15 +8,15 @@ module Dry
         private
 
         def define_new(_klass)
-          class_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            def new(**args)
-              names = #{dependency_map.inspect}
-              deps = names.each_with_object({}) { |(name, identifier), obj|
+          class_mod.class_exec(container, dependency_map) do |container, dependency_map|
+            define_method :new do |**args|
+              deps = dependency_map.to_h.each_with_object({}) { |(name, identifier), obj|
                 obj[name] = args[name] || container[identifier]
               }.merge(args)
+
               super(**deps)
             end
-          RUBY
+          end
         end
 
         def define_initialize(klass)

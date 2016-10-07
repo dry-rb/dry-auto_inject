@@ -24,4 +24,32 @@ RSpec.describe "Inheritance" do
       expect(class_with_initializer.new.one).to eq 1
     end
   end
+
+  context "injectors for different containers in inherited classes" do
+    before do
+      module Test
+        InjectOne = Dry::AutoInject(one: "hi from one")
+        InjectTwo = Dry::AutoInject(two: "hi from two")
+
+        class One
+          include InjectOne[:one]
+        end
+
+        class Two < One
+          include InjectTwo[:two]
+        end
+      end
+    end
+
+    it "uses the dependencies from each of the containers" do
+      instance = Test::Two.new
+      expect(instance.one).to eq "hi from one"
+      expect(instance.two).to eq "hi from two"
+    end
+
+    it "allows either dependency to be overridden" do
+      expect(Test::Two.new(one: "manual one").one).to eq "manual one"
+      expect(Test::Two.new(two: "manual two").two).to eq "manual two"
+    end
+  end
 end
