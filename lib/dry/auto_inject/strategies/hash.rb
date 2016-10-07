@@ -7,7 +7,7 @@ module Dry
       class Hash < Constructor
         private
 
-        def define_new(_klass)
+        def define_new
           class_mod.class_exec(container, dependency_map) do |container, dependency_map|
             define_method :new do |options = {}|
               deps = dependency_map.to_h.each_with_object({}) { |(name, identifier), obj|

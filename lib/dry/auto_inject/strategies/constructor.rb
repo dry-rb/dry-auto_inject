@@ -29,7 +29,7 @@ module Dry
         def included(klass)
           define_readers
 
-          define_new(klass)
+          define_new
           define_initialize(klass)
 
           klass.send(:include, instance_mod)
@@ -47,7 +47,7 @@ module Dry
           self
         end
 
-        def define_new(klass)
+        def define_new
           raise NotImplementedError, "must be implemented by a subclass"
         end
 

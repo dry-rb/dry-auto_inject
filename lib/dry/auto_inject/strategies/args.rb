@@ -7,7 +7,7 @@ module Dry
       class Args < Constructor
         private
 
-        def define_new(klass)
+        def define_new
           class_mod.class_exec(container, dependency_map) do |container, dependency_map|
             define_method :new do |*args|
               deps = dependency_map.to_h.values.map.with_index { |identifier, i|
