@@ -1,8 +1,14 @@
-# Unreleased
+# 0.4.2 / 2016-10-10
 
 ### Fixed
 
-- Fixed issue where multiple injectors with different containers could not be used at different classes in an inheritance hierarchy (timriley in [#31](https://github.com/dry-rb/dry-auto_inject/pull/31))
+- Fixed issue where injectors for different containers could not be used on different classes in an inheritance hierarchy (timriley in [#31](https://github.com/dry-rb/dry-auto_inject/pull/31))
+
+# 0.4.1 / 2016-08-14
+
+### Changed
+
+- Loosened version dependency on dry-container (AMHOL)
 
 # 0.4.0 / 2016-07-26
 
