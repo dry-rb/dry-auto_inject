@@ -14,7 +14,7 @@
 [![API Documentation Coverage](http://inch-ci.org/github/dry-rb/dry-auto_inject.svg)][inch]
 ![No monkey-patches](https://img.shields.io/badge/monkey--patches-0-brightgreen.svg)
 
-A simple extensions which allows you to automatically inject dependencies to your
+A simple extension which allows you to automatically inject dependencies to your
 object constructors from a configured container.
 
 It does 3 things:
