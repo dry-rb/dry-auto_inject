@@ -10,14 +10,17 @@ rvm:
   - 2.1
   - 2.2
   - 2.3.1
-  - rbx
   - jruby-9.1.5.0
 env:
   global:
     - JRUBY_OPTS='--dev -J-Xmx1024M'
 matrix:
+  include:
+    - rvm: rbx-3
+      env: RBX_RUBY_COMPAT=2.3.1 RBX_VERSION=3.62
+      os: linux
   allow_failures:
-    - rvm: rbx
+    - rvm: rbx-3
 addons:
   code_climate:
     repo_token: 029b5aa100b82b6710e285597b7eabe760357b5dd1f626514371356055378d8c
