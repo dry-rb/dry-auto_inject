@@ -9,12 +9,12 @@ module Dry
 
         def define_new
           class_mod.class_exec(container, dependency_map) do |container, dependency_map|
-            define_method :new do |**args|
+            define_method :new do |*args, **kwargs|
               deps = dependency_map.to_h.each_with_object({}) { |(name, identifier), obj|
-                obj[name] = args[name] || container[identifier]
-              }.merge(args)
+                obj[name] = kwargs[name] || container[identifier]
+              }.merge(kwargs)
 
-              super(**deps)
+              super(*args, **deps)
             end
           end
         end
@@ -45,21 +45,21 @@ module Dry
 
         def define_initialize_with_splat(super_method)
           super_kwarg_names = super_method.parameters.select { |type, _| [:key, :keyreq].include?(type) }.map(&:last)
-          super_params = super_kwarg_names.map { |name| "#{name}: args[:#{name}]" }.join(', ')
+          super_kw_params = super_kwarg_names.map { |name| "#{name}: kwargs[:#{name}]" }.join(', ')
 
           # Pass through any non-dependency args if the super method accepts `**args`
           if super_method.parameters.any? { |type, _| type == :keyrest }
-            if super_params.empty?
-              super_params = '**args'
+            if super_kw_params.empty?
+              super_kw_params = '**kwargs'
             else
-              super_params += ', **args'
+              super_kw_params += ', **kwargs'
             end
           end
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            def initialize(**args)
-              super(#{super_params})
-              #{dependency_map.names.map { |name| "@#{name} = args[:#{name}]" }.join("\n")}
+            def initialize(*args, **kwargs)
+              super(*args, #{super_kw_params})
+              #{dependency_map.names.map { |name| "@#{name} = kwargs[:#{name}]" }.join("\n")}
             end
           RUBY
           self
