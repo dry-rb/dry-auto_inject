@@ -1,3 +1,9 @@
+# 0.4.3 / to-be-released
+
+### Added
+
+- Push sequential arguments along with keywords in the kwargs strategy (hbda + vladra in [#32](https://github.com/dry-rb/dry-auto_inject/pull/32))
+
 # 0.4.2 / 2016-10-10
 
 ### Fixed
