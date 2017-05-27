@@ -1,8 +1,10 @@
-# 0.4.3 / to-be-released
+# 0.4.3 / 2017-05-27
 
 ### Added
 
 - Push sequential arguments along with keywords in the kwargs strategy (hbda + vladra in [#32](https://github.com/dry-rb/dry-auto_inject/pull/32))
+
+[Compare v0.4.2...v0.4.3](https://github.com/dryrb/dry-auto_inject/compare/v0.4.2...v0.4.3)
 
 # 0.4.2 / 2016-10-10
 
@@ -10,11 +12,15 @@
 
 - Fixed issue where injectors for different containers could not be used on different classes in an inheritance hierarchy (timriley in [#31](https://github.com/dry-rb/dry-auto_inject/pull/31))
 
+[Compare v0.4.1...v0.4.2](https://github.com/dryrb/dry-auto_inject/compare/v0.4.1...v0.4.2)
+
 # 0.4.1 / 2016-08-14
 
 ### Changed
 
 - Loosened version dependency on dry-container (AMHOL)
+
+[Compare v0.4.0...v0.4.1](https://github.com/dryrb/dry-auto_inject/compare/v0.4.0...v0.4.1)
 
 # 0.4.0 / 2016-07-26
 
