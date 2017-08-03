@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in dry-container.gemspec
+# Specify your gem's dependencies in dry-auto_inject.gemspec
 gemspec
 
 group :test do
