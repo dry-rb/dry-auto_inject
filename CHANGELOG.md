@@ -1,3 +1,9 @@
+# 0.4.4 / 2017-09-14
+
+### Added
+
+- Determine name for dependencies by splitting identifiers on any invalid local variable name characters (e.g. "/", "?", "!"), instead of splitting on dots only (raventid in [#39](https://github.com/dry-rb/dry-auto_inject/pull/39))
+
 # 0.4.3 / 2017-05-27
 
 ### Added
