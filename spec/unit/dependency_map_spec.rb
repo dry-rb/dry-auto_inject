@@ -71,7 +71,7 @@ RSpec.describe Dry::AutoInject::DependencyMap do
       let(:dependencies) { ["3213/32132"] }
 
       it "raises an error" do
-        expect { dependency_map }.to raise_error(Dry::AutoInject::DependencyNameIsNotValid)
+        expect { dependency_map }.to raise_error(Dry::AutoInject::DependencyNameInvalid)
       end
     end
   end

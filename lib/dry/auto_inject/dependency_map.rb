@@ -1,7 +1,8 @@
 module Dry
   module AutoInject
     DuplicateDependencyError = Class.new(StandardError)
-    DependencyNameIsNotValid = Class.new(StandardError)
+    DependencyNameInvalid = Class.new(StandardError)
+
     VALID_NAME = /([a-z_][a-zA-Z_0-9]*)$/.freeze
 
     class DependencyMap
@@ -38,7 +39,7 @@ module Dry
 
       def name_for(identifier)
         matched = VALID_NAME.match(identifier.to_s)
-        raise DependencyNameIsNotValid, "#{identifier} is not a valid Ruby identifier" unless matched
+        raise DependencyNameInvalid, "name +#{identifier}+ is not a valid Ruby identifier" unless matched
         matched[0]
       end
 
