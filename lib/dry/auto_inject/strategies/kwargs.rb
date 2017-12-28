@@ -14,7 +14,11 @@ module Dry
                 obj[name] = kwargs[name] || container[identifier]
               }.merge(kwargs)
 
-              super(*args, **deps)
+              other_kwargs = kwargs.each_with_object({}) { |(key, val), hsh|
+                hsh[key] = val unless deps.key?(key)
+              }
+
+              super(*args, **other_kwargs, **deps)
             end
           end
         end
@@ -44,24 +48,27 @@ module Dry
         end
 
         def define_initialize_with_splat(super_method)
-          super_kwarg_names = super_method.parameters.select { |type, _| [:key, :keyreq].include?(type) }.map(&:last)
-          super_kw_params = super_kwarg_names.map { |name| "#{name}: kwargs[:#{name}]" }.join(', ')
-
-          # Pass through any non-dependency args if the super method accepts `**args`
-          if super_method.parameters.any? { |type, _| type == :keyrest }
-            if super_kw_params.empty?
-              super_kw_params = '**kwargs'
-            else
-              super_kw_params += ', **kwargs'
-            end
-          end
+          super_kwarg_names = super_method.parameters.each_with_object([]) { |(type, name), names|
+            names << name if [:key, :keyreq].include?(type)
+          }
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def initialize(*args, **kwargs)
-              super(*args, #{super_kw_params})
+              dependency_names = [#{dependency_map.names.map { |name| ":#{name}" }.join(", ")}]
+              super_kwarg_names = [#{super_kwarg_names.map { |name| ":#{name}" }.join(", ")}]
+
+              super_kwargs = kwargs.each_with_object({}) { |(key, val), hsh|
+                if !dependency_names.include?(key) || super_kwarg_names.include?(key)
+                  hsh[key] = kwargs[key]
+                end
+              }
+
+              super(*args, **super_kwargs)
+
               #{dependency_map.names.map { |name| "@#{name} = kwargs[:#{name}]" }.join("\n")}
             end
           RUBY
+
           self
         end
       end

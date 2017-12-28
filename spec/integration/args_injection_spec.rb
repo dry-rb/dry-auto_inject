@@ -9,7 +9,7 @@ RSpec.describe "argument parameters" do
             attr_reader :module_var
 
             def initialize(*)
-              super
+              super()
               @module_var = "hi"
             end
           end
