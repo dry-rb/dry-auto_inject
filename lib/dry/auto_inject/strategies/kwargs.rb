@@ -9,16 +9,14 @@ module Dry
 
         def define_new
           class_mod.class_exec(container, dependency_map) do |container, dependency_map|
+            map = dependency_map.to_h.to_a
+
             define_method :new do |*args, **kwargs|
-              deps = dependency_map.to_h.each_with_object({}) { |(name, identifier), obj|
-                obj[name] = kwargs[name] || container[identifier]
-              }.merge(kwargs)
+              map.each do |name, identifier|
+                kwargs[name] ||= container[identifier]
+              end
 
-              other_kwargs = kwargs.each_with_object({}) { |(key, val), hsh|
-                hsh[key] = val unless deps.key?(key)
-              }
-
-              super(*args, **other_kwargs, **deps)
+              super(*args, **kwargs)
             end
           end
         end
