@@ -58,7 +58,11 @@ module Dry
                 end
               }
 
-              super(*args, **super_kwargs)
+              if super_kwargs.any?
+                super(*args, **super_kwargs)
+              else
+                super(*args)
+              end
 
               dependency_map.names.each do |name|
                 instance_variable_set :"@#{name}", kwargs[name]
