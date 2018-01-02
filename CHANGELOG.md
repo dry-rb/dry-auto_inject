@@ -1,3 +1,11 @@
+# 0.4.5 / 2018-01-02
+
+### Added
+
+- Improved handling of kwargs being passed to #initialize’s super method (timriley)
+
+[Compare v0.4.4...v0.4.5](https://github.com/dryrb/dry-auto_inject/compare/v0.4.4...v0.4.5)
+
 # 0.4.4 / 2017-09-14
 
 ### Added
