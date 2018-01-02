@@ -9,12 +9,14 @@ module Dry
 
         def define_new
           class_mod.class_exec(container, dependency_map) do |container, dependency_map|
-            define_method :new do |*args, **kwargs|
-              deps = dependency_map.to_h.each_with_object({}) { |(name, identifier), obj|
-                obj[name] = kwargs[name] || container[identifier]
-              }.merge(kwargs)
+            map = dependency_map.to_h.to_a
 
-              super(*args, **deps)
+            define_method :new do |*args, **kwargs|
+              map.each do |name, identifier|
+                kwargs[name] ||= container[identifier]
+              end
+
+              super(*args, **kwargs)
             end
           end
         end
@@ -32,7 +34,7 @@ module Dry
         end
 
         def define_initialize_with_keywords
-          initialize_params = dependency_map.names.map { |name| "#{name}: nil" }.join(', ')
+          initialize_params = dependency_map.names.map { |name| "#{name}: nil" }.join(", ")
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def initialize(#{initialize_params})
@@ -40,28 +42,35 @@ module Dry
               #{dependency_map.names.map { |name| "@#{name} = #{name}" }.join("\n")}
             end
           RUBY
+
           self
         end
 
         def define_initialize_with_splat(super_method)
-          super_kwarg_names = super_method.parameters.select { |type, _| [:key, :keyreq].include?(type) }.map(&:last)
-          super_kw_params = super_kwarg_names.map { |name| "#{name}: kwargs[:#{name}]" }.join(', ')
+          super_kwarg_names = super_method.parameters.each_with_object([]) { |(type, name), names|
+            names << name if [:key, :keyreq].include?(type)
+          }
 
-          # Pass through any non-dependency args if the super method accepts `**args`
-          if super_method.parameters.any? { |type, _| type == :keyrest }
-            if super_kw_params.empty?
-              super_kw_params = '**kwargs'
-            else
-              super_kw_params += ', **kwargs'
+          instance_mod.class_exec(dependency_map) do |dependency_map|
+            define_method :initialize do |*args, **kwargs|
+              super_kwargs = kwargs.each_with_object({}) { |(key, _), hsh|
+                if !dependency_map.names.include?(key) || super_kwarg_names.include?(key)
+                  hsh[key] = kwargs[key]
+                end
+              }
+
+              if super_kwargs.any?
+                super(*args, **super_kwargs)
+              else
+                super(*args)
+              end
+
+              dependency_map.names.each do |name|
+                instance_variable_set :"@#{name}", kwargs[name]
+              end
             end
           end
 
-          instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            def initialize(*args, **kwargs)
-              super(*args, #{super_kw_params})
-              #{dependency_map.names.map { |name| "@#{name} = kwargs[:#{name}]" }.join("\n")}
-            end
-          RUBY
           self
         end
       end
