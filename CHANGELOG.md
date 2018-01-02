@@ -4,7 +4,7 @@
 
 - Improved handling of kwargs being passed to #initialize’s super method (timriley)
 
-[Compare v0.4.4...v0.4.5](https://github.com/dryrb/dry-auto_inject/compare/v0.4.4...v0.4.5)
+[Compare v0.4.4...v0.4.5](https://github.com/dry-rb/dry-auto_inject/compare/v0.4.4...v0.4.5)
 
 # 0.4.4 / 2017-09-14
 
@@ -18,7 +18,7 @@
 
 - Push sequential arguments along with keywords in the kwargs strategy (hbda + vladra in [#32](https://github.com/dry-rb/dry-auto_inject/pull/32))
 
-[Compare v0.4.2...v0.4.3](https://github.com/dryrb/dry-auto_inject/compare/v0.4.2...v0.4.3)
+[Compare v0.4.2...v0.4.3](https://github.com/dry-rb/dry-auto_inject/compare/v0.4.2...v0.4.3)
 
 # 0.4.2 / 2016-10-10
 
@@ -26,7 +26,7 @@
 
 - Fixed issue where injectors for different containers could not be used on different classes in an inheritance hierarchy (timriley in [#31](https://github.com/dry-rb/dry-auto_inject/pull/31))
 
-[Compare v0.4.1...v0.4.2](https://github.com/dryrb/dry-auto_inject/compare/v0.4.1...v0.4.2)
+[Compare v0.4.1...v0.4.2](https://github.com/dry-rb/dry-auto_inject/compare/v0.4.1...v0.4.2)
 
 # 0.4.1 / 2016-08-14
 
@@ -34,7 +34,7 @@
 
 - Loosened version dependency on dry-container (AMHOL)
 
-[Compare v0.4.0...v0.4.1](https://github.com/dryrb/dry-auto_inject/compare/v0.4.0...v0.4.1)
+[Compare v0.4.0...v0.4.1](https://github.com/dry-rb/dry-auto_inject/compare/v0.4.0...v0.4.1)
 
 # 0.4.0 / 2016-07-26
 
@@ -65,7 +65,7 @@
 
 - Fixed issue with kwargs injectors used at multiple points in a class inheritance heirarchy (flash-gordon in [#27](https://github.com/dry-rb/dry-auto_inject/pull/27))
 
-[Compare v0.3.0...v0.4.0](https://github.com/dryrb/dry-auto_inject/compare/v0.3.0...v0.4.0)
+[Compare v0.3.0...v0.4.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.3.0...v0.4.0)
 
 # 0.3.0, 2016-06-02
 
@@ -153,7 +153,7 @@
 * `kwargs` is the new default injection strategy
 * Rubinius support is not available for the `kwargs` strategy (see [#18](https://github.com/dry-rb/dry-auto_inject/issues/18))
 
-[Compare v0.2.0...v0.3.0](https://github.com/dryrb/dry-auto_inject/compare/v0.2.0...v0.3.0)
+[Compare v0.2.0...v0.3.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.2.0...v0.3.0)
 
 # v0.2.0 2016-02-09
 
@@ -161,7 +161,7 @@
 
 * Support for hashes as constructor arguments via `Import.hash` interface (solnic)
 
-[Compare v0.1.0...v0.2.0](https://github.com/dryrb/dry-auto_inject/compare/v0.1.0...v0.2.0)
+[Compare v0.1.0...v0.2.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.1.0...v0.2.0)
 
 # v0.1.0 2015-11-12
 
