@@ -42,6 +42,7 @@ module Dry
               #{dependency_map.names.map { |name| "@#{name} = #{name}" }.join("\n")}
             end
           RUBY
+
           self
         end
 
