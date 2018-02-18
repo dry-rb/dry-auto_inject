@@ -3,7 +3,7 @@ module Dry
     DuplicateDependencyError = Class.new(StandardError)
     DependencyNameInvalid = Class.new(StandardError)
 
-    VALID_NAME = /([a-z_][a-zA-Z_0-9]*)$/.freeze
+    VALID_NAME = /([a-z_][a-zA-Z_0-9]*)$/
 
     class DependencyMap
       def initialize(*dependencies)
