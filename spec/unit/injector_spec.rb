@@ -1,12 +1,14 @@
-require "dry/auto_inject/injector"
+# frozen_string_literal: true
+
+require 'dry/auto_inject/injector'
 
 RSpec.describe Dry::AutoInject::Builder do
-  describe "#respond_to?" do
-    subject(:injector) { Dry::AutoInject::Injector.new({}, double("strategy"), builder: builder) }
+  describe '#respond_to?' do
+    subject(:injector) { Dry::AutoInject::Injector.new({}, double('strategy'), builder: builder) }
 
-    let(:builder) { Dry::AutoInject::Builder.new({}, strategies: {kwargs: double("strategy")}) }
+    let(:builder) { Dry::AutoInject::Builder.new({}, strategies: { kwargs: double('strategy') }) }
 
-    it "responds to #[] as the main injection method" do
+    it 'responds to #[] as the main injection method' do
       expect(injector.respond_to?(:[])).to be true
     end
 
@@ -14,7 +16,7 @@ RSpec.describe Dry::AutoInject::Builder do
       expect(injector.respond_to?(:kwargs)).to be true
     end
 
-    it "does not respond to unknown strategy names" do
+    it 'does not respond to unknown strategy names' do
       expect(injector.respond_to?(:args)).to be false
     end
 
