@@ -1,6 +1,4 @@
 language: ruby
-dist: trusty
-sudo: required
 cache: bundler
 bundler_args: --without tools
 script:
