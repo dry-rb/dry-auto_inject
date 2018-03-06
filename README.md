@@ -1,17 +1,16 @@
-[gitter]: https://gitter.im/dry-rb/chat
 [gem]: https://rubygems.org/gems/dry-auto_inject
 [travis]: https://travis-ci.org/dry-rb/dry-auto_inject
-[gemnasium]: https://gemnasium.com/dry-rb/dry-auto_inject
-[code_climate]: https://codeclimate.com/github/dry-rb/dry-auto_inject
-[inch]: http://inch-ci.org/github/dry-rb/dry-auto_inject
+[codeclimate]: https://codeclimate.com/github/dry-rb/dry-auto_inject
+[coveralls]: https://coveralls.io/r/dry-rb/dry-auto_inject
+[inchpages]: http://inch-ci.org/github/dry-rb/dry-auto_inject
 
-# dry-auto_inject [![Join the Gitter chat](https://badges.gitter.im/Join%20Chat.svg)][gitter]
+# dry-auto_inject [![Join the chat at https://gitter.im/dry-rb/chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dry-rb/chat)
 
-[![Gem Version](https://img.shields.io/gem/v/dry-auto_inject.svg)][gem]
-[![Build Status](https://img.shields.io/travis/dry-rb/dry-auto_inject.svg)][travis]
-[![Dependency Status](https://img.shields.io/gemnasium/dry-rb/dry-auto_inject.svg)][gemnasium]
-[![Code Climate](https://img.shields.io/codeclimate/github/dry-rb/dry-auto_inject.svg)][code_climate]
-[![API Documentation Coverage](http://inch-ci.org/github/dry-rb/dry-auto_inject.svg)][inch]
+[![Gem Version](https://badge.fury.io/rb/dry-auto_inject.svg)][gem]
+[![Build Status](https://travis-ci.org/dry-rb/dry-auto_inject.svg?branch=master)][travis]
+[![Code Climate](https://codeclimate.com/github/dry-rb/dry-auto_inject/badges/gpa.svg)][codeclimate]
+[![Test Coverage](https://codeclimate.com/github/dry-rb/dry-auto_inject/badges/coverage.svg)][codeclimate]
+[![Inline docs](http://inch-ci.org/github/dry-rb/dry-auto_inject.svg?branch=master)][inchpages]
 ![No monkey-patches](https://img.shields.io/badge/monkey--patches-0-brightgreen.svg)
 
 A simple extension which allows you to automatically inject dependencies to your
