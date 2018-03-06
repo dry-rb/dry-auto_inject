@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/auto_inject/strategies'
 
 module Dry
@@ -23,13 +25,13 @@ module Dry
         strategy.new(container, *dependency_names)
       end
 
-      def respond_to?(name, include_private = false)
+      def respond_to?(name, _include_private = false)
         Injector.instance_methods.include?(name) || builder.respond_to?(name)
       end
 
       private
 
-      def method_missing(name, *args, &block)
+      def method_missing(name, *_args)
         builder.__send__(name)
       end
     end

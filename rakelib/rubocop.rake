@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 begin
   require 'rubocop/rake_task'
 
@@ -13,6 +15,5 @@ begin
       exec 'bundle exec rubocop --auto-gen-config'
     end
   end
-
 rescue LoadError
 end

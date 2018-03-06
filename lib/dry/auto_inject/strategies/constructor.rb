@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/auto_inject/dependency_map'
 
 module Dry
@@ -42,11 +44,11 @@ module Dry
         end
 
         def define_new
-          raise NotImplementedError, "must be implemented by a subclass"
+          raise NotImplementedError, 'must be implemented by a subclass'
         end
 
-        def define_initialize(klass)
-          raise NotImplementedError, "must be implemented by a subclass"
+        def define_initialize(_klass)
+          raise NotImplementedError, 'must be implemented by a subclass'
         end
       end
     end

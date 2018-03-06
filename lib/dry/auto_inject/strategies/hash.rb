@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/auto_inject/strategies/constructor'
 
 module Dry
@@ -10,9 +12,9 @@ module Dry
         def define_new
           class_mod.class_exec(container, dependency_map) do |container, dependency_map|
             define_method :new do |options = {}|
-              deps = dependency_map.to_h.each_with_object({}) { |(name, identifier), obj|
+              deps = dependency_map.to_h.each_with_object({}) do |(name, identifier), obj|
                 obj[name] = options[name] || container[identifier]
-              }.merge(options)
+              end.merge(options)
 
               super(deps)
             end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/auto_inject/strategies/constructor'
 
 module Dry
@@ -10,9 +12,9 @@ module Dry
         def define_new
           class_mod.class_exec(container, dependency_map) do |container, dependency_map|
             define_method :new do |*args|
-              deps = dependency_map.to_h.values.map.with_index { |identifier, i|
+              deps = dependency_map.to_h.values.map.with_index do |identifier, i|
                 args[i] || container[identifier]
-              }
+              end
 
               super(*deps, *args[deps.size..-1])
             end
@@ -42,9 +44,9 @@ module Dry
 
         def define_initialize_with_splat(super_method)
           super_params = if super_method.parameters.any? { |type, _| type == :rest }
-            '*args'
-          else
-            "*args[0..#{super_method.parameters.length - 1}]"
+                           '*args'
+                         else
+                           "*args[0..#{super_method.parameters.length - 1}]"
           end
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1

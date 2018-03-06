@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Dry
   module AutoInject
     DuplicateDependencyError = Class.new(StandardError)
@@ -33,7 +35,7 @@ module Dry
       def to_h
         @map.dup.to_h
       end
-      alias_method :to_hash, :to_h
+      alias to_hash to_h
 
       private
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/auto_inject/strategies/constructor'
 
 module Dry
@@ -34,7 +36,7 @@ module Dry
         end
 
         def define_initialize_with_keywords
-          initialize_params = dependency_map.names.map { |name| "#{name}: nil" }.join(", ")
+          initialize_params = dependency_map.names.map { |name| "#{name}: nil" }.join(', ')
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def initialize(#{initialize_params})
@@ -47,17 +49,17 @@ module Dry
         end
 
         def define_initialize_with_splat(super_method)
-          super_kwarg_names = super_method.parameters.each_with_object([]) { |(type, name), names|
-            names << name if [:key, :keyreq].include?(type)
-          }
+          super_kwarg_names = super_method.parameters.each_with_object([]) do |(type, name), names|
+            names << name if %i[key keyreq].include?(type)
+          end
 
           instance_mod.class_exec(dependency_map) do |dependency_map|
             define_method :initialize do |*args, **kwargs|
-              super_kwargs = kwargs.each_with_object({}) { |(key, _), hsh|
+              super_kwargs = kwargs.each_with_object({}) do |(key, _), hsh|
                 if !dependency_map.names.include?(key) || super_kwarg_names.include?(key)
                   hsh[key] = kwargs[key]
                 end
-              }
+              end
 
               if super_kwargs.any?
                 super(*args, **super_kwargs)
