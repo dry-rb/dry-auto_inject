@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe "chaining injectors" do
   before do
     module Test

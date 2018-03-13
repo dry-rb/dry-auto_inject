@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe "argument parameters" do
   describe "inheritance" do
     describe "module included with an initialize accepting anonymous splat and passing all args through to super (which accepts no args)" do

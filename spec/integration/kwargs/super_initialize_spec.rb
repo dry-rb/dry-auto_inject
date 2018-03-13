@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe "kwargs / super #initialize method" do
   before do
     module Test
