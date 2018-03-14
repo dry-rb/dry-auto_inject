@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::AutoInject do
   def assert_valid_object(object)
     expect(object.one).to eq 1

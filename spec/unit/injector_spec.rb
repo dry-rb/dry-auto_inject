@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "dry/auto_inject/injector"
 
 RSpec.describe Dry::AutoInject::Builder do

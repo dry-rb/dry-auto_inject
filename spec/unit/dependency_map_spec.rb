@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "dry/auto_inject/dependency_map"
 
 RSpec.describe Dry::AutoInject::DependencyMap do
