@@ -27,8 +27,8 @@ module Dry
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def initialize(options)
-              super(#{super_params})
               #{dependency_map.names.map { |name| "@#{name} = options[:#{name}]" }.join("\n")}
+              super(#{super_params})
             end
           RUBY
         end
