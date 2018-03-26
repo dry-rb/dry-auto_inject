@@ -36,8 +36,8 @@ module Dry
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def initialize(#{initialize_args})
-              super()
               #{dependency_map.names.map { |name| "@#{name} = #{name}" }.join("\n")}
+              super()
             end
           RUBY
         end
@@ -51,8 +51,8 @@ module Dry
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def initialize(*args)
-              super(#{super_params})
               #{dependency_map.names.map.with_index { |name, i| "@#{name} = args[#{i}]" }.join("\n")}
+              super(#{super_params})
             end
           RUBY
         end

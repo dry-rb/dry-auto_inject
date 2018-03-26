@@ -40,8 +40,8 @@ module Dry
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def initialize(#{initialize_params})
-              super()
               #{dependency_map.names.map { |name| "@#{name} = #{name}" }.join("\n")}
+              super()
             end
           RUBY
 
@@ -55,6 +55,10 @@ module Dry
 
           instance_mod.class_exec(dependency_map) do |dependency_map|
             define_method :initialize do |*args, **kwargs|
+              dependency_map.names.each do |name|
+                instance_variable_set :"@#{name}", kwargs[name]
+              end
+
               super_kwargs = kwargs.each_with_object({}) { |(key, _), hsh|
                 if !dependency_map.names.include?(key) || super_kwarg_names.include?(key)
                   hsh[key] = kwargs[key]
@@ -65,10 +69,6 @@ module Dry
                 super(*args, **super_kwargs)
               else
                 super(*args)
-              end
-
-              dependency_map.names.each do |name|
-                instance_variable_set :"@#{name}", kwargs[name]
               end
             end
           end
