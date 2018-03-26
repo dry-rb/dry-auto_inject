@@ -1,3 +1,11 @@
+# 0.4.6 / 2018-03-27
+
+### Changed
+
+- In injector-generated `#initialize` methods, set dependency instance variables before calling `super` (timriley)
+
+[Compare v0.4.5...v0.4.6](https://github.com/dry-rb/dry-auto_inject/compare/v0.4.5...v0.4.6)
+
 # 0.4.5 / 2018-01-02
 
 ### Added
