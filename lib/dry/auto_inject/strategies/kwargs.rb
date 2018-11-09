@@ -40,7 +40,7 @@ module Dry
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def initialize(#{initialize_params})
-              #{dependency_map.names.map { |name| "@#{name} = #{name}" }.join("\n")}
+              #{dependency_map.names.map { |name| "@#{name} = #{name} unless #{name}.nil? && instance_variable_defined?(:'@#{name}')" }.join("\n")}
               super()
             end
           RUBY
@@ -56,7 +56,10 @@ module Dry
           instance_mod.class_exec(dependency_map) do |dependency_map|
             define_method :initialize do |*args, **kwargs|
               dependency_map.names.each do |name|
-                instance_variable_set :"@#{name}", kwargs[name]
+                # Assign instance variables, but only if the ivar is not
+                # previously defined (this improves compatibility with objects
+                # initialized in unconventional ways)
+                instance_variable_set :"@#{name}", kwargs[name] unless kwargs[name].nil? && instance_variable_defined?(:"@#{name}")
               end
 
               super_kwargs = kwargs.each_with_object({}) { |(key, _), hsh|
