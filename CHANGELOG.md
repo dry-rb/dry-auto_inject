@@ -1,3 +1,41 @@
+# 0.5.0 / 2018-11-09
+
+### Changed
+
+- Only assign `nil` dependency instance variables from generated `#initialize` if the instance variable has not been previously defined. This improves compatibility with objects initialized in non-conventional ways (see example below) (timriley in [#47](https://github.com/dry-rb/dry-auto_inject/pull/47))
+
+    ```ruby
+    module SomeFramework
+      class Action
+        def self.new(configuration:, **args)
+          # Do some trickery so `#initialize` on subclasses don't need to worry
+          # about handling a configuration kwarg and passing it to super
+          allocate.tap do |obj|
+            obj.instance_variable_set :@configuration, configuration
+            obj.send :initialize, **args
+          end
+        end
+      end
+    end
+
+    module MyApp
+      class Action < SomeFramework::Action
+        # Inject the configuration object, which is passed to
+        # SomeFramework::Action.new but not all the way through to any subsequent
+        # `#initialize` calls
+        include Import[configuration: "web.action.configuration"]
+      end
+
+      class SomeAction < Action
+        # Subclasses of MyApp::Action don't need to concern themselves with
+        # `configuration` dependency
+        include Import["some_repo"]
+      end
+    end
+    ```
+
+[Compare v0.4.6...v0.5.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.4.6...v0.5.0)
+
 # 0.4.6 / 2018-03-27
 
 ### Changed
