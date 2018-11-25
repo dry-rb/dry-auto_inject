@@ -29,11 +29,11 @@ module Dry
       end
 
       def names
-        @map.keys
+        @name ||= @map.keys
       end
 
       def to_h
-        @map.dup.to_h
+        @map.dup
       end
       alias_method :to_hash, :to_h
 

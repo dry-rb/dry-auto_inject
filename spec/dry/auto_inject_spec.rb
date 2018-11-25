@@ -321,8 +321,8 @@ RSpec.describe Dry::AutoInject do
 
         attr_reader :other
 
-        def initialize(other: nil, **args)
-          super(**args)
+        def initialize(other: nil, **kwargs)
+          super(**kwargs)
           @other = other
         end
       end
@@ -332,7 +332,7 @@ RSpec.describe Dry::AutoInject do
       Class.new(parent_class) do
         attr_reader :foo
 
-        def initialize(**args)
+        def initialize(**kwargs)
           super
           @foo = 'bar'
         end
