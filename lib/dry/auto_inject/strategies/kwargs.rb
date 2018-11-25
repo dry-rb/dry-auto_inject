@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'set'
 require 'dry/auto_inject/strategies/constructor'
+require 'dry/auto_inject/method_parameters'
 
 module Dry
   module AutoInject
@@ -12,7 +12,7 @@ module Dry
 
         def define_new
           class_mod.class_exec(container, dependency_map) do |container, dependency_map|
-            map = dependency_map.to_h.to_a
+            map = dependency_map.to_h
 
             define_method :new do |*args, **kwargs|
               map.each do |name, identifier|
@@ -25,25 +25,57 @@ module Dry
         end
 
         def define_initialize(klass)
-          super_method = Dry::AutoInject.super_method(klass, :initialize)
+          super_parameters = Dry::AutoInject.super_parameters(klass, :initialize).first
 
-          if super_method
-            super_parameters = super_method.parameters
-          else
-            super_parameters = []
-          end
-
-          super_seq = super_parameters.any? { |type, _|
-            type == :req || type == :opt || type == :rest
-          }
-
-          if super_seq
+          if super_parameters.splat? || super_parameters.sequential_arguments?
             define_initialize_with_splat(super_parameters)
           else
             define_initialize_with_keywords(super_parameters)
           end
 
           self
+        end
+
+        def define_initialize_with_keywords(super_parameters)
+          assign_dependencies = method(:assign_dependencies)
+          slice_kwargs = method(:slice_kwargs)
+
+          instance_mod.class_exec(dependency_map) do |dependency_map|
+            define_method :initialize do |**kwargs|
+              assign_dependencies.(kwargs, self)
+
+              super_kwargs = slice_kwargs.(kwargs, super_parameters)
+
+              if super_kwargs.any?
+                super(super_kwargs)
+              else
+                super()
+              end
+            end
+          end
+        end
+
+        def define_initialize_with_splat(super_parameters)
+          assign_dependencies = method(:assign_dependencies)
+          slice_kwargs = method(:slice_kwargs)
+
+          instance_mod.class_exec(dependency_map) do |dependency_map|
+            define_method :initialize do |*args, **kwargs|
+              assign_dependencies.(kwargs, self)
+
+              if super_parameters.splat?
+                super(*args, kwargs)
+              else
+                super_kwargs = slice_kwargs.(kwargs, super_parameters)
+
+                if super_kwargs.any?
+                  super(*args, super_kwargs)
+                else
+                  super(*args)
+                end
+              end
+            end
+          end
         end
 
         def assign_dependencies(kwargs, destination)
@@ -57,59 +89,10 @@ module Dry
           end
         end
 
-        def define_initialize_with_keywords(super_parameters)
-          super_kwarg_names = super_parameters.each_with_object(Set.new) { |(type, name), names|
-            names << name if type == :key || type == :keyreq
-          }
-
-          assign_dependencies = method(:assign_dependencies)
-
-          instance_mod.class_exec(dependency_map) do |dependency_map|
-            define_method :initialize do |**kwargs|
-              assign_dependencies.(kwargs, self)
-
-              super_kwargs = kwargs.select do |key|
-                !dependency_map.names.include?(key) || super_kwarg_names.include?(key)
-              end
-
-              if super_kwargs.any?
-                super(super_kwargs)
-              else
-                super()
-              end
-            end
+        def slice_kwargs(kwargs, super_parameters)
+          kwargs.select do |key|
+            !dependency_map.names.include?(key) || super_parameters.keyword?(key)
           end
-        end
-
-        def define_initialize_with_splat(super_parameters)
-          super_kwarg_names = super_parameters.each_with_object(Set.new) { |(type, name), names|
-            names << name if type == :key || type == :keyreq
-          }
-
-          assign_dependencies = method(:assign_dependencies)
-          super_with_splat = super_parameters.any? { |type, _| type == :rest }
-
-          instance_mod.class_exec(dependency_map) do |dependency_map|
-            define_method :initialize do |*args, **kwargs|
-              assign_dependencies.(kwargs, self)
-
-              if super_with_splat
-                super(*args, kwargs)
-              else
-                super_kwargs = kwargs.select do |key|
-                  !dependency_map.names.include?(key) || super_kwarg_names.include?(key)
-                end
-
-                if super_kwargs.any?
-                  super(*args, super_kwargs)
-                else
-                  super(*args)
-                end
-              end
-            end
-          end
-
-          self
         end
       end
 
