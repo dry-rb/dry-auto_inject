@@ -101,6 +101,7 @@ RSpec.describe "kwargs / super #initialize method" do
     it "passes dependencies assuming the parent class can take them" do
       instance = child_class.new
 
+      expect(instance.one).to eq "dep 1"
       expect(instance.dep).to eq "dep 1"
       expect(instance.args).to eq [one: "dep 1"]
     end

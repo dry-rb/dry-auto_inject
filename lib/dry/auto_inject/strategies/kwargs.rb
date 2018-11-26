@@ -40,7 +40,7 @@ module Dry
           assign_dependencies = method(:assign_dependencies)
           slice_kwargs = method(:slice_kwargs)
 
-          instance_mod.class_exec(dependency_map) do |dependency_map|
+          instance_mod.class_exec do
             define_method :initialize do |**kwargs|
               assign_dependencies.(kwargs, self)
 
@@ -59,7 +59,7 @@ module Dry
           assign_dependencies = method(:assign_dependencies)
           slice_kwargs = method(:slice_kwargs)
 
-          instance_mod.class_exec(dependency_map) do |dependency_map|
+          instance_mod.class_exec do
             define_method :initialize do |*args, **kwargs|
               assign_dependencies.(kwargs, self)
 

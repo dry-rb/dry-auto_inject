@@ -23,12 +23,12 @@ module Dry
 
         def define_initialize(klass)
           super_params = Dry::AutoInject.super_parameters(klass, :initialize).first
-          super_call = super_params.empty? ? '' : 'options'
+          super_pass = super_params.empty? ? '' : 'options'
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def initialize(options)
               #{dependency_map.names.map { |name| "@#{name} = options[:#{name}] unless !options.key?(#{name}) && instance_variable_defined?(:'@#{name}')" }.join("\n")}
-              super(#{super_call})
+              super(#{super_pass})
             end
           RUBY
         end
