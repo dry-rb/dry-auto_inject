@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'dry/auto_inject/builder'
-require 'dry/auto_inject/method_parameters'
 
 module Dry
   # Configure an auto-injection module
@@ -43,24 +42,5 @@ module Dry
   # @api public
   def self.AutoInject(container, options = {})
     AutoInject::Builder.new(container, options)
-  end
-
-  module AutoInject
-    # @api private
-    def self.super_parameters(klass, method_name)
-      Enumerator.new do |y|
-        loop do
-          method = klass.instance_method(method_name)
-
-          if method.nil? || method.owner.equal?(klass)
-            y << MethodParameters::EMPTY
-            break
-          else
-            y << MethodParameters.new(method.parameters)
-            klass = method.owner
-          end
-        end
-      end
-    end
   end
 end

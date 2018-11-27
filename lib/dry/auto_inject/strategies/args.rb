@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'dry/auto_inject/strategies/constructor'
+require 'dry/auto_inject/method_parameters'
 
 module Dry
   module AutoInject
@@ -22,7 +23,7 @@ module Dry
         end
 
         def define_initialize(klass)
-          super_parameters = Dry::AutoInject.super_parameters(klass, :initialize).each do |ps|
+          super_parameters = MethodParameters.of(klass, :initialize).each do |ps|
             # Look upwards past `def foo(*)` methods until we get an explicit list of parameters
             break ps unless ps.pass_through?
           end

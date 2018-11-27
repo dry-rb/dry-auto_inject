@@ -6,6 +6,22 @@ module Dry
     class MethodParameters
       PASS_THROUGH = [[:rest]]
 
+      def self.of(obj, name)
+        Enumerator.new do |y|
+          begin
+            method = obj.instance_method(name)
+          rescue NameError
+          end
+
+          loop do
+            break if method.nil?
+
+            y << MethodParameters.new(method.parameters)
+            method = method.super_method
+          end
+        end
+      end
+
       attr_reader :parameters
 
       def initialize(parameters)
@@ -46,7 +62,7 @@ module Dry
         parameters.eql?(PASS_THROUGH)
       end
 
-      EMPTY = new([]).freeze
+      EMPTY = new([])
     end
   end
 end

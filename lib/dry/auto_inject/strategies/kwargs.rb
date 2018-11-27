@@ -25,7 +25,10 @@ module Dry
         end
 
         def define_initialize(klass)
-          super_parameters = Dry::AutoInject.super_parameters(klass, :initialize).first
+          super_parameters = MethodParameters.of(klass, :initialize).each do |ps|
+            # Look upwards past `def foo(*)` methods until we get an explicit list of parameters
+            break ps unless ps.pass_through?
+          end
 
           if super_parameters.splat? || super_parameters.sequential_arguments?
             define_initialize_with_splat(super_parameters)

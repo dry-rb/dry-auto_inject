@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'dry/auto_inject/strategies/constructor'
+require 'dry/auto_inject/method_parameters'
 
 module Dry
   module AutoInject
@@ -22,7 +23,7 @@ module Dry
         end
 
         def define_initialize(klass)
-          super_params = Dry::AutoInject.super_parameters(klass, :initialize).first
+          super_params = MethodParameters.of(klass, :initialize).first
           super_pass = super_params.empty? ? '' : 'options'
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
