@@ -86,7 +86,7 @@ module Dry
             # Assign instance variables, but only if the ivar is not
             # previously defined (this improves compatibility with objects
             # initialized in unconventional ways)
-            unless kwargs[name].nil? && destination.instance_variable_defined?(:"@#{name}")
+            unless !kwargs.key?(name) && destination.instance_variable_defined?(:"@#{name}")
               destination.instance_variable_set :"@#{name}", kwargs[name]
             end
           end
