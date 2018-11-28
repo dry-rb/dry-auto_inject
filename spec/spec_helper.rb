@@ -32,4 +32,8 @@ RSpec.configure do |config|
   config.after do
     Test.remove_constants
   end
+
+  config.define_derived_metadata do |meta|
+    meta[:aggregate_failures] = true
+  end
 end
