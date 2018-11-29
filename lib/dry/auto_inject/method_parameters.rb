@@ -6,7 +6,7 @@ module Dry
     class MethodParameters
       PASS_THROUGH = [[:rest]]
 
-      if RUBY_VERSION >= '2.4.4.'
+      if RUBY_VERSION >= '2.4.4.' && !defined? JRUBY_VERSION
         def self.of(obj, name)
           Enumerator.new do |y|
             begin
