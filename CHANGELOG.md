@@ -1,4 +1,4 @@
-# 0.6.0 / to-be-released
+# 0.6.0 / 2018-11-29
 
 ### Changed
 
@@ -12,7 +12,7 @@
 
 - A couple of regressions were fixed along the way, see [#46](https://github.com/dry-rb/dry-auto_inject/issues/46) and [#49](https://github.com/dry-rb/dry-auto_inject/issues/49) (flash-gordon + timriley in [#48](https://github.com/dry-rb/dry-auto_inject/pull/48))
 
-[Compare v0.5.0...master](https://github.com/dry-rb/dry-auto_inject/compare/v0.5.0...master)
+[Compare v0.5.0...v0.6.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.5.0...v0.6.0)
 
 # 0.5.0 / 2018-11-09
 
