@@ -1,5 +1,9 @@
 # 0.6.0 / to-be-released
 
+### Changed
+
+- [BREAKING] 0.6.0 supports Ruby 2.3 and above. If you're on 2.3 keep in mind its EOL is scheduled at the end of March, 2019
+
 ### Added
 
 - Enhanced support for integrating with existing constructors. The kwargs strategy will now pass dependencies up to the next constructor if it accepts an arbitrary number of arguments with `*args`. Note that this change may break existing code though we think it's unlikely to happen. If something doesn't work for you please report and we'll try to sort it out (flash-gordon + timriley in [#48](https://github.com/dry-rb/dry-auto_inject/pull/48))
