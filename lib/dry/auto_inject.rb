@@ -43,12 +43,4 @@ module Dry
   def self.AutoInject(container, options = {})
     AutoInject::Builder.new(container, options)
   end
-
-  module AutoInject
-    # @api private
-    def self.super_method(klass, method)
-      method = klass.instance_method(method)
-      method unless method.owner.equal?(klass)
-    end
-  end
 end

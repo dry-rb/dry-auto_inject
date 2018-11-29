@@ -79,4 +79,58 @@ RSpec.describe "kwargs / super #initialize method" do
       expect(instance.one).to eq "dep 1"
     end
   end
+
+  describe "passing dependencies where superclass has a splat in arguments" do
+    let(:parent_class) {
+      Class.new do
+        attr_reader :dep, :args
+
+        def initialize(*args)
+          @dep = args[0].fetch(:one)
+          @args = args
+        end
+      end
+    }
+
+    let(:child_class) {
+      Class.new(parent_class) do
+        include Test::AutoInject[:one]
+      end
+    }
+
+    it "passes dependencies assuming the parent class can take them" do
+      instance = child_class.new
+
+      expect(instance.one).to eq "dep 1"
+      expect(instance.dep).to eq "dep 1"
+      expect(instance.args).to eq [one: "dep 1"]
+    end
+  end
+
+  describe "ignoring pass-through constructors" do
+    let(:parent_class) {
+      Class.new do
+        def initialize
+        end
+      end
+    }
+
+    let(:child_class) {
+      Class.new(parent_class) do
+        include Module.new {
+          def initialize(*)
+            super
+          end
+        }
+
+        include Test::AutoInject[:one]
+      end
+    }
+
+    it "don't pass deps if the final constructor will choke on them" do
+      instance = child_class.new
+
+      expect(instance.one).to eq "dep 1"
+    end
+  end
 end

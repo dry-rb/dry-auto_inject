@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'dry/auto_inject/strategies/constructor'
+require 'dry/auto_inject/method_parameters'
 
 module Dry
   module AutoInject
@@ -11,7 +12,7 @@ module Dry
 
         def define_new
           class_mod.class_exec(container, dependency_map) do |container, dependency_map|
-            map = dependency_map.to_h.to_a
+            map = dependency_map.to_h
 
             define_method :new do |*args, **kwargs|
               map.each do |name, identifier|
@@ -24,59 +25,77 @@ module Dry
         end
 
         def define_initialize(klass)
-          super_method = Dry::AutoInject.super_method(klass, :initialize)
+          super_parameters = MethodParameters.of(klass, :initialize).each do |ps|
+            # Look upwards past `def foo(*)` methods until we get an explicit list of parameters
+            break ps unless ps.pass_through?
+          end
 
-          if super_method.nil? || super_method.parameters.empty?
-            define_initialize_with_keywords
+          if super_parameters.splat? || super_parameters.sequential_arguments?
+            define_initialize_with_splat(super_parameters)
           else
-            define_initialize_with_splat(super_method)
+            define_initialize_with_keywords(super_parameters)
           end
 
           self
         end
 
-        def define_initialize_with_keywords
-          initialize_params = dependency_map.names.map { |name| "#{name}: nil" }.join(", ")
+        def define_initialize_with_keywords(super_parameters)
+          assign_dependencies = method(:assign_dependencies)
+          slice_kwargs = method(:slice_kwargs)
 
-          instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            def initialize(#{initialize_params})
-              #{dependency_map.names.map { |name| "@#{name} = #{name} unless #{name}.nil? && instance_variable_defined?(:'@#{name}')" }.join("\n")}
-              super()
-            end
-          RUBY
+          instance_mod.class_exec do
+            define_method :initialize do |**kwargs|
+              assign_dependencies.(kwargs, self)
 
-          self
-        end
-
-        def define_initialize_with_splat(super_method)
-          super_kwarg_names = super_method.parameters.each_with_object([]) { |(type, name), names|
-            names << name if [:key, :keyreq].include?(type)
-          }
-
-          instance_mod.class_exec(dependency_map) do |dependency_map|
-            define_method :initialize do |*args, **kwargs|
-              dependency_map.names.each do |name|
-                # Assign instance variables, but only if the ivar is not
-                # previously defined (this improves compatibility with objects
-                # initialized in unconventional ways)
-                instance_variable_set :"@#{name}", kwargs[name] unless kwargs[name].nil? && instance_variable_defined?(:"@#{name}")
-              end
-
-              super_kwargs = kwargs.each_with_object({}) { |(key, _), hsh|
-                if !dependency_map.names.include?(key) || super_kwarg_names.include?(key)
-                  hsh[key] = kwargs[key]
-                end
-              }
+              super_kwargs = slice_kwargs.(kwargs, super_parameters)
 
               if super_kwargs.any?
-                super(*args, **super_kwargs)
+                super(super_kwargs)
               else
-                super(*args)
+                super()
               end
             end
           end
+        end
 
-          self
+        def define_initialize_with_splat(super_parameters)
+          assign_dependencies = method(:assign_dependencies)
+          slice_kwargs = method(:slice_kwargs)
+
+          instance_mod.class_exec do
+            define_method :initialize do |*args, **kwargs|
+              assign_dependencies.(kwargs, self)
+
+              if super_parameters.splat?
+                super(*args, kwargs)
+              else
+                super_kwargs = slice_kwargs.(kwargs, super_parameters)
+
+                if super_kwargs.any?
+                  super(*args, super_kwargs)
+                else
+                  super(*args)
+                end
+              end
+            end
+          end
+        end
+
+        def assign_dependencies(kwargs, destination)
+          dependency_map.names.each do |name|
+            # Assign instance variables, but only if the ivar is not
+            # previously defined (this improves compatibility with objects
+            # initialized in unconventional ways)
+            if kwargs.key?(name) || !destination.instance_variable_defined?(:"@#{name}")
+              destination.instance_variable_set :"@#{name}", kwargs[name]
+            end
+          end
+        end
+
+        def slice_kwargs(kwargs, super_parameters)
+          kwargs.select do |key|
+            !dependency_map.names.include?(key) || super_parameters.keyword?(key)
+          end
         end
       end
 

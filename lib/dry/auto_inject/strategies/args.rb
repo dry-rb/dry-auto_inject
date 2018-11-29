@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'dry/auto_inject/strategies/constructor'
+require 'dry/auto_inject/method_parameters'
 
 module Dry
   module AutoInject
@@ -22,12 +23,15 @@ module Dry
         end
 
         def define_initialize(klass)
-          super_method = find_super(klass, :initialize)
+          super_parameters = MethodParameters.of(klass, :initialize).each do |ps|
+            # Look upwards past `def foo(*)` methods until we get an explicit list of parameters
+            break ps unless ps.pass_through?
+          end
 
-          if super_method.nil? || super_method.parameters.empty?
+          if super_parameters.empty?
             define_initialize_with_params
           else
-            define_initialize_with_splat(super_method)
+            define_initialize_with_splat(super_parameters)
           end
         end
 
@@ -42,30 +46,19 @@ module Dry
           RUBY
         end
 
-        def define_initialize_with_splat(super_method)
-          super_params = if super_method.parameters.any? { |type, _| type == :rest }
+        def define_initialize_with_splat(super_parameters)
+          super_pass = if super_parameters.splat?
             '*args'
           else
-            "*args[0..#{super_method.parameters.length - 1}]"
+            "*args.take(#{super_parameters.length})"
           end
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def initialize(*args)
               #{dependency_map.names.map.with_index { |name, i| "@#{name} = args[#{i}]" }.join("\n")}
-              super(#{super_params})
+              super(#{super_pass})
             end
           RUBY
-        end
-
-        def find_super(klass, method_name)
-          super_method = Dry::AutoInject.super_method(klass, method_name)
-
-          # Look upwards past `def foo(*)` methods until we get an explicit list of parameters
-          while super_method && super_method.parameters == [[:rest]]
-            super_method = Dry::AutoInject.super_method(super_method.owner, :initialize)
-          end
-
-          super_method
         end
       end
 
