@@ -1,3 +1,15 @@
+# 0.6.0 / to-be-released
+
+### Added
+
+- Enhanced support for integrating with existing constructors. The kwargs strategy will now pass dependencies up to the next constructor if it accepts an arbitrary number of arguments with `*args`. Note that this change may break existing code though we think it's unlikely to happen. If something doesn't work for you please report and we'll try to sort it out (flash-gordon + timriley in [#48](https://github.com/dry-rb/dry-auto_inject/pull/48))
+
+### Fixed
+
+- A couple of regressions were fixed along the way, see [#46](https://github.com/dry-rb/dry-auto_inject/issues/46) and [#49](https://github.com/dry-rb/dry-auto_inject/issues/49) (flash-gordon + timriley in [#48](https://github.com/dry-rb/dry-auto_inject/pull/48))
+
+[Compare v0.5.0...master](https://github.com/dry-rb/dry-auto_inject/compare/v0.5.0...master)
+
 # 0.5.0 / 2018-11-09
 
 ### Changed
