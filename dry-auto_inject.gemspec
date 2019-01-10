@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.license       = 'MIT'
 
   spec.summary       = 'Container-agnostic automatic constructor injection'
-  spec.homepage      = 'https://github.com/dryrb/dry-auto_inject'
+  spec.homepage      = 'https://github.com/dry-rb/dry-auto_inject'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = 'exe'
