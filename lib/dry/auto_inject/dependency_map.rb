@@ -29,7 +29,7 @@ module Dry
       end
 
       def names
-        @name ||= @map.keys
+        @names ||= @map.keys
       end
 
       def to_h
