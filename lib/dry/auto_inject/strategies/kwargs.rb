@@ -16,7 +16,7 @@ module Dry
 
             define_method :new do |*args, **kwargs|
               map.each do |name, identifier|
-                kwargs[name] ||= container[identifier]
+                kwargs[name] = container[identifier] unless kwargs.key?(name)
               end
 
               super(*args, **kwargs)
