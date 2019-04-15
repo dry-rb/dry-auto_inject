@@ -1,3 +1,11 @@
+# 0.6.1 / 2019-04-16
+
+### Fixed
+
+- Allow explicit injection of falsey values (timriley in [#58](https://github.com/dry-rb/dry-auto_inject/pull/58))
+
+[Compare v0.6.0...v0.6.1](https://github.com/dry-rb/dry-auto_inject/compare/v0.6.0...v0.6.1)
+
 # 0.6.0 / 2018-11-29
 
 ### Changed
