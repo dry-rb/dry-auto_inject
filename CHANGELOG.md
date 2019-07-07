@@ -1,3 +1,9 @@
+# 0.7.0 / to-be-released
+
+### Changed
+
+- [BREAKING] Support for 2.3 was dropped
+
 # 0.6.1 / 2019-04-16
 
 ### Fixed
