@@ -28,6 +28,10 @@ RSpec.describe Dry::AutoInject do
     Class.new(child_class)
   end
 
+  let(:mod) do
+    Module.new
+  end
+
   context 'with positioned args' do
     let(:parent_class) do
       Class.new do
@@ -165,6 +169,14 @@ RSpec.describe Dry::AutoInject do
             assert_valid_object(child_class.new(*args))
           end
         end
+      end
+    end
+
+    context 'autoinject in a module' do
+      it 'raises exception' do
+        expect {
+          mod.include Test::AutoInject.args[:one, :two]
+        }.to raise_error(Dry::AutoInject::Error, /cannot inject/)
       end
     end
   end
@@ -310,6 +322,14 @@ RSpec.describe Dry::AutoInject do
           expect(instance.one).to eq 1
           expect(instance.two).to eq 2
         end
+      end
+    end
+
+    context 'autoinject in a module' do
+      it 'raises exception' do
+        expect {
+          mod.include Test::AutoInject.hash[:one, :two]
+        }.to raise_error(Dry::AutoInject::Error, /cannot inject/)
       end
     end
   end
@@ -556,6 +576,14 @@ RSpec.describe Dry::AutoInject do
           expect(instance.two).to eq 2
           expect(instance.three).to eq 3
         end
+      end
+    end
+
+    context 'autoinject in a module' do
+      it 'raises exception' do
+        expect {
+          mod.include Test::AutoInject.kwargs[:one, :two]
+        }.to raise_error(Dry::AutoInject::Error, /cannot inject/)
       end
     end
   end

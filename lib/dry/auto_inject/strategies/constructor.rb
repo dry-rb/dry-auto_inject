@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'dry/auto_inject/dependency_map'
+require 'dry/auto_inject/errors'
 
 module Dry
   module AutoInject
@@ -23,6 +24,8 @@ module Dry
 
         # @api private
         def included(klass)
+          fail Error, "cannot inject dependencies into a module" unless klass.respond_to?(:new)
+
           define_readers
 
           define_new
