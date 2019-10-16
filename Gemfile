@@ -13,4 +13,5 @@ end
 group :tools do
   gem 'byebug', platforms: :mri
   gem 'pry'
+  gem "ossy", git: "https://github.com/solnic/ossy.git", branch: "master"
 end
