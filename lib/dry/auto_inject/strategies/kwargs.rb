@@ -50,7 +50,7 @@ module Dry
               super_kwargs = slice_kwargs.(kwargs, super_parameters)
 
               if super_kwargs.any?
-                super(super_kwargs)
+                super(**super_kwargs)
               else
                 super()
               end

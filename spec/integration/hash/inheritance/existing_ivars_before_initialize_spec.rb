@@ -9,10 +9,12 @@ RSpec.describe "kwargs / inheritance / instance variables set before #initialize
 
   let(:framework_class) {
     Class.new do
-      def self.new(configuration:, **args)
+      def self.new(options)
         allocate.tap do |obj|
-          obj.instance_variable_set :@configuration, configuration
-          obj.send :initialize, **args
+          obj.instance_variable_set :@configuration, options.fetch(:configuration)
+          opts = options.dup
+          opts.delete(:configuration)
+          obj.send :initialize, opts
         end
       end
     end
