@@ -1,5 +1,5 @@
 [gem]: https://rubygems.org/gems/dry-auto_inject
-[travis]: https://travis-ci.org/dry-rb/dry-auto_inject
+[ci]: https://github.com/dry-rb/dry-auto_inject/actions?query=workflow%3Aci
 [codeclimate]: https://codeclimate.com/github/dry-rb/dry-auto_inject
 [coveralls]: https://coveralls.io/r/dry-rb/dry-auto_inject
 [inchpages]: http://inch-ci.org/github/dry-rb/dry-auto_inject
@@ -8,7 +8,7 @@
 # dry-auto_inject [![Join the chat at https://dry-rb.zulipchat.com](https://img.shields.io/badge/dry--rb-join%20chat-%23346b7a.svg)][chat]
 
 [![Gem Version](https://badge.fury.io/rb/dry-auto_inject.svg)][gem]
-[![Build Status](https://travis-ci.org/dry-rb/dry-auto_inject.svg?branch=master)][travis]
+[![Build Status](https://github.com/dry-rb/dry-auto_inject/workflows/ci/badge.svg)][ci]
 [![Code Climate](https://codeclimate.com/github/dry-rb/dry-auto_inject/badges/gpa.svg)][codeclimate]
 [![Test Coverage](https://codeclimate.com/github/dry-rb/dry-auto_inject/badges/coverage.svg)][codeclimate]
 [![Inline docs](http://inch-ci.org/github/dry-rb/dry-auto_inject.svg?branch=master)][inchpages]
@@ -38,13 +38,14 @@ $ bundle
 ```
 
 Or install it yourself as:
+
 ```sh
 $ gem install dry-auto_inject
 ```
 
 ## Links
 
-* [Documentation](http://dry-rb.org/gems/dry-auto_inject/)
+- [Documentation](http://dry-rb.org/gems/dry-auto_inject/)
 
 ## Development
 
@@ -55,4 +56,3 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/dry-rb/dry-auto_inject.
-
