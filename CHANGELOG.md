@@ -1,8 +1,14 @@
 # 0.7.0 / to-be-released
 
+### Fixed
+
+- Keyword warnings issued by Ruby 2.7 in certain contexts (flash-gordon)
+
 ### Changed
 
 - [BREAKING] Support for 2.3 was dropped
+
+[Compare v0.7.0...master](https://github.com/dry-rb/dry-auto_inject/compare/v0.7.0...master)
 
 # 0.6.1 / 2019-04-16
 
@@ -34,35 +40,35 @@
 
 - Only assign `nil` dependency instance variables from generated `#initialize` if the instance variable has not been previously defined. This improves compatibility with objects initialized in non-conventional ways (see example below) (timriley in [#47](https://github.com/dry-rb/dry-auto_inject/pull/47))
 
-    ```ruby
-    module SomeFramework
-      class Action
-        def self.new(configuration:, **args)
-          # Do some trickery so `#initialize` on subclasses don't need to worry
-          # about handling a configuration kwarg and passing it to super
-          allocate.tap do |obj|
-            obj.instance_variable_set :@configuration, configuration
-            obj.send :initialize, **args
-          end
+  ```ruby
+  module SomeFramework
+    class Action
+      def self.new(configuration:, **args)
+        # Do some trickery so `#initialize` on subclasses don't need to worry
+        # about handling a configuration kwarg and passing it to super
+        allocate.tap do |obj|
+          obj.instance_variable_set :@configuration, configuration
+          obj.send :initialize, **args
         end
       end
     end
+  end
 
-    module MyApp
-      class Action < SomeFramework::Action
-        # Inject the configuration object, which is passed to
-        # SomeFramework::Action.new but not all the way through to any subsequent
-        # `#initialize` calls
-        include Import[configuration: "web.action.configuration"]
-      end
-
-      class SomeAction < Action
-        # Subclasses of MyApp::Action don't need to concern themselves with
-        # `configuration` dependency
-        include Import["some_repo"]
-      end
+  module MyApp
+    class Action < SomeFramework::Action
+      # Inject the configuration object, which is passed to
+      # SomeFramework::Action.new but not all the way through to any subsequent
+      # `#initialize` calls
+      include Import[configuration: "web.action.configuration"]
     end
-    ```
+
+    class SomeAction < Action
+      # Subclasses of MyApp::Action don't need to concern themselves with
+      # `configuration` dependency
+      include Import["some_repo"]
+    end
+  end
+  ```
 
 [Compare v0.4.6...v0.5.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.4.6...v0.5.0)
 
@@ -118,20 +124,20 @@
 
 - Support for strategy chaining, which is helpful in opting for alternatives to an application's normal strategy (timriley in [#25](https://github.com/dry-rb/dry-auto_inject/pull/25))
 
-    ```ruby
-    # Define the application's injector with a non-default
-    MyInject = Dry::AutoInject(MyContainer).hash
+  ```ruby
+  # Define the application's injector with a non-default
+  MyInject = Dry::AutoInject(MyContainer).hash
 
-    # Opt for a different strategy in a particular class
-    class MyClass
-      include MyInject.args["foo"]
-    end
+  # Opt for a different strategy in a particular class
+  class MyClass
+    include MyInject.args["foo"]
+  end
 
-    # You can chain as long as you want (silly example to demonstrate the flexibility)
-    class OtherClass
-      include MyInject.args.hash.kwargs.args["foo"]
-    end
-    ```
+  # You can chain as long as you want (silly example to demonstrate the flexibility)
+  class OtherClass
+    include MyInject.args.hash.kwargs.args["foo"]
+  end
+  ```
 
 ### Changed
 
@@ -147,87 +153,89 @@
 
 ### Added
 
-* Support for new `kwargs` and `hash` injection strategies
+- Support for new `kwargs` and `hash` injection strategies
 
-    These strategies can be accessed via methods on the main builder object:
+  These strategies can be accessed via methods on the main builder object:
 
-    ```ruby
-    MyInject = Dry::AutoInject(my_container)
+  ```ruby
+  MyInject = Dry::AutoInject(my_container)
 
-    class MyClass
-      include MyInject.hash["my_dep"]
-    end
-    ```
-* Support for user-provided injection strategies
+  class MyClass
+    include MyInject.hash["my_dep"]
+  end
+  ```
 
-    All injection strategies are now held in their own `Dry::AutoInject::Strategies` container. You can add register your own strategies to this container, or choose to provide a strategies container of your own:
+- Support for user-provided injection strategies
 
-    ```ruby
-    class CustomStrategy < Module
-      # Your strategy code goes here :)
-    end
+  All injection strategies are now held in their own `Dry::AutoInject::Strategies` container. You can add register your own strategies to this container, or choose to provide a strategies container of your own:
 
-    # Registering your own strategy (globally)
-    Dry::AutoInject::Strategies.register :custom, CustomStrategy
+  ```ruby
+  class CustomStrategy < Module
+    # Your strategy code goes here :)
+  end
 
-    MyInject = Dry::AutoInject(my_container)
+  # Registering your own strategy (globally)
+  Dry::AutoInject::Strategies.register :custom, CustomStrategy
 
-    class MyClass
-      include MyInject.custom["my_dep"]
-    end
+  MyInject = Dry::AutoInject(my_container)
 
-    # Providing your own container (keeping the existing strategies in place)
-    class MyStrategies < Dry::AutoInject::Strategies
-      register :custom, CustomStrategy
-    end
+  class MyClass
+    include MyInject.custom["my_dep"]
+  end
 
-    MyInject = Dry::AutoInject(my_container, strategies: MyStrategies)
+  # Providing your own container (keeping the existing strategies in place)
+  class MyStrategies < Dry::AutoInject::Strategies
+    register :custom, CustomStrategy
+  end
 
-    class MyClass
-      include MyInject.custom["my_dep"]
-    end
+  MyInject = Dry::AutoInject(my_container, strategies: MyStrategies)
 
-    # Proiding a completely separated container
-    class MyStrategies
-      extend Dry::Container::Mixin
-      register :custom, CustomStrategy
-    end
+  class MyClass
+    include MyInject.custom["my_dep"]
+  end
 
-    MyInject = Dry::AutoInject(my_container, strategies: MyStrategies)
+  # Proiding a completely separated container
+  class MyStrategies
+    extend Dry::Container::Mixin
+    register :custom, CustomStrategy
+  end
 
-    class MyClass
-      include MyInject.custom["my_dep"]
-    end
-    ```
-* User-specified aliases for dependencies
+  MyInject = Dry::AutoInject(my_container, strategies: MyStrategies)
 
-    These aliases enable you to specify your own name for dependencies, both for their local readers and their keys in the kwargs- and hash-based initializers. Specify aliases by passing a hash of names:
+  class MyClass
+    include MyInject.custom["my_dep"]
+  end
+  ```
 
-    ```ruby
-    MyInject = Dry::AutoInject(my_container)
+- User-specified aliases for dependencies
 
-    class MyClass
-      include MyInject[my_dep: "some_other.dep"]
+  These aliases enable you to specify your own name for dependencies, both for their local readers and their keys in the kwargs- and hash-based initializers. Specify aliases by passing a hash of names:
 
-      # Refer to the dependency as `my_dep` inside the class
-    end
+  ```ruby
+  MyInject = Dry::AutoInject(my_container)
 
-    # Pass your own replacements using the `my_dep` initializer key
-    my_obj = MyClass.new(my_dep: something_else)
-    ```
+  class MyClass
+    include MyInject[my_dep: "some_other.dep"]
 
-    A mix of both regular and aliased dependencies can also be injected:
+    # Refer to the dependency as `my_dep` inside the class
+  end
 
-    ```ruby
-    include MyInject["some_dep", another_dep: "some_other.dep"]
-    ```
+  # Pass your own replacements using the `my_dep` initializer key
+  my_obj = MyClass.new(my_dep: something_else)
+  ```
 
-* Inspect the `super` method of the including class’s `#initialize` and send it arguments that will match its own arguments list/arity. This allows auto_inject to be used more easily in existing class inheritance heirarchies.
+  A mix of both regular and aliased dependencies can also be injected:
+
+  ```ruby
+  include MyInject["some_dep", another_dep: "some_other.dep"]
+  ```
+
+- Inspect the `super` method of the including class’s `#initialize` and send it arguments that will match its own arguments list/arity. This allows auto_inject to be used more easily in existing class inheritance heirarchies.
 
 ### Changed
 
-* `kwargs` is the new default injection strategy
-* Rubinius support is not available for the `kwargs` strategy (see [#18](https://github.com/dry-rb/dry-auto_inject/issues/18))
+- `kwargs` is the new default injection strategy
+- Rubinius support is not available for the `kwargs` strategy (see [#18](https://github.com/dry-rb/dry-auto_inject/issues/18))
 
 [Compare v0.2.0...v0.3.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.2.0...v0.3.0)
 
@@ -235,7 +243,7 @@
 
 ### Added
 
-* Support for hashes as constructor arguments via `Import.hash` interface (solnic)
+- Support for hashes as constructor arguments via `Import.hash` interface (solnic)
 
 [Compare v0.1.0...v0.2.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.1.0...v0.2.0)
 
