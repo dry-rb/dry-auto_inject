@@ -67,12 +67,12 @@ module Dry
               assign_dependencies.(kwargs, self)
 
               if super_parameters.splat?
-                super(*args, kwargs)
+                super(*args, **kwargs)
               else
                 super_kwargs = slice_kwargs.(kwargs, super_parameters)
 
                 if super_kwargs.any?
-                  super(*args, super_kwargs)
+                  super(*args, **super_kwargs)
                 else
                   super(*args)
                 end
