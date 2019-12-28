@@ -1,4 +1,4 @@
-# 0.7.0 / to-be-released
+# 0.7.0 / 2019-12-28
 
 ### Fixed
 
@@ -8,7 +8,7 @@
 
 - [BREAKING] Support for 2.3 was dropped
 
-[Compare v0.7.0...master](https://github.com/dry-rb/dry-auto_inject/compare/v0.7.0...master)
+[Compare v0.6.1...v0.7.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.6.1...v0.7.0)
 
 # 0.6.1 / 2019-04-16
 
