@@ -2,16 +2,12 @@
 
 source 'https://rubygems.org'
 
+eval_gemfile 'Gemfile.devtools'
+
 # Specify your gem's dependencies in dry-auto_inject.gemspec
 gemspec
-
-group :test do
-  gem "simplecov"
-  gem "codeclimate-test-reporter", require: nil
-end
 
 group :tools do
   gem 'byebug', platforms: :mri
   gem 'pry'
-  gem "ossy", git: "https://github.com/solnic/ossy.git", branch: "master"
 end
