@@ -1,6 +1,6 @@
 [gem]: https://rubygems.org/gems/dry-auto_inject
 [actions]: https://github.com/dry-rb/dry-auto_inject/actions
-[codeclimate]: https://codeclimate.com/github/dry-rb/dry-auto_inject
+[codacy]: https://www.codacy.com/gh/dry-rb/dry-auto_inject
 [chat]: https://dry-rb.zulipchat.com
 [inchpages]: http://inch-ci.org/github/dry-rb/dry-auto_inject
 
@@ -8,8 +8,8 @@
 
 [![Gem Version](https://badge.fury.io/rb/dry-auto_inject.svg)][gem]
 [![CI Status](https://github.com/dry-rb/dry-auto_inject/workflows/ci/badge.svg)][actions]
-[![Code Climate](https://codeclimate.com/github/dry-rb/dry-auto_inject/badges/gpa.svg)][codeclimate]
-[![Test Coverage](https://codeclimate.com/github/dry-rb/dry-auto_inject/badges/coverage.svg)][codeclimate]
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/22edf59617be4aef97cfbe4e1c99f1ce)][codacy]
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/22edf59617be4aef97cfbe4e1c99f1ce)][codacy]
 [![Inline docs](http://inch-ci.org/github/dry-rb/dry-auto_inject.svg?branch=master)][inchpages]
 
 ## Links
