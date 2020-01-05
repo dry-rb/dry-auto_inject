@@ -13,12 +13,10 @@ on:
       - Gemfile.devtools
       - "*.gemspec"
       - ".rubocop.yml"
-  repository_dispatch:
 
 jobs:
   tests:
     runs-on: ubuntu-latest
-    if: github.event.action == 'ci' || github.event_name == 'push'
     strategy:
       fail-fast: false
       matrix:
@@ -37,9 +35,7 @@ jobs:
         with:
           ruby-version: ${{matrix.ruby}}
       - name: Bundle install
-        run: |
-          gem install bundler
-          bundle install --jobs 4 --retry 3 --without tools docs benchmarks
+        run: bundle install --jobs 4 --retry 3 --without tools docs benchmarks
       - name: Run all tests
         env:
           COVERAGE: ${{matrix.coverage}}
