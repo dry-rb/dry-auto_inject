@@ -13,10 +13,12 @@ on:
       - Gemfile.devtools
       - "*.gemspec"
       - ".rubocop.yml"
+  repository_dispatch:
 
 jobs:
   tests:
     runs-on: ubuntu-latest
+    if: github.event.action == 'sync_configs' || github.event_name == 'push
     strategy:
       fail-fast: false
       matrix:
