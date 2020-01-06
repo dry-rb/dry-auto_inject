@@ -28,7 +28,6 @@ RSpec.describe "kwargs / inheritance / instance variables set before #initialize
     Class.new(parent_class) do
       include Test::AutoInject[:another_dep]
     end
-
   }
 
   it "does not assign nil value from missing dependency arg to its instance variable if it is already defined" do

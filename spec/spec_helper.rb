@@ -5,7 +5,6 @@ require_relative 'support/coverage'
 begin
   require 'byebug'
 rescue LoadError; end
-
 require 'dry-auto_inject'
 
 module Test

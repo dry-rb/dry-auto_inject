@@ -54,11 +54,13 @@ module Dry
 
       def splat?
         return @splat if defined? @splat
+
         @splat = parameters.any? { |type, _| type == :rest }
       end
 
       def sequential_arguments?
         return @sequential_arguments if defined? @sequential_arguments
+
         @sequential_arguments = parameters.any? { |type, _|
           type == :req || type == :opt
         }

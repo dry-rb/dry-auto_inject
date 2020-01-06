@@ -122,7 +122,7 @@ RSpec.describe Dry::AutoInject do
             child_instance = child_class.new(*args)
 
             assert_valid_object(child_instance)
-            expect(child_instance.args).to eq [1,2,3]
+            expect(child_instance.args).to eq [1, 2, 3]
           end
         end
       end
@@ -192,14 +192,14 @@ RSpec.describe Dry::AutoInject do
     end
 
     it 'works' do
-        test_args.each do |args|
-          assert_valid_object(parent_class.new(args))
-          assert_valid_object(child_class.new(args))
-          assert_valid_object(grand_child_class.new(args))
-        end
+      test_args.each do |args|
+        assert_valid_object(parent_class.new(args))
+        assert_valid_object(child_class.new(args))
+        assert_valid_object(grand_child_class.new(args))
+      end
 
-        expect(parent_class.new(other: true).other).to be(true)
-        expect(grand_child_class.new(one: 1, two: 2, three: 3).foo).to eql('bar')
+      expect(parent_class.new(other: true).other).to be(true)
+      expect(grand_child_class.new(one: 1, two: 2, three: 3).foo).to eql('bar')
     end
 
     context 'aliased dependencies' do

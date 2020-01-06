@@ -8,14 +8,14 @@ RSpec.describe Dry::AutoInject::DependencyMap do
     let(:dependencies) { ["namespace.one", "namespace.two"] }
 
     it "registers specified dependencies" do
-      expect(dependency_map.to_h).to eq({one: "namespace.one", two: "namespace.two"})
+      expect(dependency_map.to_h).to eq({ one: "namespace.one", two: "namespace.two" })
     end
 
     context "aliases" do
       let(:dependencies) { ["namespace.one", second: "namespace.two"] }
 
       it "registers dependencies with their specified aliases" do
-        expect(dependency_map.to_h).to eq({one: "namespace.one", second: "namespace.two"})
+        expect(dependency_map.to_h).to eq({ one: "namespace.one", second: "namespace.two" })
       end
     end
 
@@ -23,7 +23,7 @@ RSpec.describe Dry::AutoInject::DependencyMap do
       let(:dependencies) { [first: "namespace.one", second: "namespace.two"] }
 
       it "registers dependencies with their specified aliases" do
-        expect(dependency_map.to_h).to eq({first: "namespace.one", second: "namespace.two"})
+        expect(dependency_map.to_h).to eq({ first: "namespace.one", second: "namespace.two" })
       end
     end
 
@@ -40,7 +40,7 @@ RSpec.describe Dry::AutoInject::DependencyMap do
         let(:dependencies) { ["namespace/one", "namespace/two"] }
 
         it "registers dependencies with their specified aliases" do
-          expect(dependency_map.to_h).to eq({one: "namespace/one", two: "namespace/two"})
+          expect(dependency_map.to_h).to eq({ one: "namespace/one", two: "namespace/two" })
         end
       end
 
@@ -48,7 +48,7 @@ RSpec.describe Dry::AutoInject::DependencyMap do
         let(:dependencies) { ["namespace/one", "namespace!two"] }
 
         it "registers dependencies with their specified aliases" do
-          expect(dependency_map.to_h).to eq({one: "namespace/one", two: "namespace!two"})
+          expect(dependency_map.to_h).to eq({ one: "namespace/one", two: "namespace!two" })
         end
       end
     end

@@ -42,12 +42,14 @@ module Dry
       def name_for(identifier)
         matched = VALID_NAME.match(identifier.to_s)
         raise DependencyNameInvalid, "name +#{identifier}+ is not a valid Ruby identifier" unless matched
+
         matched[0]
       end
 
       def add_dependency(name, identifier)
         name = name.to_sym
         raise DuplicateDependencyError, "name +#{name}+ is already used" if @map.key?(name)
+
         @map[name] = identifier
       end
     end

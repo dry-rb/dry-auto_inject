@@ -48,9 +48,9 @@ module Dry
 
         def define_initialize_with_splat(super_parameters)
           super_pass = if super_parameters.splat?
-            '*args'
-          else
-            "*args.take(#{super_parameters.length})"
+                         '*args'
+                       else
+                         "*args.take(#{super_parameters.length})"
           end
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1

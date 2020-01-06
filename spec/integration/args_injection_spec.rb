@@ -5,7 +5,7 @@ RSpec.describe "argument parameters" do
     describe "module included with an initialize accepting anonymous splat and passing all args through to super (which accepts no args)" do
       before do
         module Test
-          AutoInject = Dry::AutoInject({one: 1}).args
+          AutoInject = Dry::AutoInject({ one: 1 }).args
 
           module PassThroughInitializer
             attr_reader :module_var
