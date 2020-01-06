@@ -44,11 +44,11 @@ module Dry
         end
 
         def define_new
-          raise NotImplementedError, "must be implemented by a subclass"
+          raise NotImplementedError, 'must be implemented by a subclass'
         end
 
         def define_initialize(klass)
-          raise NotImplementedError, "must be implemented by a subclass"
+          raise NotImplementedError, 'must be implemented by a subclass'
         end
       end
     end

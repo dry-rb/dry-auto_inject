@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-RSpec.describe "kwargs / super #initialize method" do
+RSpec.describe 'kwargs / super #initialize method' do
   before do
     module Test
-      AutoInject = Dry::AutoInject(one: "dep 1")
+      AutoInject = Dry::AutoInject(one: 'dep 1')
     end
   end
 
-  describe "super #initialize using dependencies set in the child class" do
-    context "super #initialize without parameters" do
+  describe 'super #initialize using dependencies set in the child class' do
+    context 'super #initialize without parameters' do
       let(:parent_class) {
         Class.new do
           attr_reader :excited_one
@@ -25,12 +25,12 @@ RSpec.describe "kwargs / super #initialize method" do
         end
       }
 
-      it "sets the dependencies in the generated #initialize before calling super" do
-        expect(child_class.new.excited_one).to eq "dep 1!"
+      it 'sets the dependencies in the generated #initialize before calling super' do
+        expect(child_class.new.excited_one).to eq 'dep 1!'
       end
     end
 
-    context "super #initialize with parameters" do
+    context 'super #initialize with parameters' do
       let(:parent_class) {
         Class.new do
           attr_reader :excited_one
@@ -48,13 +48,13 @@ RSpec.describe "kwargs / super #initialize method" do
         end
       }
 
-      it "sets the dependenceies in the generated #initialize before caling super" do
-        expect(child_class.new(two: "_").excited_one).to eq "dep 1!"
+      it 'sets the dependenceies in the generated #initialize before caling super' do
+        expect(child_class.new(two: '_').excited_one).to eq 'dep 1!'
       end
     end
   end
 
-  describe "super #initialize accepts *args and extracts keyword args manually" do
+  describe 'super #initialize accepts *args and extracts keyword args manually' do
     let(:parent_class) {
       Class.new do
         attr_reader :data
@@ -72,15 +72,15 @@ RSpec.describe "kwargs / super #initialize method" do
       end
     }
 
-    it "passes non-dependency keyword args to the super method" do
-      instance = child_class.new(data: "data")
+    it 'passes non-dependency keyword args to the super method' do
+      instance = child_class.new(data: 'data')
 
-      expect(instance.data).to eq "data"
-      expect(instance.one).to eq "dep 1"
+      expect(instance.data).to eq 'data'
+      expect(instance.one).to eq 'dep 1'
     end
   end
 
-  describe "passing dependencies where superclass has a splat in arguments" do
+  describe 'passing dependencies where superclass has a splat in arguments' do
     let(:parent_class) {
       Class.new do
         attr_reader :dep, :args
@@ -98,16 +98,16 @@ RSpec.describe "kwargs / super #initialize method" do
       end
     }
 
-    it "passes dependencies assuming the parent class can take them" do
+    it 'passes dependencies assuming the parent class can take them' do
       instance = child_class.new
 
-      expect(instance.one).to eq "dep 1"
-      expect(instance.dep).to eq "dep 1"
-      expect(instance.args).to eq [one: "dep 1"]
+      expect(instance.one).to eq 'dep 1'
+      expect(instance.dep).to eq 'dep 1'
+      expect(instance.args).to eq [one: 'dep 1']
     end
   end
 
-  describe "ignoring pass-through constructors" do
+  describe 'ignoring pass-through constructors' do
     let(:parent_class) {
       Class.new do
         def initialize
@@ -130,7 +130,7 @@ RSpec.describe "kwargs / super #initialize method" do
     it "don't pass deps if the final constructor will choke on them" do
       instance = child_class.new
 
-      expect(instance.one).to eq "dep 1"
+      expect(instance.one).to eq 'dep 1'
     end
   end
 end
