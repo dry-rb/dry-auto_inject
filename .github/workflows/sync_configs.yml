@@ -33,7 +33,7 @@ jobs:
           if [ -f "project.yml" ]; then
             for t in `find tmp/devtools/templates -type f`
             do
-              bin/ossy t c $t $(echo $t | sed -e 's/^tmp\/devtools\/templates\///g' | sed -e 's/\.erb$//g')
+              bin/ossy t c $t $(echo $t | sed -e 's/^tmp\/devtools\/templates\///g' | sed -e 's/\.erb$//g') project.yml
             done
           fi
       - name: Update configuration files from devtools
