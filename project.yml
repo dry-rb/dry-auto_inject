@@ -1,2 +1,12 @@
 name: dry-auto_inject
 codacy_id: d869ec8dc92e46b6a6eafa551f68c3f4
+gemspec:
+  authors: ["Piotr Solnica"]
+  email: ["piotr.solnica@gmail.com"]
+  summary: "Container-agnostic automatic constructor injection"
+  development_dependencies:
+    - bundler
+    - rake
+    - rspec
+  runtime_dependencies:
+    - [dry-container, ">= 0.3.4"]
