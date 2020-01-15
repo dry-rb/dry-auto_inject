@@ -1,0 +1,214 @@
+---
+- version: 0.7.0
+  date: '2019-12-28'
+  fixed:
+  - Keyword warnings issued by Ruby 2.7 in certain contexts (flash-gordon)
+  changed:
+  - "[BREAKING] Support for 2.3 was dropped"
+- version: 0.6.1
+  date: '2019-04-16'
+  fixed:
+  - Allow explicit injection of falsey values (timriley in [#58](https://github.com/dry-rb/dry-auto_inject/pull/58))
+- version: 0.6.0
+  date: '2018-11-29'
+  changed:
+  - "[BREAKING] 0.6.0 supports Ruby 2.3 and above. If you're on 2.3 keep in mind its
+    EOL is scheduled at the end of March, 2019"
+  added:
+  - Enhanced support for integrating with existing constructors. The kwargs strategy
+    will now pass dependencies up to the next constructor if it accepts an arbitrary
+    number of arguments with `*args`. Note that this change may break existing code
+    though we think it's unlikely to happen. If something doesn't work for you please
+    report and we'll try to sort it out (flash-gordon + timriley in [#48](https://github.com/dry-rb/dry-auto_inject/pull/48))
+  fixed:
+  - A couple of regressions were fixed along the way, see [#46](https://github.com/dry-rb/dry-auto_inject/issues/46)
+    and [#49](https://github.com/dry-rb/dry-auto_inject/issues/49) (flash-gordon +
+    timriley in [#48](https://github.com/dry-rb/dry-auto_inject/pull/48))
+- version: 0.5.0
+  date: '2018-11-09'
+  changed:
+  - |-
+    Only assign `nil` dependency instance variables from generated `#initialize` if the instance variable has not been previously defined. This improves compatibility with objects initialized in non-conventional ways (see example below) (timriley in [#47](https://github.com/dry-rb/dry-auto_inject/pull/47))
+
+      ```ruby
+      module SomeFramework
+        class Action
+          def self.new(configuration:, **args)
+            # Do some trickery so `#initialize` on subclasses don't need to worry
+            # about handling a configuration kwarg and passing it to super
+            allocate.tap do |obj|
+              obj.instance_variable_set :@configuration, configuration
+              obj.send :initialize, **args
+            end
+          end
+        end
+      end
+
+      module MyApp
+        class Action < SomeFramework::Action
+          # Inject the configuration object, which is passed to
+          # SomeFramework::Action.new but not all the way through to any subsequent
+          # `#initialize` calls
+          include Import[configuration: "web.action.configuration"]
+        end
+
+        class SomeAction < Action
+          # Subclasses of MyApp::Action don't need to concern themselves with
+          # `configuration` dependency
+          include Import["some_repo"]
+        end
+      end
+      ```
+- version: 0.4.6
+  date: '2018-03-27'
+  changed:
+  - In injector-generated `#initialize` methods, set dependency instance variables
+    before calling `super` (timriley)
+- version: 0.4.5
+  date: '2018-01-02'
+  added:
+  - 'Improved handling of kwargs being passed to #initialize’s super method (timriley)'
+- version: 0.4.4
+  date: '2017-09-14'
+  added:
+  - Determine name for dependencies by splitting identifiers on any invalid local
+    variable name characters (e.g. "/", "?", "!"), instead of splitting on dots only
+    (raventid in [#39](https://github.com/dry-rb/dry-auto_inject/pull/39))
+- version: 0.4.3
+  date: '2017-05-27'
+  added:
+  - Push sequential arguments along with keywords in the kwargs strategy (hbda + vladra
+    in [#32](https://github.com/dry-rb/dry-auto_inject/pull/32))
+- version: 0.4.2
+  date: '2016-10-10'
+  fixed:
+  - Fixed issue where injectors for different containers could not be used on different
+    classes in an inheritance hierarchy (timriley in [#31](https://github.com/dry-rb/dry-auto_inject/pull/31))
+- version: 0.4.1
+  date: '2016-08-14'
+  changed:
+  - Loosened version dependency on dry-container (AMHOL)
+- version: 0.4.0
+  date: '2016-07-26'
+  added:
+  - |-
+    Support for strategy chaining, which is helpful in opting for alternatives to an application's normal strategy (timriley in [#25](https://github.com/dry-rb/dry-auto_inject/pull/25))
+
+      ```ruby
+      # Define the application's injector with a non-default
+      MyInject = Dry::AutoInject(MyContainer).hash
+
+      # Opt for a different strategy in a particular class
+      class MyClass
+        include MyInject.args["foo"]
+      end
+
+      # You can chain as long as you want (silly example to demonstrate the flexibility)
+      class OtherClass
+        include MyInject.args.hash.kwargs.args["foo"]
+      end
+      ```
+  changed:
+  - Use a `BasicObject`-based environment for the injector builder API instead of
+    the previous `define_singleton_method`-based approach, which had negative performance
+    characteristics (timriley in [#26](https://github.com/dry-rb/dry-auto_inject/pull/26))
+  fixed:
+  - Fixed issue with kwargs injectors used at multiple points in a class inheritance
+    heirarchy (flash-gordon in [#27](https://github.com/dry-rb/dry-auto_inject/pull/27))
+- version: 0.3.0,
+  date: '2016-06-02'
+  added:
+  - |-
+    Support for new `kwargs` and `hash` injection strategies
+
+      These strategies can be accessed via methods on the main builder object:
+
+      ```ruby
+      MyInject = Dry::AutoInject(my_container)
+
+      class MyClass
+        include MyInject.hash["my_dep"]
+      end
+      ```
+  - |-
+    Support for user-provided injection strategies
+
+      All injection strategies are now held in their own `Dry::AutoInject::Strategies` container. You can add register your own strategies to this container, or choose to provide a strategies container of your own:
+
+      ```ruby
+      class CustomStrategy < Module
+        # Your strategy code goes here :)
+      end
+
+      # Registering your own strategy (globally)
+      Dry::AutoInject::Strategies.register :custom, CustomStrategy
+
+      MyInject = Dry::AutoInject(my_container)
+
+      class MyClass
+        include MyInject.custom["my_dep"]
+      end
+
+      # Providing your own container (keeping the existing strategies in place)
+      class MyStrategies < Dry::AutoInject::Strategies
+        register :custom, CustomStrategy
+      end
+
+      MyInject = Dry::AutoInject(my_container, strategies: MyStrategies)
+
+      class MyClass
+        include MyInject.custom["my_dep"]
+      end
+
+      # Proiding a completely separated container
+      class MyStrategies
+        extend Dry::Container::Mixin
+        register :custom, CustomStrategy
+      end
+
+      MyInject = Dry::AutoInject(my_container, strategies: MyStrategies)
+
+      class MyClass
+        include MyInject.custom["my_dep"]
+      end
+      ```
+  - |-
+    User-specified aliases for dependencies
+
+      These aliases enable you to specify your own name for dependencies, both for their local readers and their keys in the kwargs- and hash-based initializers. Specify aliases by passing a hash of names:
+
+      ```ruby
+      MyInject = Dry::AutoInject(my_container)
+
+      class MyClass
+        include MyInject[my_dep: "some_other.dep"]
+
+        # Refer to the dependency as `my_dep` inside the class
+      end
+
+      # Pass your own replacements using the `my_dep` initializer key
+      my_obj = MyClass.new(my_dep: something_else)
+      ```
+
+      A mix of both regular and aliased dependencies can also be injected:
+
+      ```ruby
+      include MyInject["some_dep", another_dep: "some_other.dep"]
+      ```
+  - Inspect the `super` method of the including class’s `#initialize` and send it
+    arguments that will match its own arguments list/arity. This allows auto_inject
+    to be used more easily in existing class inheritance heirarchies.
+  changed:
+  - "`kwargs` is the new default injection strategy"
+  - Rubinius support is not available for the `kwargs` strategy (see [#18](https://github.com/dry-rb/dry-auto_inject/issues/18))
+- version: 0.2.0
+  date: '2016-02-09'
+  added:
+  - Support for hashes as constructor arguments via `Import.hash` interface (solnic)
+- version: 0.1.0
+  date: '2015-11-12'
+  summary: Changed interface from `Dry::AutoInject.new { container(some_container)
+    }` to
+- version: 0.0.1
+  date: '2015-08-20'
+  summary: First public release \o/
