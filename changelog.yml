@@ -11,9 +11,6 @@
   - Allow explicit injection of falsey values (timriley in [#58](https://github.com/dry-rb/dry-auto_inject/pull/58))
 - version: 0.6.0
   date: '2018-11-29'
-  changed:
-  - "[BREAKING] 0.6.0 supports Ruby 2.3 and above. If you're on 2.3 keep in mind its
-    EOL is scheduled at the end of March, 2019"
   added:
   - Enhanced support for integrating with existing constructors. The kwargs strategy
     will now pass dependencies up to the next constructor if it accepts an arbitrary
@@ -24,6 +21,9 @@
   - A couple of regressions were fixed along the way, see [#46](https://github.com/dry-rb/dry-auto_inject/issues/46)
     and [#49](https://github.com/dry-rb/dry-auto_inject/issues/49) (flash-gordon +
     timriley in [#48](https://github.com/dry-rb/dry-auto_inject/pull/48))
+  changed:
+  - "[BREAKING] 0.6.0 supports Ruby 2.3 and above. If you're on 2.3 keep in mind its
+    EOL is scheduled at the end of March, 2019"
 - version: 0.5.0
   date: '2018-11-09'
   changed:
@@ -108,13 +108,13 @@
         include MyInject.args.hash.kwargs.args["foo"]
       end
       ```
+  fixed:
+  - Fixed issue with kwargs injectors used at multiple points in a class inheritance
+    heirarchy (flash-gordon in [#27](https://github.com/dry-rb/dry-auto_inject/pull/27))
   changed:
   - Use a `BasicObject`-based environment for the injector builder API instead of
     the previous `define_singleton_method`-based approach, which had negative performance
     characteristics (timriley in [#26](https://github.com/dry-rb/dry-auto_inject/pull/26))
-  fixed:
-  - Fixed issue with kwargs injectors used at multiple points in a class inheritance
-    heirarchy (flash-gordon in [#27](https://github.com/dry-rb/dry-auto_inject/pull/27))
 - version: 0.3.0,
   date: '2016-06-02'
   added:
