@@ -17,7 +17,13 @@ jobs:
       GITHUB_LOGIN: dry-bot
       GITHUB_TOKEN: ${{ secrets.GH_PAT }}
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout ${{github.repo}}
+        uses: actions/checkout@v2
+      - name: Checkout devtools
+        uses: actions/checkout@v2
+        with:
+          repository: dry-rb/devtools
+          path: tmp/devtools
       - name: Set up Ruby
         uses: eregon/use-ruby-action@master
         with:
@@ -29,9 +35,7 @@ jobs:
       - name: Install dependencies
         run: bundle install --jobs 4 --retry 3
       - name: Symlink ossy
-        run: ln -sf "$(bundle info ossy --path)/bin/ossy" bin/ossy
-      - name: Clone devtools
-        run: git clone https://github.com/dry-rb/devtools.git tmp/devtools
+        run: bundle binstubs ossy
       - name: Compile file templates
         run: compile-templates
       - name: Update workflow files from devtools
