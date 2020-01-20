@@ -17,7 +17,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GH_PAT }}
     steps:
       - name: Checkout ${{github.repository}}
-        uses: actions/checkout@v2
+        uses: actions/checkout@v1
       - name: Checkout devtools
         uses: actions/checkout@v2
         with:
@@ -47,15 +47,14 @@ jobs:
         run: tmp/devtools/bin/compile-changelog
       - name: Setup git user
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --local user.email "dry-bot@dry-rb.org"
+          git config --local user.name "dry-bot"
       - name: Commit
         run: |
           rm bin/ossy
           git add -A
           git commit -m "[devtools] sync configs" || echo "nothing to commit"
-          git pull --rebase origin master
       - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
+        run: |
+          git pull --rebase origin master
+          git push https://dry-bot:${{secrets.GH_PAT}}@github.com/${{github.repository}}.git master
