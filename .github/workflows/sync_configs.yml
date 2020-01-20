@@ -16,7 +16,7 @@ jobs:
       GITHUB_LOGIN: dry-bot
       GITHUB_TOKEN: ${{ secrets.GH_PAT }}
     steps:
-      - name: Checkout ${{github.repo}}
+      - name: Checkout ${{github.repository}}
         uses: actions/checkout@v2
       - name: Checkout devtools
         uses: actions/checkout@v2
@@ -36,7 +36,7 @@ jobs:
       - name: Symlink ossy
         run: bundle binstubs ossy
       - name: Compile file templates
-        run: tmp/devtools/bin/compile-templates
+        run: tmp/devtools/bin/compile-templates $GITHUB_REPOSITORY
       - name: Update workflow files from devtools
         run: tmp/devtools/bin/sync-workflows
       - name: Update configuration files from devtools
