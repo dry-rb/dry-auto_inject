@@ -41,6 +41,10 @@ jobs:
         run: tmp/devtools/bin/sync-workflows
       - name: Update configuration files from devtools
         run: tmp/devtools/bin/sync-shared-files
+      - name: Update changelog.yml from commit
+        run: tmp/devtools/bin/update-changelog-from-commit $GITHUB_SHA
+      - name: Compile CHANGELOG.md
+        run: tmp/devtools/bin/compile-changelog
       - name: Commit changes
         run: |
           rm bin/ossy
