@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     if: (github.event_name == 'repository_dispatch' && github.event.action == 'sync_configs') || github.event_name != 'repository_dispatch'
     env:
-      PATH: "tmp/devtools/bin:$PATH"
       GITHUB_LOGIN: dry-bot
       GITHUB_TOKEN: ${{ secrets.GH_PAT }}
     steps:
@@ -37,11 +36,11 @@ jobs:
       - name: Symlink ossy
         run: bundle binstubs ossy
       - name: Compile file templates
-        run: compile-templates
+        run: tmp/devtools/bin/compile-templates
       - name: Update workflow files from devtools
-        run: sync-workflows
+        run: tmp/devtools/bin/sync-workflows
       - name: Update configuration files from devtools
-        run: sync-shared-files
+        run: tmp/devtools/bin/sync-shared-files
       - name: Commit changes
         run: |
           rm bin/ossy
