@@ -14,12 +14,12 @@ module Dry
           class_mod.class_exec(container, dependency_map) do |container, dependency_map|
             map = dependency_map.to_h
 
-            define_method :new do |*args, **kwargs|
+            define_method :new do |*args, **kwargs, &block|
               map.each do |name, identifier|
                 kwargs[name] = container[identifier] unless kwargs.key?(name)
               end
 
-              super(*args, **kwargs)
+              super(*args, **kwargs, &block)
             end
           end
         end
@@ -44,15 +44,15 @@ module Dry
           slice_kwargs = method(:slice_kwargs)
 
           instance_mod.class_exec do
-            define_method :initialize do |**kwargs|
+            define_method :initialize do |**kwargs, &block|
               assign_dependencies.(kwargs, self)
 
               super_kwargs = slice_kwargs.(kwargs, super_parameters)
 
               if super_kwargs.any?
-                super(**super_kwargs)
+                super(**super_kwargs, &block)
               else
-                super()
+                super(&block)
               end
             end
           end
@@ -63,18 +63,18 @@ module Dry
           slice_kwargs = method(:slice_kwargs)
 
           instance_mod.class_exec do
-            define_method :initialize do |*args, **kwargs|
+            define_method :initialize do |*args, **kwargs, &block|
               assign_dependencies.(kwargs, self)
 
               if super_parameters.splat?
-                super(*args, **kwargs)
+                super(*args, **kwargs, &block)
               else
                 super_kwargs = slice_kwargs.(kwargs, super_parameters)
 
                 if super_kwargs.any?
-                  super(*args, **super_kwargs)
+                  super(*args, **super_kwargs, &block)
                 else
-                  super(*args)
+                  super(*args, &block)
                 end
               end
             end
