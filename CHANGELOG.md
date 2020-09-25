@@ -1,3 +1,13 @@
+## unreleased 
+
+
+### Fixed
+
+- Constructors with kwargs strategy properly forward blocks to super (via #68) (@mintyfresh)
+
+
+[Compare v0.7.0...master](https://github.com/dry-rb/dry-auto_inject/compare/v0.7.0...master)
+
 ## 0.7.0 2019-12-28
 
 
