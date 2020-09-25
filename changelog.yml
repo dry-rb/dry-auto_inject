@@ -1,4 +1,12 @@
 ---
+- version: unreleased
+  summary: 
+  date: 
+  fixed:
+  - 'Constructors with kwargs strategy properly forward blocks to super (via #68)
+    (@mintyfresh)'
+  added: 
+  changed: 
 - version: 0.7.0
   date: '2019-12-28'
   fixed:
