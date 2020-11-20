@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
+require 'dry/auto_inject/errors'
+
 module Dry
   module AutoInject
-    DuplicateDependencyError = Class.new(StandardError)
-    DependencyNameInvalid = Class.new(StandardError)
-
     VALID_NAME = /([a-z_][a-zA-Z_0-9]*)$/
 
     class DependencyMap
