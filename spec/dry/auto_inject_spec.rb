@@ -9,7 +9,7 @@ RSpec.describe Dry::AutoInject do
 
   before do
     module Test
-      AutoInject = Dry::AutoInject({ one: 1, two: 2, 'namespace.three' => 3 })
+      AutoInject = Dry::AutoInject({ one: 1, two: 2, "namespace.three" => 3 })
     end
   end
 
@@ -18,7 +18,7 @@ RSpec.describe Dry::AutoInject do
       attr_reader :foo
 
       def initialize(*args)
-        @foo = 'bar'
+        @foo = "bar"
         super
       end
     end
@@ -28,10 +28,10 @@ RSpec.describe Dry::AutoInject do
     Class.new(child_class)
   end
 
-  context 'with positioned args' do
+  context "with positioned args" do
     let(:parent_class) do
       Class.new do
-        include Test::AutoInject.args[:one, :two, 'namespace.three']
+        include Test::AutoInject.args[:one, :two, "namespace.three"]
       end
     end
 
@@ -42,21 +42,21 @@ RSpec.describe Dry::AutoInject do
       ]
     end
 
-    it 'works' do
+    it "works" do
       test_args.each do |args|
         assert_valid_object(parent_class.new(*args))
         assert_valid_object(child_class.new(*args))
         assert_valid_object(grand_child_class.new(*args))
       end
 
-      expect(grand_child_class.new(1, 2, 3).foo).to eql('bar')
+      expect(grand_child_class.new(1, 2, 3).foo).to eql("bar")
     end
 
-    it 'raises an argument error when non-specific args are passed to the initializer' do
-      expect { parent_class.new(nil, nil, nil, 'unexpected') }.to raise_error ArgumentError
+    it "raises an argument error when non-specific args are passed to the initializer" do
+      expect { parent_class.new(nil, nil, nil, "unexpected") }.to raise_error ArgumentError
     end
 
-    context 'aliased dependencies' do
+    context "aliased dependencies" do
       def assert_valid_object(object)
         expect(object.one).to eq 1
         expect(object.two).to eq 2
@@ -65,11 +65,11 @@ RSpec.describe Dry::AutoInject do
 
       let(:parent_class) do
         Class.new do
-          include Test::AutoInject.args[:one, :two, last: 'namespace.three']
+          include Test::AutoInject.args[:one, :two, last: "namespace.three"]
         end
       end
 
-      it 'works' do
+      it "works" do
         test_args.each do |args|
           assert_valid_object(parent_class.new(*args))
           assert_valid_object(child_class.new(*args))
@@ -78,14 +78,14 @@ RSpec.describe Dry::AutoInject do
       end
     end
 
-    context 'autoinject in a subclass' do
+    context "autoinject in a subclass" do
       let(:child_class) do
         Class.new(parent_class) do
-          include Test::AutoInject.args[:one, :two, 'namespace.three']
+          include Test::AutoInject.args[:one, :two, "namespace.three"]
         end
       end
 
-      context 'superclass initialize accepts fixed arguments' do
+      context "superclass initialize accepts fixed arguments" do
         let(:parent_class) do
           Class.new do
             attr_reader :first
@@ -96,7 +96,7 @@ RSpec.describe Dry::AutoInject do
           end
         end
 
-        it 'works' do
+        it "works" do
           test_args.each do |args|
             child_instance = child_class.new(*args)
 
@@ -106,7 +106,7 @@ RSpec.describe Dry::AutoInject do
         end
       end
 
-      context 'superclass initialize has matching signature' do
+      context "superclass initialize has matching signature" do
         let(:parent_class) do
           Class.new do
             attr_reader :args
@@ -117,7 +117,7 @@ RSpec.describe Dry::AutoInject do
           end
         end
 
-        it 'works' do
+        it "works" do
           test_args.each do |args|
             child_instance = child_class.new(*args)
 
@@ -127,7 +127,7 @@ RSpec.describe Dry::AutoInject do
         end
       end
 
-      context 'superclass initialize accepts variable arguments' do
+      context "superclass initialize accepts variable arguments" do
         let(:parent_class) do
           Class.new do
             attr_reader :first
@@ -142,7 +142,7 @@ RSpec.describe Dry::AutoInject do
           end
         end
 
-        it 'works' do
+        it "works" do
           test_args.each do |args|
             child_instance = child_class.new(*args)
 
@@ -154,13 +154,13 @@ RSpec.describe Dry::AutoInject do
         end
       end
 
-      context 'superclass initialize accepts no arguments' do
+      context "superclass initialize accepts no arguments" do
         let(:parent_class) do
           Class.new do
           end
         end
 
-        it 'works' do
+        it "works" do
           test_args.each do |args|
             assert_valid_object(child_class.new(*args))
           end
@@ -169,10 +169,10 @@ RSpec.describe Dry::AutoInject do
     end
   end
 
-  context 'with hash arg' do
+  context "with hash arg" do
     let(:parent_class) do
       Class.new do
-        include Test::AutoInject.hash[:one, :two, 'namespace.three']
+        include Test::AutoInject.hash[:one, :two, "namespace.three"]
 
         attr_reader :other
 
@@ -191,7 +191,7 @@ RSpec.describe Dry::AutoInject do
       ]
     end
 
-    it 'works' do
+    it "works" do
       test_args.each do |args|
         assert_valid_object(parent_class.new(args))
         assert_valid_object(child_class.new(args))
@@ -199,10 +199,10 @@ RSpec.describe Dry::AutoInject do
       end
 
       expect(parent_class.new(other: true).other).to be(true)
-      expect(grand_child_class.new(one: 1, two: 2, three: 3).foo).to eql('bar')
+      expect(grand_child_class.new(one: 1, two: 2, three: 3).foo).to eql("bar")
     end
 
-    context 'aliased dependencies' do
+    context "aliased dependencies" do
       def assert_valid_object(object)
         expect(object.one).to eq 1
         expect(object.two).to eq 2
@@ -211,11 +211,11 @@ RSpec.describe Dry::AutoInject do
 
       let(:parent_class) do
         Class.new do
-          include Test::AutoInject.hash[:one, :two, last: 'namespace.three']
+          include Test::AutoInject.hash[:one, :two, last: "namespace.three"]
         end
       end
 
-      it 'works' do
+      it "works" do
         test_args.each do |args|
           assert_valid_object(parent_class.new(args))
           assert_valid_object(child_class.new(args))
@@ -224,14 +224,14 @@ RSpec.describe Dry::AutoInject do
       end
     end
 
-    context 'autoinject in a subclass' do
+    context "autoinject in a subclass" do
       let(:child_class) do
         Class.new(parent_class) do
-          include Test::AutoInject.hash[:one, :two, 'namespace.three']
+          include Test::AutoInject.hash[:one, :two, "namespace.three"]
         end
       end
 
-      context 'superclass initialize accepts option hash' do
+      context "superclass initialize accepts option hash" do
         let(:parent_class) do
           Class.new do
             attr_reader :first
@@ -242,7 +242,7 @@ RSpec.describe Dry::AutoInject do
           end
         end
 
-        it 'works' do
+        it "works" do
           test_args.each do |args|
             child_instance = child_class.new(args)
 
@@ -252,13 +252,13 @@ RSpec.describe Dry::AutoInject do
         end
       end
 
-      context 'superclass initialize accepts no arguments' do
+      context "superclass initialize accepts no arguments" do
         let(:parent_class) do
           Class.new do
           end
         end
 
-        it 'works' do
+        it "works" do
           test_args.each do |args|
             assert_valid_object(child_class.new(args))
           end
@@ -266,7 +266,7 @@ RSpec.describe Dry::AutoInject do
       end
     end
 
-    context 'multiple autoinject' do
+    context "multiple autoinject" do
       let(:klass) do
         Class.new do
           include Test::AutoInject.hash[:one]
@@ -274,7 +274,7 @@ RSpec.describe Dry::AutoInject do
         end
       end
 
-      it 'works' do
+      it "works" do
         instance = klass.new
 
         expect(instance.one).to eq 1
@@ -282,7 +282,7 @@ RSpec.describe Dry::AutoInject do
       end
     end
 
-    context 'autoinject in class and included module' do
+    context "autoinject in class and included module" do
       let(:klasses) do
         mixin = Module.new do
           def self.included(klass)
@@ -303,7 +303,7 @@ RSpec.describe Dry::AutoInject do
         [k1, k2]
       end
 
-      it 'works regardless inclusion order' do
+      it "works regardless inclusion order" do
         klasses.each do |klass|
           instance = klass.new
 
@@ -314,10 +314,10 @@ RSpec.describe Dry::AutoInject do
     end
   end
 
-  context 'with keyword args' do
+  context "with keyword args" do
     let(:parent_class) do
       Class.new do
-        include Test::AutoInject.kwargs[:one, :two, 'namespace.three']
+        include Test::AutoInject.kwargs[:one, :two, "namespace.three"]
 
         attr_reader :other
 
@@ -334,7 +334,7 @@ RSpec.describe Dry::AutoInject do
 
         def initialize(**kwargs)
           super
-          @foo = 'bar'
+          @foo = "bar"
         end
       end
     end
@@ -351,7 +351,7 @@ RSpec.describe Dry::AutoInject do
       ]
     end
 
-    it 'works' do
+    it "works" do
       test_args.each do |args|
         assert_valid_object(parent_class.new(**args))
         assert_valid_object(child_class.new(**args))
@@ -359,14 +359,14 @@ RSpec.describe Dry::AutoInject do
       end
 
       expect(parent_class.new(other: true).other).to be(true)
-      expect(grand_child_class.new(one: 1, two: 2, three: 3).foo).to eql('bar')
+      expect(grand_child_class.new(one: 1, two: 2, three: 3).foo).to eql("bar")
     end
 
-    it 'raise an argument error when non-specified keywords are passed to initializer' do
-      expect { parent_class.new(unexpected: 'foo') }.to raise_error ArgumentError
+    it "raise an argument error when non-specified keywords are passed to initializer" do
+      expect { parent_class.new(unexpected: "foo") }.to raise_error ArgumentError
     end
 
-    context 'aliased dependencies' do
+    context "aliased dependencies" do
       let(:test_args) do
         [
           {}, { one: 1, two: 2, last: 3 }, { two: 2, last: 3 },
@@ -383,11 +383,11 @@ RSpec.describe Dry::AutoInject do
 
       let(:parent_class) do
         Class.new do
-          include Test::AutoInject.kwargs[:one, :two, last: 'namespace.three']
+          include Test::AutoInject.kwargs[:one, :two, last: "namespace.three"]
         end
       end
 
-      it 'works' do
+      it "works" do
         test_args.each do |args|
           assert_valid_object(parent_class.new(**args))
           assert_valid_object(child_class.new(**args))
@@ -396,14 +396,14 @@ RSpec.describe Dry::AutoInject do
       end
     end
 
-    context 'autoinject in a subclass' do
+    context "autoinject in a subclass" do
       let(:child_class) do
         Class.new(parent_class) do
-          include Test::AutoInject.kwargs[:one, :two, 'namespace.three']
+          include Test::AutoInject.kwargs[:one, :two, "namespace.three"]
         end
       end
 
-      context 'superclass initialize accepts keyword args' do
+      context "superclass initialize accepts keyword args" do
         let(:parent_class) do
           Class.new do
             attr_reader :first
@@ -414,7 +414,7 @@ RSpec.describe Dry::AutoInject do
           end
         end
 
-        it 'works' do
+        it "works" do
           test_args.each do |args|
             child_instance = child_class.new(**args)
 
@@ -424,7 +424,7 @@ RSpec.describe Dry::AutoInject do
         end
       end
 
-      context 'superclass initialize accepts keywords args outside the injected dependencies list' do
+      context "superclass initialize accepts keywords args outside the injected dependencies list" do
         let(:parent_class) do
           Class.new do
             attr_reader :other
@@ -435,23 +435,23 @@ RSpec.describe Dry::AutoInject do
           end
         end
 
-        it 'works' do
+        it "works" do
           test_args.each do |args|
-            child_instance = child_class.new(other: 'other', **args)
+            child_instance = child_class.new(other: "other", **args)
 
             assert_valid_object(child_instance)
-            expect(child_instance.other).to eq 'other'
+            expect(child_instance.other).to eq "other"
           end
         end
       end
 
-      context 'superclass initialize accepts no arguments' do
+      context "superclass initialize accepts no arguments" do
         let(:parent_class) do
           Class.new do
           end
         end
 
-        it 'works' do
+        it "works" do
           test_args.each do |args|
             assert_valid_object(child_class.new(**args))
           end
@@ -459,23 +459,23 @@ RSpec.describe Dry::AutoInject do
       end
     end
 
-    context 'multiple autoinject' do
+    context "multiple autoinject" do
       let(:klass) do
         Class.new do
           include Test::AutoInject.kwargs[:one]
           include Test::AutoInject.kwargs[:two]
-          include Test::AutoInject.kwargs['namespace.three']
+          include Test::AutoInject.kwargs["namespace.three"]
         end
       end
 
-      it 'works' do
+      it "works" do
         instance = klass.new
 
         assert_valid_object(instance)
       end
     end
 
-    context 'autoinject in class and included module' do
+    context "autoinject in class and included module" do
       let(:klasses) do
         mixin = Module.new do
           def self.included(klass)
@@ -496,7 +496,7 @@ RSpec.describe Dry::AutoInject do
         [k1, k2]
       end
 
-      it 'works regardless inclusion order' do
+      it "works regardless inclusion order" do
         klasses.each do |klass|
           instance = klass.new
 
@@ -506,11 +506,11 @@ RSpec.describe Dry::AutoInject do
       end
     end
 
-    context 'with regular argument' do
-      context 'autoinject in class with regular argument' do
+    context "with regular argument" do
+      context "autoinject in class with regular argument" do
         let(:klass) do
           Class.new do
-            include Test::AutoInject.kwargs[:one, :two, 'namespace.three']
+            include Test::AutoInject.kwargs[:one, :two, "namespace.three"]
 
             attr_reader :other
 
@@ -521,7 +521,7 @@ RSpec.describe Dry::AutoInject do
           end
         end
 
-        it 'works' do
+        it "works" do
           instance = klass.new(:other)
 
           expect(instance.other).to eq :other
@@ -531,10 +531,10 @@ RSpec.describe Dry::AutoInject do
         end
       end
 
-      context 'autoinject in super class with regular argument' do
+      context "autoinject in super class with regular argument" do
         let(:child_class) do
           Class.new(parent_klass) do
-            include Test::AutoInject.kwargs[:one, :two, 'namespace.three']
+            include Test::AutoInject.kwargs[:one, :two, "namespace.three"]
           end
         end
 
@@ -548,7 +548,7 @@ RSpec.describe Dry::AutoInject do
           end
         end
 
-        it 'works' do
+        it "works" do
           instance = child_class.new(:other)
 
           expect(instance.other).to eq :other
