@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry/auto_inject/builder'
+require "dry/auto_inject/builder"
 
 module Dry
   # Configure an auto-injection module

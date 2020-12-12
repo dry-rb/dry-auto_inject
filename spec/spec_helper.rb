@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'support/coverage'
+require_relative "support/coverage"
 
 begin
-  require 'byebug'
+  require "byebug"
 rescue LoadError; end
-require 'dry-auto_inject'
+require "dry-auto_inject"
 
 module Test
   def self.remove_constants
