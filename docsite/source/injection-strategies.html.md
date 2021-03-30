@@ -71,7 +71,7 @@ class MyClass
  include Import["users_repository"]
 end
 
-# This can also take `{users_repo: my_repo}`
+# This can also take `{users_repository: my_repo}`
 MyClass.new(users_repository: my_repo)
 ```
 
