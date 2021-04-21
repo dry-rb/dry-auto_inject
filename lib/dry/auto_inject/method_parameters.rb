@@ -6,7 +6,7 @@ module Dry
   module AutoInject
     # @api private
     class MethodParameters
-      PASS_THROUGH = [[:rest]]
+      PASS_THROUGH = [[[:rest]], [[:rest, :*], [:block, :&]]]
 
       if RUBY_VERSION >= '2.4.4.' && !defined? JRUBY_VERSION
         def self.of(obj, name)
@@ -87,7 +87,7 @@ module Dry
       end
 
       def pass_through?
-        parameters.eql?(PASS_THROUGH)
+        PASS_THROUGH.any? { |pass_through_params| parameters.eql?(pass_through_params) }
       end
 
       EMPTY = new([])

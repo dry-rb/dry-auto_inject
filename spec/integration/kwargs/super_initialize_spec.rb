@@ -132,5 +132,25 @@ RSpec.describe 'kwargs / super #initialize method' do
 
       expect(instance.one).to eq 'dep 1'
     end
+
+    context 'when pass-through is performed via ...' do
+      let(:child_class) {
+        Class.new(parent_class) do
+          include Module.new {
+            def initialize(...)
+              super(...)
+            end
+          }
+
+          include Test::AutoInject[:one]
+        end
+      }
+
+      it "don't pass deps if the final constructor will choke on them" do
+        instance = child_class.new
+
+        expect(instance.one).to eq 'dep 1'
+      end
+    end
   end
 end
