@@ -87,7 +87,7 @@ module Dry
       end
 
       def pass_through?
-        PASS_THROUGH.any? { |pass_through_params| parameters.eql?(pass_through_params) }
+        PASS_THROUGH.include?(parameters)
       end
 
       EMPTY = new([])
