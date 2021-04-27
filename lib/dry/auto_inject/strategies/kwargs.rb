@@ -26,7 +26,7 @@ module Dry
 
         def define_initialize(klass)
           super_parameters = MethodParameters.of(klass, :initialize).each do |ps|
-            # Look upwards past `def foo(*)` and `def foo(...)` methods 
+            # Look upwards past `def foo(*)` and `def foo(...)` methods
             # until we get an explicit list of parameters
             break ps unless ps.pass_through?
           end

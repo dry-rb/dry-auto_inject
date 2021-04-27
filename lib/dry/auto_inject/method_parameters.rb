@@ -6,7 +6,7 @@ module Dry
   module AutoInject
     # @api private
     class MethodParameters
-      PASS_THROUGH = [[[:rest]], [[:rest, :*], [:block, :&]]]
+      PASS_THROUGH = [[%i[rest]], [%i[rest *], %i[block &]]]
 
       if RUBY_VERSION >= '2.4.4.' && !defined? JRUBY_VERSION
         def self.of(obj, name)
