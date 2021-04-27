@@ -23,8 +23,8 @@ RSpec.describe "kwargs" do
 
       attr_reader :block
 
-      def initialize(*args, &block)
-        super(*args)
+      def initialize(*args, **kwargs, &block)
+        super(*args, **kwargs)
         @block = block
       end
     end
