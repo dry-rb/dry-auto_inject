@@ -132,5 +132,28 @@ RSpec.describe 'kwargs / super #initialize method' do
 
       expect(instance.one).to eq 'dep 1'
     end
+
+    if RUBY_VERSION >= "2.7" && !defined? JRUBY_VERSION
+      context "when pass-through is performed via ..." do
+        let(:child_class) {
+          klass = Class.new(parent_class) do
+            include Test::AutoInject[:one]
+          end
+          klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
+            def initialize(...)
+              super(...)
+            end
+          RUBY
+
+          klass
+        }
+
+        it "don't pass deps if the final constructor will choke on them" do
+          instance = child_class.new
+
+          expect(instance.one).to eq 'dep 1'
+        end
+      end
+    end
   end
 end
