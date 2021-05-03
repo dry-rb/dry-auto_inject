@@ -3,6 +3,10 @@
 ## unreleased 
 
 
+### Added
+
+- Support For `...` passthrough-args (@ytaben)
+
 ### Fixed
 
 - Constructors with kwargs strategy properly forward blocks to super (via #68) (@mintyfresh)
