@@ -5,7 +5,8 @@
   fixed:
   - 'Constructors with kwargs strategy properly forward blocks to super (via #68)
     (@mintyfresh)'
-  added: 
+  added:
+  - Support For `...` passthrough-args (@ytaben)
   changed: 
 - version: 0.7.0
   date: '2019-12-28'
