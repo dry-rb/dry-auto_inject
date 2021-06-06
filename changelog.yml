@@ -1,13 +1,14 @@
 ---
-- version: unreleased
-  summary: 
-  date: 
+- version: 0.8.0
+  date: "2021-06-06"
+  summary:
   fixed:
-  - 'Constructors with kwargs strategy properly forward blocks to super (via #68)
-    (@mintyfresh)'
+  - "Constructors with kwargs strategy properly forward blocks to super (via #68)
+    (@mintyfresh)"
   added:
   - Support For `...` passthrough-args (@ytaben)
-  changed: 
+  changed:
+  - "[BREAKING] Support for 2.4 and 2.5 was dropped"
 - version: 0.7.0
   date: '2019-12-28'
   fixed:
