@@ -1,35 +1,18 @@
 # frozen_string_literal: true
 
+require 'dry/auto_inject/strategies/base'
 require 'dry/auto_inject/dependency_map'
 
 module Dry
   module AutoInject
     class Strategies
-      class Constructor < Module
-        ClassMethods = Class.new(Module)
-        InstanceMethods = Class.new(Module)
-
-        attr_reader :container
-        attr_reader :dependency_map
-        attr_reader :instance_mod
-        attr_reader :class_mod
-
-        def initialize(container, *dependency_names)
-          @container = container
-          @dependency_map = DependencyMap.new(*dependency_names)
-          @instance_mod = InstanceMethods.new
-          @class_mod = ClassMethods.new
-        end
-
+      class Constructor < Base
         # @api private
         def included(klass)
           define_readers
 
           define_new
           define_initialize(klass)
-
-          klass.send(:include, instance_mod)
-          klass.extend(class_mod)
 
           super
         end
