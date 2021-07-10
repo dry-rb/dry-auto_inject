@@ -51,7 +51,7 @@ module Dry
                          '*args'
                        else
                          "*args.take(#{super_parameters.length})"
-          end
+                       end
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def initialize(*args)
