@@ -8,7 +8,7 @@
 # dry-auto_inject [![Join the chat at https://dry-rb.zulipchat.com](https://img.shields.io/badge/dry--rb-join%20chat-%23346b7a.svg)][chat]
 
 [![Gem Version](https://badge.fury.io/rb/dry-auto_inject.svg)][gem]
-[![CI Status](https://github.com/dry-rb/dry-auto_inject/workflows/CI/badge.svg)][actions]
+[![CI Status](https://github.com/dry-rb/dry-auto_inject/workflows/ci/badge.svg)][actions]
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d869ec8dc92e46b6a6eafa551f68c3f4)][codacy]
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/d869ec8dc92e46b6a6eafa551f68c3f4)][codacy]
 [![Inline docs](http://inch-ci.org/github/dry-rb/dry-auto_inject.svg?branch=master)][inchpages]
