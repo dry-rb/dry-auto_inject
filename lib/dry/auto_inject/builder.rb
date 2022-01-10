@@ -5,7 +5,7 @@ require 'dry/auto_inject/injector'
 
 module Dry
   module AutoInject
-    class Builder < BasicObject
+    class Builder
       # @api private
       attr_reader :container
 
