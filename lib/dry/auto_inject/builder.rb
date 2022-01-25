@@ -12,6 +12,9 @@ module Dry
       # @api private
       attr_reader :strategies
 
+      # This clashes with the hash strategy
+      undef hash
+
       def initialize(container, options = {})
         @container = container
         @strategies = options.fetch(:strategies) { Strategies }
