@@ -127,32 +127,49 @@ RSpec.describe 'kwargs / super #initialize method' do
       end
     }
 
-    it "don't pass deps if the final constructor will choke on them" do
+    it "doesn't pass deps if the final constructor will choke on them" do
       instance = child_class.new
 
       expect(instance.one).to eq 'dep 1'
     end
 
-    if RUBY_VERSION >= "2.7" && !defined? JRUBY_VERSION
-      context "when pass-through is performed via ..." do
-        let(:child_class) {
-          klass = Class.new(parent_class) do
-            include Test::AutoInject[:one]
-          end
-          klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            def initialize(...)
-              super(...)
+    context "with keywords" do
+      let(:child_class) do
+        Class.new(parent_class) do
+          include Module.new {
+            def initialize(*, **)
+              super
             end
-          RUBY
+          }
 
-          klass
-        }
-
-        it "don't pass deps if the final constructor will choke on them" do
-          instance = child_class.new
-
-          expect(instance.one).to eq 'dep 1'
+          include Test::AutoInject[:one]
         end
+      end
+
+      it "doesn't pass deps if the final constructor will choke on them" do
+        instance = child_class.new
+
+        expect(instance.one).to eq 'dep 1'
+      end
+    end
+
+    context "only keywords" do
+      let(:child_class) do
+        Class.new(parent_class) do
+          include Module.new {
+            def initialize(**)
+              super
+            end
+          }
+
+          include Test::AutoInject[:one]
+        end
+      end
+
+      it "doesn't pass deps if the final constructor will choke on them" do
+        instance = child_class.new
+
+        expect(instance.one).to eq 'dep 1'
       end
     end
   end
