@@ -8,42 +8,18 @@ module Dry
     class MethodParameters
       PASS_THROUGH = [[%i[rest]], [%i[rest *], %i[block &]]]
 
-      if RUBY_VERSION >= '2.4.4.' && !defined? JRUBY_VERSION
-        def self.of(obj, name)
-          Enumerator.new do |y|
-            begin
-              method = obj.instance_method(name)
-            rescue NameError
-            end
-
-            loop do
-              break if method.nil?
-
-              y << MethodParameters.new(method.parameters)
-              method = method.super_method
-            end
+      def self.of(obj, name)
+        Enumerator.new do |y|
+          begin
+            method = obj.instance_method(name)
+          rescue NameError
           end
-        end
-      else
-        # see https://bugs.ruby-lang.org/issues/13973
-        def self.of(obj, name)
-          Enumerator.new do |y|
-            ancestors = obj.ancestors
 
-            loop do
-              klass = ancestors.shift
-              break if klass.nil?
+          loop do
+            break if method.nil?
 
-              begin
-                method = klass.instance_method(name)
-
-                next unless method.owner.equal?(klass)
-              rescue NameError
-                next
-              end
-
-              y << MethodParameters.new(method.parameters)
-            end
+            y << MethodParameters.new(method.parameters)
+            method = method.super_method
           end
         end
       end
