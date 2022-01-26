@@ -1,10 +1,15 @@
 ---
+- version: 0.9.0
+  date: "2022-01-26"
+  changed:
+  - |
+    [BREAKING] Support for ... was changed, now constructors with such signature are not considered
+    as pass-through because they can forward arguments to another method (flash-gordon in [#78](https://github.com/dry-rb/dry-auto_inject/pull/78))
 - version: 0.8.0
   date: "2021-06-06"
   summary:
   fixed:
-  - "Constructors with kwargs strategy properly forward blocks to super (via #68)
-    (@mintyfresh)"
+  - Constructors with kwargs strategy properly forward blocks to super (mintyfresh in [#68](https://github.com/dry-rb/dry-auto_inject/pull/68))
   added:
   - Support For `...` passthrough-args (@ytaben)
   changed:
