@@ -19,3 +19,4 @@ end
 require 'dry/auto_inject/strategies/args'
 require 'dry/auto_inject/strategies/hash'
 require 'dry/auto_inject/strategies/kwargs'
+require 'dry/auto_inject/strategies/methods'
