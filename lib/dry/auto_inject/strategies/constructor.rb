@@ -15,6 +15,7 @@ module Dry
         attr_reader :class_mod
 
         def initialize(container, *dependency_names)
+          super()
           @container = container
           @dependency_map = DependencyMap.new(*dependency_names)
           @instance_mod = InstanceMethods.new
@@ -37,8 +38,9 @@ module Dry
         private
 
         def define_readers
+          readers = dependency_map.names.map { ":#{_1}" }
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            attr_reader #{dependency_map.names.map { |name| ":#{name}" }.join(", ")}
+            attr_reader #{readers.join(", ")} # attr_reader :dep1, :dep2
           RUBY
           self
         end

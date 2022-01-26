@@ -17,7 +17,7 @@ module Dry
                 args[i] || container[identifier]
               }
 
-              super(*deps, *args[deps.size..-1])
+              super(*deps, *args[deps.size..])
             end
           end
         end
@@ -38,11 +38,13 @@ module Dry
         def define_initialize_with_params
           initialize_args = dependency_map.names.join(", ")
 
+          assignment = dependency_map.names.map { "@#{_1} = #{_1}" }.join("\n")
+
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            def initialize(#{initialize_args})
-              #{dependency_map.names.map { |name| "@#{name} = #{name}" }.join("\n")}
-              super()
-            end
+            def initialize(#{initialize_args})  # def initialize(dep)
+              #{assignment}                     #   @dep = dep
+              super()                           #   super()
+            end                                 # end
           RUBY
         end
 
@@ -53,11 +55,16 @@ module Dry
                          "*args.take(#{super_parameters.length})"
                        end
 
+          assignments = dependency_map.names.map.with_index do |name, idx|
+            "@#{name} = args[#{idx}]"
+          end
+          body = assignments.join("\n")
+
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            def initialize(*args)
-              #{dependency_map.names.map.with_index { |name, i| "@#{name} = args[#{i}]" }.join("\n")}
-              super(#{super_pass})
-            end
+            def initialize(*args)    # def initialize(*args)
+              #{body}                #   @dep = args[0]
+              super(#{super_pass})   #   super(*args)
+            end                      # end
           RUBY
         end
       end

@@ -14,6 +14,8 @@ module Dry
       # @api private
       attr_reader :builder
 
+      define_method(:respond_to?, ::Kernel.instance_method(:respond_to?))
+
       # @api private
       def initialize(container, strategy, builder:)
         @container = container
@@ -25,8 +27,8 @@ module Dry
         strategy.new(container, *dependency_names)
       end
 
-      def respond_to?(name, _include_private = false)
-        Injector.instance_methods.include?(name) || builder.respond_to?(name)
+      def respond_to_missing?(name, _include_private = false)
+        builder.respond_to?(name)
       end
 
       private

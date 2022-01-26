@@ -25,8 +25,8 @@ module Dry
         default[*dependency_names]
       end
 
-      def respond_to?(name, _include_private = false)
-        Builder.public_instance_methods.include?(name) || strategies.key?(name)
+      def respond_to_missing?(name, _include_private = false)
+        strategies.key?(name)
       end
 
       private

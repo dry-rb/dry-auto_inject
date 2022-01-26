@@ -6,13 +6,13 @@ module Dry
   module AutoInject
     # @api private
     class MethodParameters
-      PASS_THROUGH = [[%i[rest]], [%i[rest], %i[keyrest]]]
+      PASS_THROUGH = [[%i[rest]], [%i[rest], %i[keyrest]]].freeze
 
       def self.of(obj, name)
         Enumerator.new do |y|
           begin
             method = obj.instance_method(name)
-          rescue NameError
+          rescue ::NameError # rubocop: disable Lint/SuppressedException
           end
 
           loop do

@@ -25,12 +25,22 @@ module Dry
         def define_initialize(klass)
           super_params = MethodParameters.of(klass, :initialize).first
           super_pass = super_params.empty? ? "" : "options"
+          assignments = dependency_map.names.map do |name|
+            <<~RUBY
+              unless !options.key?(:#{name}) && instance_variable_defined?(:'@#{name}')
+                @#{name} = options[:#{name}]
+              end
+            RUBY
+          end
+          body = assignments.join("\n")
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            def initialize(options)
-              #{dependency_map.names.map { |name| "@#{name} = options[:#{name}] unless !options.key?(#{name}) && instance_variable_defined?(:'@#{name}')" }.join("\n")}
-              super(#{super_pass})
-            end
+            def initialize(options) # def initialize(options)
+                                    #   unless !options.key?(:dep) && instance_variable_defined?(:@dep)
+              #{body}               #     @dep = options[:dep]
+                                    #   end
+              super(#{super_pass})  #   super(options)
+            end                     # end
           RUBY
         end
       end
