@@ -41,7 +41,10 @@ module Dry
 
       def name_for(identifier)
         matched = VALID_NAME.match(identifier.to_s)
-        raise DependencyNameInvalid, "name +#{identifier}+ is not a valid Ruby identifier" unless matched
+        unless matched
+          raise DependencyNameInvalid,
+                "name +#{identifier}+ is not a valid Ruby identifier"
+        end
 
         matched[0]
       end

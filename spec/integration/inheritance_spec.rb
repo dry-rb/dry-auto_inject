@@ -3,7 +3,7 @@
 RSpec.describe "Inheritance" do
   before do
     module Test
-      AutoInject = Dry::AutoInject({ one: 1, two: 2, "namespace.three" => 3 })
+      AutoInject = Dry::AutoInject({one: 1, two: 2, "namespace.three" => 3})
     end
   end
 

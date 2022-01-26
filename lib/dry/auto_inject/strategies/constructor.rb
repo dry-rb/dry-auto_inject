@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry/auto_inject/dependency_map'
+require "dry/auto_inject/dependency_map"
 
 module Dry
   module AutoInject
@@ -38,17 +38,17 @@ module Dry
 
         def define_readers
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            attr_reader #{dependency_map.names.map { |name| ":#{name}" }.join(', ')}
+            attr_reader #{dependency_map.names.map { |name| ":#{name}" }.join(", ")}
           RUBY
           self
         end
 
         def define_new
-          raise NotImplementedError, 'must be implemented by a subclass'
+          raise NotImplementedError, "must be implemented by a subclass"
         end
 
-        def define_initialize(klass)
-          raise NotImplementedError, 'must be implemented by a subclass'
+        def define_initialize(_klass)
+          raise NotImplementedError, "must be implemented by a subclass"
         end
       end
     end

@@ -3,7 +3,7 @@
 RSpec.describe "chaining injectors" do
   before do
     module Test
-      AutoInject = Dry::AutoInject({ one: 1, two: 2 })
+      AutoInject = Dry::AutoInject({one: 1, two: 2})
     end
   end
 

@@ -6,7 +6,7 @@ RSpec.describe Dry::AutoInject::Builder do
   describe "#respond_to?" do
     subject(:injector) { Dry::AutoInject::Injector.new({}, double("strategy"), builder: builder) }
 
-    let(:builder) { Dry::AutoInject::Builder.new({}, strategies: { kwargs: double("strategy") }) }
+    let(:builder) { Dry::AutoInject::Builder.new({}, strategies: {kwargs: double("strategy")}) }
 
     it "responds to #[] as the main injection method" do
       expect(injector.respond_to?(:[])).to be true

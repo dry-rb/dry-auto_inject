@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry-container'
+require "dry-container"
 
 module Dry
   module AutoInject
@@ -16,6 +16,6 @@ module Dry
   end
 end
 
-require 'dry/auto_inject/strategies/args'
-require 'dry/auto_inject/strategies/hash'
-require 'dry/auto_inject/strategies/kwargs'
+require "dry/auto_inject/strategies/args"
+require "dry/auto_inject/strategies/hash"
+require "dry/auto_inject/strategies/kwargs"

@@ -8,8 +8,7 @@ RSpec.describe Dry::AutoInject::MethodParameters do
   describe ".of" do
     it "returns method parameters" do
       klass = Class.new {
-        def foo(a, b = nil, *c, d:, e: nil, **f, &g)
-        end
+        def foo(a, b = nil, *c, d:, e: nil, **f, &g); end
       }
 
       all_parameters = parameters.of(klass, :foo).to_a
@@ -17,10 +16,10 @@ RSpec.describe Dry::AutoInject::MethodParameters do
       expect(all_parameters.size).to eq 1
       expect(all_parameters[0].parameters)
         .to eq([
-                 [:req, :a], [:opt, :b], [:rest, :c],
-                 [:keyreq, :d], [:key, :e], [:keyrest, :f],
-                 [:block, :g]
-               ])
+          [:req, :a], [:opt, :b], [:rest, :c],
+          [:keyreq, :d], [:key, :e], [:keyrest, :f],
+          [:block, :g]
+        ])
     end
 
     it "returns empty array when no method defined" do

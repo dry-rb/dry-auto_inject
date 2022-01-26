@@ -9,7 +9,7 @@ RSpec.describe Dry::AutoInject do
 
   before do
     module Test
-      AutoInject = Dry::AutoInject({ one: 1, two: 2, "namespace.three" => 3 })
+      AutoInject = Dry::AutoInject({one: 1, two: 2, "namespace.three" => 3})
     end
   end
 
@@ -185,9 +185,9 @@ RSpec.describe Dry::AutoInject do
 
     let(:test_args) do
       [
-        {}, { one: 1, two: 2, three: 3 }, { two: 2, three: 3 },
-        { one: 1, three: 3 }, { one: 1, two: 2 }, { three: 3 },
-        { one: 1 }, { one: 1, three: 3 }
+        {}, {one: 1, two: 2, three: 3}, {two: 2, three: 3},
+        {one: 1, three: 3}, {one: 1, two: 2}, {three: 3},
+        {one: 1}, {one: 1, three: 3}
       ]
     end
 
@@ -345,9 +345,9 @@ RSpec.describe Dry::AutoInject do
 
     let(:test_args) do
       [
-        {}, { one: 1, two: 2, three: 3 }, { two: 2, three: 3 },
-        { one: 1, three: 3 }, { one: 1, two: 2 }, { three: 3 },
-        { one: 1 }, { one: 1, three: 3 }
+        {}, {one: 1, two: 2, three: 3}, {two: 2, three: 3},
+        {one: 1, three: 3}, {one: 1, two: 2}, {three: 3},
+        {one: 1}, {one: 1, three: 3}
       ]
     end
 
@@ -369,9 +369,9 @@ RSpec.describe Dry::AutoInject do
     context "aliased dependencies" do
       let(:test_args) do
         [
-          {}, { one: 1, two: 2, last: 3 }, { two: 2, last: 3 },
-          { one: 1, last: 3 }, { one: 1, two: 2 }, { last: 3 },
-          { one: 1 }, { one: 1, last: 3 }
+          {}, {one: 1, two: 2, last: 3}, {two: 2, last: 3},
+          {one: 1, last: 3}, {one: 1, two: 2}, {last: 3},
+          {one: 1}, {one: 1, last: 3}
         ]
       end
 
@@ -408,7 +408,7 @@ RSpec.describe Dry::AutoInject do
           Class.new do
             attr_reader :first
 
-            def initialize(one: nil, **args)
+            def initialize(one: nil, **_args)
               @first = one
             end
           end

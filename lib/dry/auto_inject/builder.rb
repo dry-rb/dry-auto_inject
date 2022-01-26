@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'dry/auto_inject/strategies'
-require 'dry/auto_inject/injector'
+require "dry/auto_inject/strategies"
+require "dry/auto_inject/injector"
 
 module Dry
   module AutoInject
@@ -25,7 +25,7 @@ module Dry
         default[*dependency_names]
       end
 
-      def respond_to?(name, include_private = false)
+      def respond_to?(name, _include_private = false)
         Builder.public_instance_methods.include?(name) || strategies.key?(name)
       end
 

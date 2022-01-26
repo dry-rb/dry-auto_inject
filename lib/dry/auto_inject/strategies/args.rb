@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'dry/auto_inject/strategies/constructor'
-require 'dry/auto_inject/method_parameters'
+require "dry/auto_inject/strategies/constructor"
+require "dry/auto_inject/method_parameters"
 
 module Dry
   module AutoInject
@@ -36,7 +36,7 @@ module Dry
         end
 
         def define_initialize_with_params
-          initialize_args = dependency_map.names.join(', ')
+          initialize_args = dependency_map.names.join(", ")
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def initialize(#{initialize_args})
@@ -48,7 +48,7 @@ module Dry
 
         def define_initialize_with_splat(super_parameters)
           super_pass = if super_parameters.splat?
-                         '*args'
+                         "*args"
                        else
                          "*args.take(#{super_parameters.length})"
                        end
