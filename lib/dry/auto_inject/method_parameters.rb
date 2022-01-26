@@ -6,7 +6,7 @@ module Dry
   module AutoInject
     # @api private
     class MethodParameters
-      PASS_THROUGH = [[%i[rest]], [%i[rest *], %i[block &]]]
+      PASS_THROUGH = [[%i[rest]], [%i[rest], %i[keyrest]]]
 
       def self.of(obj, name)
         Enumerator.new do |y|
