@@ -8,6 +8,7 @@
 - [BREAKING] Support for ... was changed, now constructors with such signature are not considered
 as pass-through because they can forward arguments to another method (flash-gordon in [#78](https://github.com/dry-rb/dry-auto_inject/pull/78))
 
+- [BREAKING] Support for 2.6 was dropped
 
 [Compare v0.8.0...v0.9.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.8.0...v0.9.0)
 
