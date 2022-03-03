@@ -72,7 +72,7 @@ module Dry
               else
                 super_kwargs = slice_kwargs.(kwargs, super_parameters)
 
-                if super_kwargs.any?
+                if super_kwargs.any? && super_parameters.keyword_names.any?
                   super(*args, **super_kwargs, &block)
                 else
                   super(*args, &block)

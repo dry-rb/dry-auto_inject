@@ -557,6 +557,39 @@ RSpec.describe Dry::AutoInject do
           expect(instance.three).to eq 3
         end
       end
+
+      context "autoinject in class and parent with regular argument in super class" do
+        let(:super_klass) do
+          Class.new do
+            attr_reader :other
+
+            def initialize(other)
+              @other = other
+            end
+          end
+        end
+
+        let(:parent_klass) do
+          Class.new(super_klass) do
+            include Test::AutoInject.kwargs[:one, :two]
+          end
+        end
+
+        let(:child_class) do
+          Class.new(parent_klass) do
+            include Test::AutoInject.kwargs["namespace.three"]
+          end
+        end
+
+        it "works" do
+          instance = child_class.new(:other)
+
+          expect(instance.other).to eq :other
+          expect(instance.one).to eq 1
+          expect(instance.two).to eq 2
+          expect(instance.three).to eq 3
+        end
+      end
     end
   end
 end
