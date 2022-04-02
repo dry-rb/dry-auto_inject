@@ -11,7 +11,7 @@
 [![CI Status](https://github.com/dry-rb/dry-auto_inject/workflows/ci/badge.svg)][actions]
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d869ec8dc92e46b6a6eafa551f68c3f4)][codacy]
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/d869ec8dc92e46b6a6eafa551f68c3f4)][codacy]
-[![Inline docs](http://inch-ci.org/github/dry-rb/dry-auto_inject.svg?branch=master)][inchpages]
+[![Inline docs](http://inch-ci.org/github/dry-rb/dry-auto_inject.svg?branch=main)][inchpages]
 
 ## Links
 
