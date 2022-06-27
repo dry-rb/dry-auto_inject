@@ -95,7 +95,7 @@ module Dry
 
         def slice_kwargs(kwargs, super_parameters)
           kwargs.select do |key|
-            !dependency_map.names.include?(key) || super_parameters.keyword?(key)
+            !dependency_map.names.include?(key) && super_parameters.keyword?(key)
           end
         end
       end
