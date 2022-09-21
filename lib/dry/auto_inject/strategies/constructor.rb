@@ -40,6 +40,7 @@ module Dry
         def define_readers
           readers = dependency_map.names.map { ":#{_1}" }
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
+            private
             attr_reader #{readers.join(", ")} # attr_reader :dep1, :dep2
           RUBY
           self

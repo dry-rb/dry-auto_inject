@@ -28,7 +28,7 @@ RSpec.describe "argument parameters" do
       it "works" do
         instance = including_class.new
 
-        expect(instance.one).to eq 1
+        expect(instance.send(:one)).to eq 1
         expect(instance.module_var).to eq "hi"
       end
     end

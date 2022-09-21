@@ -15,11 +15,11 @@ RSpec.describe "chaining injectors" do
 
   it "supports chaining injectors" do
     object = class_with_inject.new
-    expect(object.one).to eq 1
-    expect(object.two).to eq 2
+    expect(object.send(:one)).to eq 1
+    expect(object.send(:two)).to eq 2
 
     object = class_with_inject.new(one: "one", two: "two")
-    expect(object.one).to eq "one"
-    expect(object.two).to eq "two"
+    expect(object.send(:one)).to eq "one"
+    expect(object.send(:two)).to eq "two"
   end
 end

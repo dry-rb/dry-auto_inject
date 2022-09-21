@@ -12,9 +12,9 @@ RSpec.describe "kwargs" do
       include Test::AutoInject[:one]
     end
 
-    expect(obj.new.one).to eq "dep 1"
-    expect(obj.new(one: false).one).to be false
-    expect(obj.new(one: nil).one).to be nil
+    expect(obj.new.send(:one)).to eq "dep 1"
+    expect(obj.new(one: false).send(:one)).to be false
+    expect(obj.new(one: nil).send(:one)).to be nil
   end
 
   it "forwards the block to the constructor" do
@@ -31,8 +31,19 @@ RSpec.describe "kwargs" do
 
     block = -> {}
 
-    expect(klass.new).to have_attributes(one: "dep 1", block: nil)
-    expect(klass.new(&block)).to have_attributes(one: "dep 1", block: block)
-    expect(klass.new(one: nil, &block)).to have_attributes(one: nil, block: block)
+    klass.new.tap do |obj|
+      expect(obj.send(:one)).to eq "dep 1"
+      expect(obj.block).to be nil
+    end
+
+    klass.new(&block).tap do |obj|
+      expect(obj.send(:one)).to eq "dep 1"
+      expect(obj.block).to eq block
+    end
+
+    klass.new(one: nil, &block).tap do |obj|
+      expect(obj.send(:one)).to be nil
+      expect(obj.block).to eq block
+    end
   end
 end

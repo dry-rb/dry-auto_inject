@@ -45,13 +45,13 @@ RSpec.describe "Inheritance" do
 
     it "uses the dependencies from each of the containers" do
       instance = Test::Two.new
-      expect(instance.one).to eq "hi from one"
-      expect(instance.two).to eq "hi from two"
+      expect(instance.send(:one)).to eq "hi from one"
+      expect(instance.send(:two)).to eq "hi from two"
     end
 
     it "allows either dependency to be overridden" do
-      expect(Test::Two.new(one: "manual one").one).to eq "manual one"
-      expect(Test::Two.new(two: "manual two").two).to eq "manual two"
+      expect(Test::Two.new(one: "manual one").send(:one)).to eq "manual one"
+      expect(Test::Two.new(two: "manual two").send(:two)).to eq "manual two"
     end
   end
 end

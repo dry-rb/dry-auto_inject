@@ -75,8 +75,8 @@ RSpec.describe "kwargs / super #initialize method" do
     it "passes non-dependency keyword args to the super method" do
       instance = child_class.new(data: "data")
 
-      expect(instance.data).to eq "data"
-      expect(instance.one).to eq "dep 1"
+      expect(instance.send(:data)).to eq "data"
+      expect(instance.send(:one)).to eq "dep 1"
     end
   end
 
@@ -101,7 +101,7 @@ RSpec.describe "kwargs / super #initialize method" do
     it "passes dependencies assuming the parent class can take them" do
       instance = child_class.new
 
-      expect(instance.one).to eq "dep 1"
+      expect(instance.send(:one)).to eq "dep 1"
       expect(instance.dep).to eq "dep 1"
       expect(instance.args).to eq [one: "dep 1"]
     end
@@ -129,7 +129,7 @@ RSpec.describe "kwargs / super #initialize method" do
     it "doesn't pass deps if the final constructor will choke on them" do
       instance = child_class.new
 
-      expect(instance.one).to eq "dep 1"
+      expect(instance.send(:one)).to eq "dep 1"
     end
 
     context "with keywords" do
@@ -148,7 +148,7 @@ RSpec.describe "kwargs / super #initialize method" do
       it "doesn't pass deps if the final constructor will choke on them" do
         instance = child_class.new
 
-        expect(instance.one).to eq "dep 1"
+        expect(instance.send(:one)).to eq "dep 1"
       end
     end
 
@@ -168,7 +168,7 @@ RSpec.describe "kwargs / super #initialize method" do
       it "doesn't pass deps if the final constructor will choke on them" do
         instance = child_class.new
 
-        expect(instance.one).to eq "dep 1"
+        expect(instance.send(:one)).to eq "dep 1"
       end
     end
   end

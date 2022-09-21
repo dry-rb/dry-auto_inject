@@ -22,8 +22,8 @@ RSpec.describe "kwargs / inheritance / parent class also auto-injecting" do
 
     specify "auto-injections from parent class are available in child class" do
       child = child_class.new
-      expect(child.one).to eq "dep 1"
-      expect(child.two).to eq "dep 2"
+      expect(child.send(:one)).to eq "dep 1"
+      expect(child.send(:two)).to eq "dep 2"
     end
   end
 
@@ -42,8 +42,8 @@ RSpec.describe "kwargs / inheritance / parent class also auto-injecting" do
 
     specify "the child class' injection is kept" do
       child = child_class.new
-      expect(child.one).to eq "dep 1"
-      expect(child.two).to eq "dep 2"
+      expect(child.send(:one)).to eq "dep 1"
+      expect(child.send(:two)).to eq "dep 2"
     end
   end
 
@@ -62,8 +62,8 @@ RSpec.describe "kwargs / inheritance / parent class also auto-injecting" do
 
     specify "the child class' injection is kept" do
       child = child_class.new
-      expect(child.one).to eq "dep 2"
-      expect(child.two).to eq "dep 2"
+      expect(child.send(:one)).to eq "dep 2"
+      expect(child.send(:two)).to eq "dep 2"
     end
   end
 
@@ -93,7 +93,7 @@ RSpec.describe "kwargs / inheritance / parent class also auto-injecting" do
 
     it "passes deps to the base constructor" do
       child = child_class.new
-      expect(child).to have_attributes(one: "dep 1")
+      expect(child.send(:one)).to eq "dep 1"
     end
   end
 end

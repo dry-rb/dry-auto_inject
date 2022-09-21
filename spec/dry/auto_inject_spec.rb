@@ -2,9 +2,9 @@
 
 RSpec.describe Dry::AutoInject do
   def assert_valid_object(object)
-    expect(object.one).to eq 1
-    expect(object.two).to eq 2
-    expect(object.three).to eq 3
+    expect(object.send(:one)).to eq 1
+    expect(object.send(:two)).to eq 2
+    expect(object.send(:three)).to eq 3
   end
 
   before do
@@ -58,9 +58,9 @@ RSpec.describe Dry::AutoInject do
 
     context "aliased dependencies" do
       def assert_valid_object(object)
-        expect(object.one).to eq 1
-        expect(object.two).to eq 2
-        expect(object.last).to eq 3
+        expect(object.send(:one)).to eq 1
+        expect(object.send(:two)).to eq 2
+        expect(object.send(:last)).to eq 3
       end
 
       let(:parent_class) do
@@ -101,7 +101,7 @@ RSpec.describe Dry::AutoInject do
             child_instance = child_class.new(*args)
 
             assert_valid_object(child_instance)
-            expect(child_instance.first).to eq 1
+            expect(child_instance.send(:first)).to eq 1
           end
         end
       end
@@ -122,7 +122,7 @@ RSpec.describe Dry::AutoInject do
             child_instance = child_class.new(*args)
 
             assert_valid_object(child_instance)
-            expect(child_instance.args).to eq [1, 2, 3]
+            expect(child_instance.send(:args)).to eq [1, 2, 3]
           end
         end
       end
@@ -147,9 +147,9 @@ RSpec.describe Dry::AutoInject do
             child_instance = child_class.new(*args)
 
             assert_valid_object(child_instance)
-            expect(child_instance.first).to eq 1
-            expect(child_instance.middle).to eq [2]
-            expect(child_instance.last).to eq 3
+            expect(child_instance.send(:first)).to eq 1
+            expect(child_instance.send(:middle)).to eq [2]
+            expect(child_instance.send(:last)).to eq 3
           end
         end
       end
@@ -204,9 +204,9 @@ RSpec.describe Dry::AutoInject do
 
     context "aliased dependencies" do
       def assert_valid_object(object)
-        expect(object.one).to eq 1
-        expect(object.two).to eq 2
-        expect(object.last).to eq 3
+        expect(object.send(:one)).to eq 1
+        expect(object.send(:two)).to eq 2
+        expect(object.send(:last)).to eq 3
       end
 
       let(:parent_class) do
@@ -247,7 +247,7 @@ RSpec.describe Dry::AutoInject do
             child_instance = child_class.new(args)
 
             assert_valid_object(child_instance)
-            expect(child_instance.first).to eq 1
+            expect(child_instance.send(:first)).to eq 1
           end
         end
       end
@@ -277,8 +277,8 @@ RSpec.describe Dry::AutoInject do
       it "works" do
         instance = klass.new
 
-        expect(instance.one).to eq 1
-        expect(instance.two).to eq 2
+        expect(instance.send(:one)).to eq 1
+        expect(instance.send(:two)).to eq 2
       end
     end
 
@@ -307,8 +307,8 @@ RSpec.describe Dry::AutoInject do
         klasses.each do |klass|
           instance = klass.new
 
-          expect(instance.one).to eq 1
-          expect(instance.two).to eq 2
+          expect(instance.send(:one)).to eq 1
+          expect(instance.send(:two)).to eq 2
         end
       end
     end
@@ -376,9 +376,9 @@ RSpec.describe Dry::AutoInject do
       end
 
       def assert_valid_object(object)
-        expect(object.one).to eq 1
-        expect(object.two).to eq 2
-        expect(object.last).to eq 3
+        expect(object.send(:one)).to eq 1
+        expect(object.send(:two)).to eq 2
+        expect(object.send(:last)).to eq 3
       end
 
       let(:parent_class) do
@@ -419,7 +419,7 @@ RSpec.describe Dry::AutoInject do
             child_instance = child_class.new(**args)
 
             assert_valid_object(child_instance)
-            expect(child_instance.first).to eq 1
+            expect(child_instance.send(:first)).to eq 1
           end
         end
       end
@@ -440,7 +440,7 @@ RSpec.describe Dry::AutoInject do
             child_instance = child_class.new(other: "other", **args)
 
             assert_valid_object(child_instance)
-            expect(child_instance.other).to eq "other"
+            expect(child_instance.send(:other)).to eq "other"
           end
         end
       end
@@ -500,8 +500,8 @@ RSpec.describe Dry::AutoInject do
         klasses.each do |klass|
           instance = klass.new
 
-          expect(instance.one).to eq 1
-          expect(instance.two).to eq 2
+          expect(instance.send(:one)).to eq 1
+          expect(instance.send(:two)).to eq 2
         end
       end
     end
@@ -524,10 +524,10 @@ RSpec.describe Dry::AutoInject do
         it "works" do
           instance = klass.new(:other)
 
-          expect(instance.other).to eq :other
-          expect(instance.one).to eq 1
-          expect(instance.two).to eq 2
-          expect(instance.three).to eq 3
+          expect(instance.send(:other)).to eq :other
+          expect(instance.send(:one)).to eq 1
+          expect(instance.send(:two)).to eq 2
+          expect(instance.send(:three)).to eq 3
         end
       end
 
@@ -551,10 +551,10 @@ RSpec.describe Dry::AutoInject do
         it "works" do
           instance = child_class.new(:other)
 
-          expect(instance.other).to eq :other
-          expect(instance.one).to eq 1
-          expect(instance.two).to eq 2
-          expect(instance.three).to eq 3
+          expect(instance.send(:other)).to eq :other
+          expect(instance.send(:one)).to eq 1
+          expect(instance.send(:two)).to eq 2
+          expect(instance.send(:three)).to eq 3
         end
       end
     end
