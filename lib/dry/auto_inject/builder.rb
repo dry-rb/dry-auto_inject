@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/auto_inject/strategies"
-require "dry/auto_inject/injector"
-
 module Dry
   module AutoInject
     class Builder
