@@ -6,6 +6,7 @@
 ### Changed
 
 - This version uses dry-core 1.0 instead of dry-container (@flash-gordon)
+- This version uses zeitwerk for autoloading (@flash-gordon)
 
 [Compare v0.9.0...master](https://github.com/dry-rb/dry-auto_inject/compare/v0.9.0...master)
 
