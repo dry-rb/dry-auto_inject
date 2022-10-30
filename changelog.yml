@@ -2,6 +2,7 @@
 - version: 0.10.0
   changed:
   - "This version uses dry-core 1.0 instead of dry-container (@flash-gordon)"
+  - "This version uses zeitwerk for autoloading (@flash-gordon)"
 - version: 0.9.0
   date: "2022-01-26"
   changed:
