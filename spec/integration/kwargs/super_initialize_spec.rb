@@ -110,7 +110,12 @@ RSpec.describe "kwargs / super #initialize method" do
   describe "ignoring pass-through constructors" do
     let(:parent_class) {
       Class.new do
-        def initialize; end
+        # rubocop:disable Lint/RedundantCopDisableDirective
+        # rubocop:disable Style/RedundantInitialize
+        def initialize
+        end
+        # rubocop:enable Style/RedundantInitialize
+        # rubocop:enable Lint/RedundantCopDisableDirective
       end
     }
 
