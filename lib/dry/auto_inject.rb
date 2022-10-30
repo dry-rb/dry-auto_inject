@@ -1,9 +1,26 @@
 # frozen_string_literal: true
 
+require "zeitwerk"
 require "dry/core"
-require "dry/auto_inject/builder"
 
 module Dry
+  module AutoInject
+    def self.loader
+      @loader ||= Zeitwerk::Loader.new.tap do |loader|
+        root = File.expand_path("..", __dir__)
+        loader.tag = "dry-auto_inject"
+        loader.inflector = Zeitwerk::GemInflector.new("#{root}/dry-auto_inject.rb")
+        loader.push_dir(root)
+        loader.ignore(
+          "#{root}/dry-auto_inject.rb",
+          "#{root}/dry/auto_inject/version.rb"
+        )
+      end
+    end
+
+    loader.setup
+  end
+
   # Configure an auto-injection module
   #
   # @example

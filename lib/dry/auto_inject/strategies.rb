@@ -10,10 +10,10 @@ module Dry
         register name, strategy
         register :default, strategy
       end
+
+      register :args, proc { Args }
+      register :hash, proc { Strategies::Hash }
+      register_default :kwargs, proc { Kwargs }
     end
   end
 end
-
-require "dry/auto_inject/strategies/args"
-require "dry/auto_inject/strategies/hash"
-require "dry/auto_inject/strategies/kwargs"

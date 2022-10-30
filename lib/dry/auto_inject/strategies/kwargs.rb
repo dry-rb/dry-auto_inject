@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/auto_inject/strategies/constructor"
-require "dry/auto_inject/method_parameters"
-
 module Dry
   module AutoInject
     class Strategies
@@ -99,8 +96,6 @@ module Dry
           end
         end
       end
-
-      register_default :kwargs, Kwargs
     end
   end
 end

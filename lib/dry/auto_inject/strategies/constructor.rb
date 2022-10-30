@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-require "dry/auto_inject/dependency_map"
-
 module Dry
   module AutoInject
     class Strategies
-      class Constructor < Module
-        ClassMethods = Class.new(Module)
-        InstanceMethods = Class.new(Module)
+      class Constructor < ::Module
+        ClassMethods = ::Class.new(::Module)
+        InstanceMethods = ::Class.new(::Module)
 
         attr_reader :container
         attr_reader :dependency_map
