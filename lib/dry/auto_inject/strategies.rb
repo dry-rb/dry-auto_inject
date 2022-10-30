@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require "dry-container"
-
 module Dry
   module AutoInject
     class Strategies
-      extend Dry::Container::Mixin
+      extend Core::Container::Mixin
 
       # @api public
       def self.register_default(name, strategy)

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "dry/core"
 require "dry/auto_inject/builder"
 
 module Dry
@@ -8,7 +9,7 @@ module Dry
   # @example
   #    module MyApp
   #      # set up your container
-  #      container = Dry::Container.new
+  #      container = Dry::Core::Container.new
   #
   #      container.register(:data_store, -> { DataStore.new })
   #      container.register(:user_repository, -> { container[:data_store][:users] })

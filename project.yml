@@ -9,4 +9,4 @@ gemspec:
     - rake
     - rspec
   runtime_dependencies:
-    - [dry-container, ">= 0.3.4"]
+    - [dry-core, ">= 1.0.0.rc1", "< 2"]
