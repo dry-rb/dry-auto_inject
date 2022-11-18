@@ -1,6 +1,6 @@
 ---
 - version: 1.0.0
-  date:
+  date: 2022-11-18
   changed:
   - "This version is compatible with recently released dry-rb dependencies (@flash-gordon)"
   - "This version uses zeitwerk for autoloading (@flash-gordon)"
