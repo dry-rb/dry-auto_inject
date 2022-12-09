@@ -8,8 +8,3 @@ eval_gemfile "Gemfile.devtools"
 gemspec
 
 gem "dry-core", github: "dry-rb/dry-core", branch: "main"
-
-group :tools do
-  gem "byebug", platforms: :mri
-  gem "pry"
-end
