@@ -15,6 +15,6 @@ sources:
       - "Gemfile.devtools"
       - ".rspec"
       - ".rubocop.yml"
-  - repo: action-hero/workflows
+  - repo: repobot/workflows
     sync:
       - ".github/workflows/*.yml"
