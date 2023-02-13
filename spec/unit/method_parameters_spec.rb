@@ -45,7 +45,11 @@ RSpec.describe Dry::AutoInject::MethodParameters do
       all_parameters = parameters.of(klass, :initialize).to_a
 
       expect(all_parameters.size).to eq 2
-      expect(all_parameters[0].parameters).to eql([[:rest]])
+      if RUBY_VERSION >= "3.2"
+        expect(all_parameters[0].parameters).to eql([[:rest, :*]])
+      else
+        expect(all_parameters[0].parameters).to eql([[:rest]])
+      end
       expect(all_parameters[1]).to be_empty
     end
   end
