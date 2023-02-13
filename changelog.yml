@@ -1,4 +1,8 @@
 ---
+- version: 1.0.1
+  date: 2023-02-13
+  fixed:
+  - "Update passthrough parameters list to support ruby 3.2.1 (@hieuk09 in [#88](https://github.com/dry-rb/dry-auto_inject/pull/88))"
 - version: 1.0.0
   date: 2022-11-18
   changed:
