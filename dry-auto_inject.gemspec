@@ -26,10 +26,10 @@ Gem::Specification.new do |spec|
   spec.metadata["source_code_uri"]   = "https://github.com/dry-rb/dry-auto_inject"
   spec.metadata["bug_tracker_uri"]   = "https://github.com/dry-rb/dry-auto_inject/issues"
 
-  spec.required_ruby_version = ">= 2.7.0"
+  spec.required_ruby_version = ">= 2.7"
 
   # to update dependencies edit project.yml
-  spec.add_runtime_dependency "dry-core", "~> 1.0"
+  spec.add_runtime_dependency "dry-core", "~> 1.0", "< 2"
   spec.add_runtime_dependency "zeitwerk", "~> 2.6"
 
   spec.add_development_dependency "bundler"
