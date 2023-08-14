@@ -2,7 +2,7 @@
 [gem]: https://rubygems.org/gems/dry-auto_inject
 [actions]: https://github.com/dry-rb/dry-auto_inject/actions
 
-# dry-auto_inject [![Gem Version](https://badge.fury.io/rb/dry-auto_inject.svg)][gem] [![CI Status](https://github.com/dry-rb/dry-auto_inject/workflows/ci/badge.svg)][actions]
+# dry-auto_inject [![Gem Version](https://badge.fury.io/rb/dry-auto_inject.svg)][gem] [![CI Status](https://github.com/dry-rb/dry-auto_inject/workflows/CI/badge.svg)][actions]
 
 ## Links
 
