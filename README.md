@@ -1,4 +1,5 @@
 <!--- this file is synced from dry-rb/template-gem project -->
+
 [gem]: https://rubygems.org/gems/dry-auto_inject
 [actions]: https://github.com/dry-rb/dry-auto_inject/actions
 
