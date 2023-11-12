@@ -9,9 +9,22 @@ module Dry
       PASS_THROUGH = [
         [%i[rest]],
         [%i[rest], %i[keyrest]],
+        [%i[keyrest]],
+        [%i[keyrest], %i[block &]],
+        [%i[block]],
         [%i[rest *]],
-        [%i[rest *], %i[keyrest **]]
-      ].freeze
+        [%i[rest *], %i[keyrest **]],
+        [%i[rest *], %i[block &]],
+        [%i[keyrest **]],
+        [%i[keyrest **], %i[block &]],
+        [%i[block &]]
+      ].to_set
+
+      unless RUBY_VERSION < "3.1"
+        PASS_THROUGH << [%i[rest *], %i[block &]]
+      end
+
+      PASS_THROUGH.freeze
 
       def self.of(obj, name)
         Enumerator.new do |y|

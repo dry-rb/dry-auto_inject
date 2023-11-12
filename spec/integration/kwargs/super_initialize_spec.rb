@@ -112,8 +112,7 @@ RSpec.describe "kwargs / super #initialize method" do
       Class.new do
         # rubocop:disable Lint/RedundantCopDisableDirective
         # rubocop:disable Style/RedundantInitialize
-        def initialize
-        end
+        def initialize; end
         # rubocop:enable Style/RedundantInitialize
         # rubocop:enable Lint/RedundantCopDisableDirective
       end
