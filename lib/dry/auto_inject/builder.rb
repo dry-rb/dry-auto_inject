@@ -15,10 +15,17 @@ module Dry
       def initialize(container, options = {})
         @container = container
         @strategies = options.fetch(:strategies) { Strategies }
+        @pattern = options.fetch(:pattern) { nil }
+      end
+
+      def allow(pattern)
+        AutoInject::Builder.new(@container, pattern: pattern, strategies: @strategies)
       end
 
       # @api public
       def [](*dependency_names)
+        raise unless match_by_pattern?(dependency_names)
+
         default[*dependency_names]
       end
 
@@ -27,6 +34,10 @@ module Dry
       end
 
       private
+
+      def match_by_pattern?(dependency_names)
+        @pattern.nil? || dependency_names.all? { |dependency| dependency.match(@pattern) }
+      end
 
       def method_missing(name, *args, &block)
         if strategies.key?(name)
