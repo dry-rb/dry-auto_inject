@@ -84,10 +84,9 @@ RSpec.describe "kwargs / inheritance / parent class also auto-injecting" do
       Class.new(parent_class) do
         include Test::AutoInject[:one]
 
-        def initialize(*)
+        def initialize(*, **)
           super
         end
-        ruby2_keywords(:initialize) if respond_to?(:ruby2_keywords, true)
       end
     end
 
