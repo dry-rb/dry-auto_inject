@@ -2,7 +2,7 @@
 - version: 1.1.0
   date:
   fixed:
-  - "Update minimal ruby version to 3.1"
+  - "Update minimal ruby version to 3.1 (@flash-gordon)"
 - version: 1.0.1
   date: 2023-02-13
   fixed:
