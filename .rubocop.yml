@@ -269,3 +269,7 @@ Naming/VariableNumber:
 
 Naming/BinaryOperatorParameterName:
   Enabled: false
+
+Style/RedundantInitialize:
+  Exclude:
+    - "spec/**/*.rb"
