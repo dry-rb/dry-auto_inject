@@ -6,10 +6,10 @@ require "dry/core"
 module Dry
   module AutoInject
     def self.loader
-      @loader ||= Zeitwerk::Loader.new.tap do |loader|
-        root = File.expand_path("..", __dir__)
+      @loader ||= ::Zeitwerk::Loader.new.tap do |loader|
+        root = ::File.expand_path("..", __dir__)
         loader.tag = "dry-auto_inject"
-        loader.inflector = Zeitwerk::GemInflector.new("#{root}/dry-auto_inject.rb")
+        loader.inflector = ::Zeitwerk::GemInflector.new("#{root}/dry-auto_inject.rb")
         loader.push_dir(root)
         loader.ignore(
           "#{root}/dry-auto_inject.rb",

@@ -11,9 +11,9 @@ module Dry
         register :default, strategy
       end
 
-      register :args, proc { Args }
+      register :args, proc { Strategies::Args }
       register :hash, proc { Strategies::Hash }
-      register_default :kwargs, proc { Kwargs }
+      register_default :kwargs, proc { Strategies::Kwargs }
     end
   end
 end

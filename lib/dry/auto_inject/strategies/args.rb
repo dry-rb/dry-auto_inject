@@ -9,12 +9,14 @@ module Dry
 
         def define_new
           class_mod.class_exec(container, dependency_map) do |container, dependency_map|
-            define_method :new do |*args|
-              deps = dependency_map.to_h.values.map.with_index { |identifier, i|
-                args[i] || container[identifier]
-              }
+            deps_with_indices = dependency_map.to_h.values.map.with_index
 
-              super(*deps, *args[deps.size..])
+            define_method :new do |*args|
+              deps = deps_with_indices.map do |identifier, i|
+                args[i] || container[identifier]
+              end
+
+              super(*deps, *args.drop(deps.size))
             end
           end
         end
@@ -46,11 +48,12 @@ module Dry
         end
 
         def define_initialize_with_splat(super_parameters)
-          super_pass = if super_parameters.splat?
-                         "*args"
-                       else
-                         "*args.take(#{super_parameters.length})"
-                       end
+          super_pass =
+            if super_parameters.splat?
+              "*args"
+            else
+              "*args.take(#{super_parameters.length})"
+            end
 
           assignments = dependency_map.names.map.with_index do |name, idx|
             "@#{name} = args[#{idx}]"

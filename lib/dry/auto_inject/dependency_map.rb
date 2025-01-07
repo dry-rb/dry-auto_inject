@@ -2,8 +2,8 @@
 
 module Dry
   module AutoInject
-    DuplicateDependencyError = Class.new(StandardError)
-    DependencyNameInvalid = Class.new(StandardError)
+    DuplicateDependencyError = ::Class.new(::StandardError)
+    DependencyNameInvalid = ::Class.new(::StandardError)
 
     VALID_NAME = /([a-z_][a-zA-Z_0-9]*)$/
 
@@ -12,7 +12,7 @@ module Dry
         @map = {}
 
         dependencies = dependencies.dup
-        aliases = dependencies.last.is_a?(Hash) ? dependencies.pop : {}
+        aliases = dependencies.last.is_a?(::Hash) ? dependencies.pop : {}
 
         dependencies.each do |identifier|
           name = name_for(identifier)
@@ -24,17 +24,13 @@ module Dry
         end
       end
 
-      def inspect
-        @map.inspect
-      end
+      def inspect = @map.inspect
 
       def names
         @names ||= @map.keys
       end
 
-      def to_h
-        @map.dup
-      end
+      def to_h = @map.dup
       alias_method :to_hash, :to_h
 
       private

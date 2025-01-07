@@ -18,17 +18,13 @@ module Dry
       end
 
       # @api public
-      def [](*dependency_names)
-        default[*dependency_names]
-      end
+      def [](*dependency_names) = default[*dependency_names]
 
-      def respond_to_missing?(name, _include_private = false)
-        strategies.key?(name)
-      end
+      def respond_to_missing?(name, _ = false) = strategies.key?(name)
 
       private
 
-      def method_missing(name, *args, &)
+      def method_missing(name, ...)
         if strategies.key?(name)
           Injector.new(container, strategies[name], builder: self)
         else

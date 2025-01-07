@@ -9,12 +9,14 @@ module Dry
 
         def define_new
           class_mod.class_exec(container, dependency_map) do |container, dependency_map|
-            define_method :new do |options = {}|
-              deps = dependency_map.to_h.each_with_object({}) { |(name, identifier), obj|
-                obj[name] = options[name] || container[identifier]
-              }.merge(options)
+            deps_map = dependency_map.to_h
 
-              super(deps)
+            define_method :new do |options = {}|
+              deps = deps_map.transform_values do |identifier|
+                options[identifier] || container[identifier]
+              end
+
+              super({**deps, **options})
             end
           end
         end
@@ -24,7 +26,7 @@ module Dry
           super_pass = super_params.empty? ? "" : "options"
           assignments = dependency_map.names.map do |name|
             <<~RUBY
-              unless !options.key?(:#{name}) && instance_variable_defined?(:'@#{name}')
+              if options.key?(:#{name}) || !instance_variable_defined?(:'@#{name}')
                 @#{name} = options[:#{name}]
               end
             RUBY
@@ -33,7 +35,7 @@ module Dry
 
           instance_mod.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def initialize(options) # def initialize(options)
-                                    #   unless !options.key?(:dep) && instance_variable_defined?(:@dep)
+                                    #   if options.key?(:dep) || !instance_variable_defined?(:@dep)
               #{body}               #     @dep = options[:dep]
                                     #   end
               super(#{super_pass})  #   super(options)

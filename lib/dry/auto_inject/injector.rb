@@ -4,7 +4,7 @@ require "dry/auto_inject/strategies"
 
 module Dry
   module AutoInject
-    class Injector < BasicObject
+    class Injector < ::BasicObject
       # @api private
       attr_reader :container
 
@@ -23,19 +23,13 @@ module Dry
         @builder = builder
       end
 
-      def [](*dependency_names)
-        strategy.new(container, *dependency_names)
-      end
+      def [](*dependency_names) = strategy.new(container, *dependency_names)
 
-      def respond_to_missing?(name, _include_private = false)
-        builder.respond_to?(name)
-      end
+      def respond_to_missing?(name, _ = false) = builder.respond_to?(name)
 
       private
 
-      def method_missing(name, *_args)
-        builder.__send__(name)
-      end
+      def method_missing(name, ...) = builder.__send__(name)
     end
   end
 end
