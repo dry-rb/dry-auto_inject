@@ -41,6 +41,12 @@ module Dry
         @splat = parameters.any? { |type, _| type == :rest }
       end
 
+      def keyword_splat?
+        return @keyword_splat if defined? @keyword_splat
+
+        @keyword_splat = parameters.any? { |type, _| type == :keyrest }
+      end
+
       def sequential_arguments?
         return @sequential_arguments if defined? @sequential_arguments
 
@@ -57,6 +63,10 @@ module Dry
 
       def keyword?(name)
         keyword_names.include?(name)
+      end
+
+      def accept_keyword?(name)
+        keyword_splat? || keyword?(name)
       end
 
       def empty?

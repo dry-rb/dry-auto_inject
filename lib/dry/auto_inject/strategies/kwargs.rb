@@ -69,7 +69,7 @@ module Dry
               else
                 super_kwargs = slice_kwargs.(kwargs, super_parameters)
 
-                if super_kwargs.any? && super_parameters.keyword_names.any?
+                if super_kwargs.any?
                   super(*args, **super_kwargs, &block)
                 else
                   super(*args, &block)
@@ -92,7 +92,11 @@ module Dry
 
         def slice_kwargs(kwargs, super_parameters)
           kwargs.select do |key|
-            !dependency_map.names.include?(key) || super_parameters.keyword?(key)
+            if super_parameters.accept_keyword?(key)
+              !dependency_map.names.include?(key) || super_parameters.keyword?(key)
+            else
+              false
+            end
           end
         end
       end
