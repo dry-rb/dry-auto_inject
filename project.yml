@@ -1,8 +1,0 @@
-name: dry-auto_inject
-gemspec:
-  authors: ["Piotr Solnica"]
-  email: ["piotr.solnica@gmail.com"]
-  summary: "Container-agnostic automatic constructor injection"
-  runtime_dependencies:
-    - [dry-core, "~> 1.1"]
-    - [zeitwerk, "~> 2.6"]

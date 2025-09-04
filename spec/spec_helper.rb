@@ -5,7 +5,14 @@ require_relative "support/coverage"
 begin
   require "byebug"
 rescue LoadError; end
+
+require_relative "support/rspec"
+
 require "dry-auto_inject"
+
+Dir.glob(Pathname.new(__dir__).join("support", "**", "*.rb")).each do |file|
+  require_relative file
+end
 
 module Test
   def self.remove_constants
@@ -14,15 +21,7 @@ module Test
 end
 
 RSpec.configure do |config|
-  config.disable_monkey_patching!
-  config.filter_run_when_matching :focus
-  config.warnings = true
-
   config.after do
     Test.remove_constants
-  end
-
-  config.define_derived_metadata do |meta|
-    meta[:aggregate_failures] = true
   end
 end

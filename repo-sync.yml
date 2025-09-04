@@ -1,0 +1,17 @@
+name:
+  gem: dry-auto_inject
+  constant: Dry::AutoInject
+github_org: dry
+gemspec:
+  authors: ["Hanakai team"]
+  email: ["info@hanakai.org"]
+  summary: "Container-agnostic automatic constructor injection"
+  homepage: "https://dry-rb.org/gems/dry-auto_inject"
+  required_ruby_version: ">= 3.1"
+  development_dependencies:
+    - bundler
+    - rake
+    - rspec
+  runtime_dependencies:
+    - [dry-core, "~> 1.1"]
+    - [zeitwerk, "~> 2.6"]
