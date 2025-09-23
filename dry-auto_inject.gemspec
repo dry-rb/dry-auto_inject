@@ -24,9 +24,9 @@ Gem::Specification.new do |spec|
   spec.extra_rdoc_files = ["README.md", "CHANGELOG.md", "LICENSE"]
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
-  spec.metadata["changelog_uri"]     = "https://github.com/dry-rb/dry-auto_inject/blob/main/CHANGELOG.md"
-  spec.metadata["source_code_uri"]   = "https://github.com/dry-rb/dry-auto_inject"
-  spec.metadata["bug_tracker_uri"]   = "https://github.com/dry-rb/dry-auto_inject/issues"
+  spec.metadata["changelog_uri"]     = "https://github.com/dry/dry-auto_inject/blob/main/CHANGELOG.md"
+  spec.metadata["source_code_uri"]   = "https://github.com/dry/dry-auto_inject"
+  spec.metadata["bug_tracker_uri"]   = "https://github.com/dry/dry-auto_inject/issues"
   spec.metadata["funding_uri"]       = "https://github.com/sponsors/hanami"
 
   spec.required_ruby_version = ">= 3.1"
