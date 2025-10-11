@@ -1,7 +1,7 @@
 name:
   gem: dry-auto_inject
   constant: Dry::AutoInject
-github_org: dry
+github_org: dry-rb
 gemspec:
   authors: ["Hanakai team"]
   email: ["info@hanakai.org"]
