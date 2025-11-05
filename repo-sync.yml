@@ -7,7 +7,6 @@ gemspec:
   email: ["info@hanakai.org"]
   summary: "Container-agnostic automatic constructor injection"
   homepage: "https://dry-rb.org/gems/dry-auto_inject"
-  required_ruby_version: ">= 3.1"
   development_dependencies:
     - bundler
     - rake
