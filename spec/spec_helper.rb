@@ -4,7 +4,8 @@ require_relative "support/coverage"
 
 begin
   require "byebug"
-rescue LoadError; end
+rescue LoadError;
+end
 
 require_relative "support/rspec"
 
