@@ -4,13 +4,6 @@ module Dry
   module AutoInject
     # @api private
     class MethodParameters
-      PASS_THROUGH = [
-        [%i[rest]],
-        [%i[rest], %i[keyrest]],
-        [%i[rest *]],
-        [%i[rest *], %i[keyrest **]]
-      ].freeze
-
       def self.of(obj, name)
         ::Enumerator.new do |y|
           begin
@@ -59,7 +52,13 @@ module Dry
 
       def length = parameters.length
 
-      def pass_through? = PASS_THROUGH.include?(parameters)
+      def pass_through?
+        return false if parameters.empty?
+
+        parameters.all? do |param|
+          param in [:rest, :*] | [:keyrest, :**]
+        end
+      end
 
       EMPTY = new([])
     end
