@@ -36,6 +36,10 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
       - "core.*"
   ```
 
+## Fixed
+
+- Ancestor parameter detection for smart kwarg forwarding is no longer obscured by injections in a parent class (@alassek in [#97](https://github.com/dry-rb/dry-auto_inject/pull/97))
+
 ### Changed
 
 - Update minimum Ruby version to 3.2 (@timriley)

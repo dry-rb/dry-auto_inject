@@ -49,4 +49,41 @@ RSpec.describe Dry::AutoInject::MethodParameters do
       expect(all_parameters[1]).to be_empty
     end
   end
+
+  describe "#pass_through?" do
+    it "returns true for anonymous splat (*, **)" do
+      params = described_class.new([[:rest, :*], [:keyrest, :**]])
+      expect(params.pass_through?).to be true
+    end
+
+    it "returns false for forwarding (...) due to named block parameter" do
+      params = described_class.new([[:rest, :*], [:keyrest, :**], [:block, :&]])
+      expect(params.pass_through?).to be false
+    end
+
+    it "returns true for unnamed parameters" do
+      params = described_class.new([[:rest], [:keyrest]])
+      expect(params.pass_through?).to be true
+    end
+
+    it "returns true for injected kwargs" do
+      params = described_class.new([[:keyrest, :__auto_inject_kwargs__]])
+      expect(params.pass_through?).to be true
+    end
+
+    it "returns false for empty parameters" do
+      params = described_class.new([])
+      expect(params.pass_through?).to be false
+    end
+
+    it "returns false for named parameters" do
+      params = described_class.new([[:req, :a], [:keyreq, :b]])
+      expect(params.pass_through?).to be false
+    end
+
+    it "returns false for **nil (nokey)" do
+      params = described_class.new([[:nokey]])
+      expect(params.pass_through?).to be false
+    end
+  end
 end
