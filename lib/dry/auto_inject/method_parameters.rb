@@ -54,9 +54,19 @@ module Dry
 
       def pass_through?
         return false if parameters.empty?
+        return true if parameters.any? { |param| param in [:keyrest, :__auto_inject_kwargs__] }
 
         parameters.all? do |param|
-          param in [:rest, :*] | [:keyrest, :**]
+          case param
+          in [:rest, :*] | [:keyrest, :**]
+            true
+          in [:rest | :req | :opt | :keyrest | :keyreq | :key | :block, _]
+            false
+          in [:nokey]
+            false
+          else
+            true
+          end
         end
       end
 

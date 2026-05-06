@@ -23,8 +23,10 @@ module Dry
 
         def define_initialize(klass)
           super_parameters = MethodParameters.of(klass, :initialize).each do |ps|
-            # Look upwards past `def foo(*)` and `def foo(...)` methods
-            # until we get an explicit list of parameters
+            # Look upwards past methods that only forward arguments, stopping at the
+            # first instance of explicit parameters. So `foo(**kwargs)` is
+            # skipped, but `foo(bar:, **kwargs)` is not. `foo(...)` is used by ROM as
+            # a delegation pattern, so it is not skipped.
             break ps unless ps.pass_through?
           end
 
@@ -37,15 +39,18 @@ module Dry
           self
         end
 
+        # rubocop:disable Lint/UnderscorePrefixedVariableName
         def define_initialize_with_keywords(super_parameters)
           assign_dependencies = method(:assign_dependencies)
           slice_kwargs = method(:slice_kwargs)
 
           instance_mod.class_exec do
-            define_method :initialize do |**kwargs, &block|
-              assign_dependencies.(kwargs, self)
+            # The choice of `__auto_inject_kwargs__` here is intentional, and used
+            # by MethodParameters#pass_through? to detect an injected initialize.
+            define_method :initialize do |**__auto_inject_kwargs__, &block|
+              assign_dependencies.(__auto_inject_kwargs__, self)
 
-              super_kwargs = slice_kwargs.(kwargs, super_parameters)
+              super_kwargs = slice_kwargs.(__auto_inject_kwargs__, super_parameters)
 
               if super_kwargs.any?
                 super(**super_kwargs, &block)
@@ -61,13 +66,13 @@ module Dry
           slice_kwargs = method(:slice_kwargs)
 
           instance_mod.class_exec do
-            define_method :initialize do |*args, **kwargs, &block|
-              assign_dependencies.(kwargs, self)
+            define_method :initialize do |*args, **__auto_inject_kwargs__, &block|
+              assign_dependencies.(__auto_inject_kwargs__, self)
 
               if super_parameters.splat?
-                super(*args, **kwargs, &block)
+                super(*args, **__auto_inject_kwargs__, &block)
               else
-                super_kwargs = slice_kwargs.(kwargs, super_parameters)
+                super_kwargs = slice_kwargs.(__auto_inject_kwargs__, super_parameters)
 
                 if super_kwargs.any?
                   super(*args, **super_kwargs, &block)
@@ -78,6 +83,7 @@ module Dry
             end
           end
         end
+        # rubocop:enable Lint/UnderscorePrefixedVariableName
 
         def assign_dependencies(kwargs, destination)
           dependency_map.names.each do |name|
