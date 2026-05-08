@@ -7,6 +7,35 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ## [Unreleased]
 
+### Added
+
+- Ship a `DryAutoInject/DependencyOrder` rubocop cop that enforces a configurable
+  order for dependencies inside `Import[...]` calls. Non-aliased deps are
+  emitted first, then aliased ones; within each section, deps are grouped by
+  the configured `Order` patterns and sorted alphabetically inside a group.
+  Supported pattern forms: `'*'` (catch-all, at most one and implicitly
+  appended), `'prefix.*'`, `/regex/flags`, or an exact path. The cop also
+  autocorrects.
+
+  Enable it from your `.rubocop.yml` using RuboCop's plugin system
+  (requires RuboCop 1.72+):
+
+  ```yaml
+  plugins:
+    - dry-auto_inject:
+        require_path: rubocop/dry_auto_inject
+
+  DryAutoInject/DependencyOrder:
+    Enabled: true
+    InjectorModules:  # Default is [Import, *::Import, Deps, *::Deps]
+      - Deps          # exact constant
+      - "*::Deps"     # match any namespace ending in `::Deps`
+    Order:
+      - "web.*"
+      - "*"
+      - "core.*"
+  ```
+
 ### Changed
 
 - Update minimum Ruby version to 3.2 (@timriley)
