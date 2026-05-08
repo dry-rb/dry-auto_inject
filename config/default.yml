@@ -1,0 +1,11 @@
+DryAutoInject/DependencyOrder:
+  Description: 'Enforces a configurable order for dry-auto_inject `Import[...]` dependencies.'
+  Enabled: true
+  VersionAdded: '1.2'
+  InjectorModules:
+    - 'Import'
+    - '*::Import'
+    - 'Deps'
+    - '*::Deps'
+  Order:
+    - '*'
