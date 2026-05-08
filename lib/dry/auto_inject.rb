@@ -13,7 +13,8 @@ module Dry
         loader.push_dir(root)
         loader.ignore(
           "#{root}/dry-auto_inject.rb",
-          "#{root}/dry/auto_inject/version.rb"
+          "#{root}/dry/auto_inject/version.rb",
+          "#{root}/rubocop"
         )
       end
     end
