@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "Container-agnostic automatic constructor injection"
   spec.description   = spec.summary
   spec.homepage      = "https://dry-rb.org/gems/dry-auto_inject"
-  spec.files         = Dir["CHANGELOG.md", "LICENSE", "README.md", "dry-auto_inject.gemspec", "config/**/*", "lib/**/*"]
+  spec.files         = Dir["CHANGELOG.md", "LICENSE", "README.md", "dry-auto_inject.gemspec", "lib/**/*", "config/**/*"]
   spec.bindir        = "exe"
   spec.executables   = Dir["exe/*"].map { |f| File.basename(f) }
   spec.require_paths = ["lib"]
