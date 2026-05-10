@@ -7,6 +7,9 @@ gemspec:
   email: ["info@hanakai.org"]
   summary: "Container-agnostic automatic constructor injection"
   homepage: "https://dry-rb.org/gems/dry-auto_inject"
+  additional_files: ["config/**/*"]
+  metadata:
+    default_lint_roller_plugin: "RuboCop::DryAutoInject::Plugin"
   development_dependencies:
     - bundler
     - rake
