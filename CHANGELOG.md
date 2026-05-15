@@ -42,7 +42,7 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ### Changed
 
-- Update minimum Ruby version to 3.2. (@timriley)
+- Update minimum Ruby version to 3.3. (@timriley)
 
 [Unreleased]: https://github.com/dry-rb/dry-auto_inject/compare/v1.1.0...main
 
