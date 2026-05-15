@@ -15,7 +15,7 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
   the configured `Order` patterns and sorted alphabetically inside a group.
   Supported pattern forms: `'*'` (catch-all, at most one and implicitly
   appended), `'prefix.*'`, `/regex/flags`, or an exact path. The cop also
-  autocorrects.
+  autocorrects. (@flash-gordon in #96)
 
   Enable it from your `.rubocop.yml` using RuboCop's plugin system
   (requires RuboCop 1.72+):
@@ -36,119 +36,108 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
       - "core.*"
   ```
 
-## Fixed
+### Fixed
 
-- Ancestor parameter detection for smart kwarg forwarding is no longer obscured by injections in a parent class (@alassek in [#97](https://github.com/dry-rb/dry-auto_inject/pull/97))
+- Ancestor parameter detection for smart kwarg forwarding is no longer obscured by injections in a parent class. (@alassek in #97)
 
 ### Changed
 
-- Update minimum Ruby version to 3.2 (@timriley)
+- Update minimum Ruby version to 3.2. (@timriley)
+
+[Unreleased]: https://github.com/dry-rb/dry-auto_inject/compare/v1.1.0...main
 
 ## [1.1.0] - 2025-01-07
 
-
 ### Fixed
 
-- Update minimal ruby version to 3.1 (@flash-gordon)
+- Update minimal ruby version to 3.1. (@flash-gordon)
 
-
-[Compare v1.0.1...v1.1.0](https://github.com/dry-rb/dry-auto_inject/compare/v1.0.1...v1.1.0)
+[1.1.0]: https://github.com/dry-rb/dry-auto_inject/compare/v1.0.1...v1.1.0
 
 ## [1.0.1] - 2023-02-13
 
-
 ### Fixed
 
-- Update passthrough parameters list to support ruby 3.2.1 (@hieuk09 in [#88](https://github.com/dry-rb/dry-auto_inject/pull/88))
+- Update passthrough parameters list to support ruby 3.2.1. (@hieuk09 in #88)
 
-
-[Compare v1.0.0...v1.0.1](https://github.com/dry-rb/dry-auto_inject/compare/v1.0.0...v1.0.1)
+[1.0.1]: https://github.com/dry-rb/dry-auto_inject/compare/v1.0.0...v1.0.1
 
 ## [1.0.0] - 2022-11-18
 
-
 ### Changed
 
-- This version is compatible with recently released dry-rb dependencies (@flash-gordon)
-- This version uses zeitwerk for autoloading (@flash-gordon)
+- This version is compatible with recently released dry-rb dependencies. (@flash-gordon)
+- This version uses zeitwerk for autoloading. (@flash-gordon)
 
-[Compare v0.9.0...v1.0.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.9.0...v1.0.0)
+[1.0.0]: https://github.com/dry-rb/dry-auto_inject/compare/v0.9.0...v1.0.0
 
 ## [0.9.0] - 2022-01-26
-
 
 ### Changed
 
 - [BREAKING] Support for ... was changed, now constructors with such signature are not considered
-as pass-through because they can forward arguments to another method (flash-gordon in [#78](https://github.com/dry-rb/dry-auto_inject/pull/78))
-
+  as pass-through because they can forward arguments to another method. (@flash-gordon in #78)
 - [BREAKING] Support for 2.6 was dropped
 
-[Compare v0.8.0...v0.9.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.8.0...v0.9.0)
+[0.9.0]: https://github.com/dry-rb/dry-auto_inject/compare/v0.8.0...v0.9.0
 
 ## [0.8.0] - 2021-06-06
 
-
 ### Added
 
-- Support For `...` passthrough-args (@ytaben)
+- Support For `...` passthrough-args. (@ytaben)
 
 ### Fixed
 
-- Constructors with kwargs strategy properly forward blocks to super (mintyfresh in [#68](https://github.com/dry-rb/dry-auto_inject/pull/68))
+- Constructors with kwargs strategy properly forward blocks to super. (@mintyfresh in #68)
 
 ### Changed
 
 - [BREAKING] Support for 2.4 and 2.5 was dropped
 
-[Compare v0.7.0...v0.8.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.7.0...v0.8.0)
+[0.8.0]: https://github.com/dry-rb/dry-auto_inject/compare/v0.7.0...v0.8.0
 
 ## [0.7.0] - 2019-12-28
 
-
 ### Fixed
 
-- Keyword warnings issued by Ruby 2.7 in certain contexts (flash-gordon)
+- Keyword warnings issued by Ruby 2.7 in certain contexts. (@flash-gordon)
 
 ### Changed
 
 - [BREAKING] Support for 2.3 was dropped
 
-[Compare v0.6.1...v0.7.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.6.1...v0.7.0)
+[0.7.0]: https://github.com/dry-rb/dry-auto_inject/compare/v0.6.1...v0.7.0
 
 ## [0.6.1] - 2019-04-16
 
-
 ### Fixed
 
-- Allow explicit injection of falsey values (timriley in [#58](https://github.com/dry-rb/dry-auto_inject/pull/58))
+- Allow explicit injection of falsey values. (@timriley in #58)
 
-
-[Compare v0.6.0...v0.6.1](https://github.com/dry-rb/dry-auto_inject/compare/v0.6.0...v0.6.1)
+[0.6.1]: https://github.com/dry-rb/dry-auto_inject/compare/v0.6.0...v0.6.1
 
 ## [0.6.0] - 2018-11-29
 
-
 ### Added
 
-- Enhanced support for integrating with existing constructors. The kwargs strategy will now pass dependencies up to the next constructor if it accepts an arbitrary number of arguments with `*args`. Note that this change may break existing code though we think it's unlikely to happen. If something doesn't work for you please report and we'll try to sort it out (flash-gordon + timriley in [#48](https://github.com/dry-rb/dry-auto_inject/pull/48))
+- Enhanced support for integrating with existing constructors. The kwargs strategy will now pass dependencies up to the next constructor if it accepts an arbitrary number of arguments with `*args`. Note that this change may break existing code though we think it's unlikely to happen. If something doesn't work for you please report and we'll try to sort it out. (@flash-gordon + @timriley in #48)
 
 ### Fixed
 
-- A couple of regressions were fixed along the way, see [#46](https://github.com/dry-rb/dry-auto_inject/issues/46) and [#49](https://github.com/dry-rb/dry-auto_inject/issues/49) (flash-gordon + timriley in [#48](https://github.com/dry-rb/dry-auto_inject/pull/48))
+- A couple of regressions were fixed along the way, see [#46](https://github.com/dry-rb/dry-auto_inject/issues/46) and [#49](https://github.com/dry-rb/dry-auto_inject/issues/49). (@flash-gordon + @timriley in #48)
 
 ### Changed
 
 - [BREAKING] 0.6.0 supports Ruby 2.3 and above. If you're on 2.3 keep in mind its EOL is scheduled at the end of March, 2019
 
-[Compare v0.5.0...v0.6.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.5.0...v0.6.0)
+[0.6.0]: https://github.com/dry-rb/dry-auto_inject/compare/v0.5.0...v0.6.0
 
 ## [0.5.0] - 2018-11-09
 
-
 ### Changed
 
-- Only assign `nil` dependency instance variables from generated `#initialize` if the instance variable has not been previously defined. This improves compatibility with objects initialized in non-conventional ways (see example below) (timriley in [#47](https://github.com/dry-rb/dry-auto_inject/pull/47))
+- Only assign `nil` dependency instance variables from generated `#initialize` if the instance variable has not been previously defined. This improves compatibility with objects initialized in non-conventional ways (see example below). (@timriley in #47)
 
   ```ruby
   module SomeFramework
@@ -180,72 +169,61 @@ as pass-through because they can forward arguments to another method (flash-gord
   end
   ```
 
-[Compare v0.4.6...v0.5.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.4.6...v0.5.0)
+[0.5.0]: https://github.com/dry-rb/dry-auto_inject/compare/v0.4.6...v0.5.0
 
 ## [0.4.6] - 2018-03-27
 
-
 ### Changed
 
-- In injector-generated `#initialize` methods, set dependency instance variables before calling `super` (timriley)
+- In injector-generated `#initialize` methods, set dependency instance variables before calling `super`. (@timriley)
 
-[Compare v0.4.5...v0.4.6](https://github.com/dry-rb/dry-auto_inject/compare/v0.4.5...v0.4.6)
+[0.4.6]: https://github.com/dry-rb/dry-auto_inject/compare/v0.4.5...v0.4.6
 
 ## [0.4.5] - 2018-01-02
 
-
 ### Added
 
-- Improved handling of kwargs being passed to #initialize’s super method (timriley)
+- Improved handling of kwargs being passed to #initialize’s super method. (@timriley)
 
-
-[Compare v0.4.4...v0.4.5](https://github.com/dry-rb/dry-auto_inject/compare/v0.4.4...v0.4.5)
+[0.4.5]: https://github.com/dry-rb/dry-auto_inject/compare/v0.4.4...v0.4.5
 
 ## [0.4.4] - 2017-09-14
 
-
 ### Added
 
-- Determine name for dependencies by splitting identifiers on any invalid local variable name characters (e.g. "/", "?", "!"), instead of splitting on dots only (raventid in [#39](https://github.com/dry-rb/dry-auto_inject/pull/39))
+- Determine name for dependencies by splitting identifiers on any invalid local variable name characters (e.g. "/", "?", "!"), instead of splitting on dots only. (@raventid in #39)
 
-
-[Compare v0.4.3...v0.4.4](https://github.com/dry-rb/dry-auto_inject/compare/v0.4.3...v0.4.4)
+[0.4.4]: https://github.com/dry-rb/dry-auto_inject/compare/v0.4.3...v0.4.4
 
 ## [0.4.3] - 2017-05-27
 
-
 ### Added
 
-- Push sequential arguments along with keywords in the kwargs strategy (hbda + vladra in [#32](https://github.com/dry-rb/dry-auto_inject/pull/32))
+- Push sequential arguments along with keywords in the kwargs strategy. (@hbda + @vladra in #32)
 
-
-[Compare v0.4.2...v0.4.3](https://github.com/dry-rb/dry-auto_inject/compare/v0.4.2...v0.4.3)
+[0.4.3]: https://github.com/dry-rb/dry-auto_inject/compare/v0.4.2...v0.4.3
 
 ## [0.4.2] - 2016-10-10
 
-
 ### Fixed
 
-- Fixed issue where injectors for different containers could not be used on different classes in an inheritance hierarchy (timriley in [#31](https://github.com/dry-rb/dry-auto_inject/pull/31))
+- Fixed issue where injectors for different containers could not be used on different classes in an inheritance hierarchy. (@timriley in #31)
 
-
-[Compare v0.4.1...v0.4.2](https://github.com/dry-rb/dry-auto_inject/compare/v0.4.1...v0.4.2)
+[0.4.2]: https://github.com/dry-rb/dry-auto_inject/compare/v0.4.1...v0.4.2
 
 ## [0.4.1] - 2016-08-14
 
-
 ### Changed
 
-- Loosened version dependency on dry-container (AMHOL)
+- Loosened version dependency on dry-container. (@AMHOL)
 
-[Compare v0.4.0...v0.4.1](https://github.com/dry-rb/dry-auto_inject/compare/v0.4.0...v0.4.1)
+[0.4.1]: https://github.com/dry-rb/dry-auto_inject/compare/v0.4.0...v0.4.1
 
 ## [0.4.0] - 2016-07-26
 
-
 ### Added
 
-- Support for strategy chaining, which is helpful in opting for alternatives to an application's normal strategy (timriley in [#25](https://github.com/dry-rb/dry-auto_inject/pull/25))
+- Support for strategy chaining, which is helpful in opting for alternatives to an application's normal strategy. (@timriley in #25)
 
   ```ruby
   # Define the application's injector with a non-default
@@ -264,16 +242,15 @@ as pass-through because they can forward arguments to another method (flash-gord
 
 ### Fixed
 
-- Fixed issue with kwargs injectors used at multiple points in a class inheritance heirarchy (flash-gordon in [#27](https://github.com/dry-rb/dry-auto_inject/pull/27))
+- Fixed issue with kwargs injectors used at multiple points in a class inheritance heirarchy. (@flash-gordon in #27)
 
 ### Changed
 
-- Use a `BasicObject`-based environment for the injector builder API instead of the previous `define_singleton_method`-based approach, which had negative performance characteristics (timriley in [#26](https://github.com/dry-rb/dry-auto_inject/pull/26))
+- Use a `BasicObject`-based environment for the injector builder API instead of the previous `define_singleton_method`-based approach, which had negative performance characteristics. (@timriley in #26)
 
-[Compare v0.3.0,...v0.4.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.3.0,...v0.4.0)
+[0.4.0]: https://github.com/dry-rb/dry-auto_inject/compare/v0.3.0...v0.4.0
 
-## [0.3.0] -, 2016-06-02
-
+## [0.3.0] - 2016-06-02
 
 ### Added
 
@@ -358,24 +335,21 @@ as pass-through because they can forward arguments to another method (flash-gord
 - `kwargs` is the new default injection strategy
 - Rubinius support is not available for the `kwargs` strategy (see [#18](https://github.com/dry-rb/dry-auto_inject/issues/18))
 
-[Compare v0.2.0...v0.3.0,](https://github.com/dry-rb/dry-auto_inject/compare/v0.2.0...v0.3.0,)
+[0.3.0]: https://github.com/dry-rb/dry-auto_inject/compare/v0.2.0...v0.3.0
 
 ## [0.2.0] - 2016-02-09
 
-
 ### Added
 
-- Support for hashes as constructor arguments via `Import.hash` interface (solnic)
+- Support for hashes as constructor arguments via `Import.hash` interface. (@solnic)
 
-
-[Compare v0.1.0...v0.2.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.1.0...v0.2.0)
+[0.2.0]: https://github.com/dry-rb/dry-auto_inject/compare/v0.1.0...v0.2.0
 
 ## [0.1.0] - 2015-11-12
 
 Changed interface from `Dry::AutoInject.new { container(some_container) }` to
 
-
-[Compare v0.0.1...v0.1.0](https://github.com/dry-rb/dry-auto_inject/compare/v0.0.1...v0.1.0)
+[0.1.0]: https://github.com/dry-rb/dry-auto_inject/compare/v0.0.1...v0.1.0
 
 ## [0.0.1] - 2015-08-20
 
