@@ -19,7 +19,7 @@ RSpec.describe RuboCop::Cop::DryAutoInject::DependencyOrder do
 
   subject(:cop) { described_class.new(config) }
 
-  context "when the call is not an Import" do
+  context "when the call is not an injector module" do
     it "registers no offenses" do
       expect_no_offenses(<<~RUBY)
         Foo['b', 'a']

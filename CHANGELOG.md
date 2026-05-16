@@ -36,6 +36,13 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
       - "core.*"
   ```
 
+- Ship a `DryAutoInject/RedundantAlias` rubocop cop that flags
+  `Import[foo: 'some.path.foo']`-style imports where the alias matches the
+  last segment of the path, since dry-auto_inject already derives the
+  dependency key from that segment. The cop autocorrects by promoting
+  redundant aliases to non-aliased deps, preserving the original quoting.
+  (@flash-gordon in #98)
+
 ### Fixed
 
 - Ancestor parameter detection for smart kwarg forwarding is no longer obscured by injections in a parent class. (@alassek in #97)
