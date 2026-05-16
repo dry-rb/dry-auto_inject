@@ -9,3 +9,13 @@ DryAutoInject/DependencyOrder:
     - '*::Deps'
   Order:
     - '*'
+
+DryAutoInject/RedundantAlias:
+  Description: 'Flags dry-auto_inject imports whose hash key matches the last segment of the path.'
+  Enabled: true
+  VersionAdded: '1.2'
+  InjectorModules:
+    - 'Import'
+    - '*::Import'
+    - 'Deps'
+    - '*::Deps'
