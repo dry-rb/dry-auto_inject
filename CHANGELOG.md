@@ -22,8 +22,7 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
   ```yaml
   plugins:
-    - dry-auto_inject:
-        require_path: rubocop/dry_auto_inject
+    - dry-auto_inject
 
   DryAutoInject/DependencyOrder:
     Enabled: true
