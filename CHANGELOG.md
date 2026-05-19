@@ -50,7 +50,7 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 - Update minimum Ruby version to 3.3. (@timriley)
 
-[Unreleased]: https://github.com/dry-rb/dry-auto_inject/compare/v1.1.0...main
+[1.2.0]: https://github.com/dry-rb/dry-auto_inject/compare/v1.1.0...v1.2.0
 
 ## [1.1.0] - 2025-01-07
 
