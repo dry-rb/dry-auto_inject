@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Break Versioning](https://www.taoensso.com/break-versioning).
 
+## [1.2.1] - 2026-05-26
+
+### Fixed
+
+- Load cop classes when the RuboCop plugin is required, so offenses are
+  actually reported (@flash-gordon in #100)
+
+[1.2.1]: https://github.com/dry-rb/dry-auto_inject/compare/v1.2.0...v1.2.1
+
 ## [1.2.0] - 2026-05-19
 
 ### Added
