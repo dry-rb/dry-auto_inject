@@ -3,6 +3,8 @@
 require "lint_roller"
 
 require "dry/auto_inject/version"
+require_relative "../cop/dry_auto_inject/dependency_order"
+require_relative "../cop/dry_auto_inject/redundant_alias"
 
 module RuboCop
   module DryAutoInject
