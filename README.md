@@ -2,7 +2,7 @@
 
 [actions]: https://github.com/dry-rb/dry-auto_inject/actions
 [chat]: https://discord.gg/naQApPAsZB
-[forum]: https://discourse.hanamirb.org
+[forum]: https://discourse.hanakai.org
 [rubygem]: https://rubygems.org/gems/dry-auto_inject
 
 # dry-auto_inject [![Gem Version](https://badge.fury.io/rb/dry-auto_inject.svg)][rubygem] [![CI Status](https://github.com/dry-rb/dry-auto_inject/workflows/CI/badge.svg)][actions]
