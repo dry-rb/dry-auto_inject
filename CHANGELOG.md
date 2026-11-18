@@ -2,8 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Break Versioning](https://www.taoensso.com/break-versioning).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Break Versioning](https://www.taoensso.com/break-versioning).
+
+## [Unreleased]
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+[Unreleased]: https://github.com/dry-rb/dry-auto_inject/compare/v1.2.2...main
+
+## [1.2.2] - 2026-11-19
+
+### Fixed
+
+- Work around a bug in JRuby 10.1.3.0 (@timriley in #102)
+
+[1.2.2]: https://github.com/dry-rb/dry-auto_inject/compare/v1.2.1...v1.2.2
 
 ## [1.2.1] - 2026-05-26
 
