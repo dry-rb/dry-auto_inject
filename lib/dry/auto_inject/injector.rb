@@ -29,7 +29,7 @@ module Dry
 
       private
 
-      def method_missing(name, ...) = builder.__send__(name)
+      def method_missing(name, *) = builder.__send__(name)
     end
   end
 end
